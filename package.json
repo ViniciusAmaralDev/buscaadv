@@ -1,0 +1,27 @@
+{
+  "name": "buscaadv",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "watchman watch-del-all && clear && npx react-native start --reset-cache",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
+    "web": "npx react-native start --web",
+    "android:clean": "yarn cache clean && cd android && ./gradlew clean && cd .. && clear",
+    "ios:clean": "yarn cache clean && rm -rf ~/Library/Developer/Xcode/DerivedData && cd ios && rm -rf /build && rm -rf /Pods && rm -rf Podfile.lock && cd .. && clear",
+    "clean": "yarn cache clean && cd android && ./gradlew clean && cd .. && rm -rf ~/Library/Developer/Xcode/DerivedData && cd ios && rm -rf /build && rm -rf /Pods && rm -rf Podfile.lock && cd .. && rm -rf /node_modules && rm -rf yarn.lock && yarn install && npx pod-install && say completed"
+  },
+  "dependencies": {
+    "expo": "~49.0.8",
+    "expo-splash-screen": "~0.20.5",
+    "expo-status-bar": "~1.6.0",
+    "react": "18.2.0",
+    "react-native": "0.72.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.14",
+    "typescript": "^5.1.3"
+  },
+  "private": true
+}
