@@ -1,4 +1,4 @@
-package com.buscaadv;
+package com.codes.buscaadv;
 
 import android.app.Application;
 import android.content.res.Configuration;
