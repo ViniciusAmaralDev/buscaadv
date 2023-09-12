@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { Button } from "../../../components/base/button";
 
@@ -27,12 +27,32 @@ export const TargetButton = styled(Button)<ButtonProps>`
   border-radius: 20px;
   align-items: center;
   justify-content: center;
-  top: ${({ paddingTop }) => paddingTop + 16}px;
+  bottom: 16px;
   background-color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const FilterButton = styled(Button)<ButtonProps>`
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  bottom: 70px;
+  border-width: .5px;
+  background-color: ${({ theme }) => theme.colors.gray};
+  border-color: ${({ theme }) => theme.colors.gray_dark};
 `;
 
 export const TargetIcon = styled(MaterialCommunityIcons).attrs(({ theme }) => ({
   size: 24,
   name: "target",
   color: theme.colors.white,
+}))``;
+
+export const FilterIcon = styled(Ionicons).attrs(({ theme }) => ({
+  size: 20,
+  name: "ios-filter",
+  color: theme.colors.gray_dark,
 }))``;

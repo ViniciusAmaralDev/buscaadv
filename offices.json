@@ -1,0 +1,74 @@
+{
+  "Especialista em Direito Civil": [
+    "Direito das obrigações.",
+    "Direito das sucessões.",
+    "Direito das coisas (propriedade, posse).",
+    "Direito das famílias.",
+    "Direito das contratos.",
+    "Direito das responsabilidades civis.",
+    "Direito das empresas.",
+    "Direito das relações de consumo.",
+    "Direito imobiliário.",
+    "Direito registral e notarial"
+  ],
+
+  "Especialista em Direito Penal": [
+    "Crimes contra a pessoa",
+    "Crimes contra o patrimônio",
+    "Crimes econômicos e financeiros",
+    "Crimes sexuais",
+    "Crimes de tráfico de drogas",
+    "Crimes contra a administração pública",
+    "Crimes de violência doméstica",
+    "Crimes cibernéticos",
+    "Crimes ambientais",
+    "Criminologia."
+  ],
+
+  "Especialista em Direito Trabalhista": [
+    "Contrato de trabalho",
+    "Direitos e deveres do empregado e empregador",
+    "Rescisão contratual e demissão",
+    "Acidentes de trabalho e doenças ocupacionais",
+    "Negociação coletiva e sindicalismo",
+    "Terceirização e trabalho temporário",
+    "Assédio moral e assédio sexual no ambiente de trabalho",
+    "Jornada de trabalho e horas extras",
+    "Férias e licenças trabalhistas",
+    "Segurança e saúde no trabalho."
+  ],
+
+  "Especialista em Direito Tributário": [
+    "Impostos federais, estaduais e municipais",
+    "Planejamento tributário",
+    "Contencioso tributário (processos administrativos e judiciais)",
+    "Tributos diretos e indiretos",
+    "Regimes especiais de tributação",
+    "Benefícios fiscais e incentivos",
+    "Responsabilidade tributária",
+    "Autuações fiscais e defesas",
+    "Planejamento sucessório e tributação",
+    "Tributação internacional."
+  ],
+
+  "Especialista em Direito Administrativo": [
+    "Licitações e contratos administrativos",
+    "Serviços públicos e concessões",
+    "Responsabilidade civil do Estado",
+    "Agentes públicos e improbidade administrativa",
+    "Processo administrativo disciplinar",
+    "Controle da administração pública",
+    "Organização administrativa",
+    "Direito urbanístico",
+    "Direito regulatório",
+    "Direito ambiental."
+  ],
+
+  "Especialista em Direito Constitucional": [
+    "Controle de constitucionalidade",
+    "Organização dos poderes",
+    "Direitos fundamentais",
+    "Federalismo e repartição de competências",
+    "Processo legislativo e emendas"
+  ]
+}
