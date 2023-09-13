@@ -63,8 +63,6 @@ export const Home = () => {
 
   return (
     <Container>
-      <StatusBar backgroundColor="transparent" />
-
       <Map markers={markers} />
 
       <TargetButton paddingTop={top}>

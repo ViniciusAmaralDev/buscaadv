@@ -8,8 +8,8 @@ export const Container = styled.KeyboardAvoidingView.attrs({
   enabled: true,
 })<ContainerProps>`
   flex: 1;
-  padding-top: ${({ paddingTop }) => paddingTop + 16}px;
-  background-color: ${({ theme }) => theme.colors.gray_light};
+  padding-top: ${({ paddingTop }) => paddingTop}px;
+  background-color: ${({ theme }) => theme.colors.gray.main_light};
 `;
 
 export const View = styled.View`

@@ -1,11 +1,21 @@
 export const theme = {
   colors: {
-    primary: "#189FED",
-    black: "#141414",
-    white: "#FFFFFF",
-    gray: "#ececec",
-    gray_light: "#f1f1f1",
-    gray_dark: "#b8b8b8",
+    primary: {
+      main: "#189FED",
+      light: "#67C0F4",
+      dark: "#0D71AB",
+    },
+    black: {
+      main: "#141414",
+    },
+    white: {
+      main: "#FFFFFF",
+    },
+    gray: {
+      main: "#CECEDF",
+      light: "#F9F9FD",
+      dark: "#9C9BAD",
+    },
   },
   fonts: {
     regular: "Comfortaa-Regular",
