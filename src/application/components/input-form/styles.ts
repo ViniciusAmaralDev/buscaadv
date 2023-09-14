@@ -5,6 +5,7 @@ import { Text } from "../base/text";
 import { TextButton } from "../text-button";
 
 interface ContentProps {
+  isFocused: boolean;
   variant: InputVariant;
 }
 
@@ -27,9 +28,16 @@ export const Content = styled.View<ContentProps>`
   align-items: center;
   border-radius: 8px;
   border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.gray.main};
+  border-color: ${({ theme, isFocused }) =>
+    isFocused ? theme.colors.primary.main : theme.colors.gray.main};
   background-color: ${({ theme, variant }) =>
     variant === "contained" ? theme.colors.gray.light : "transparent"};
+`;
+
+export const ErrorText = styled(Text)`
+  font-size: 12px;
+  text-align: right;
+  color: ${({ theme }) => theme.colors.red.main};
 `;
 
 export const ForgotPasswordButton = styled(TextButton).attrs(({ theme }) => ({

@@ -1,8 +1,9 @@
 import React, { ReactNode, useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldError } from "react-hook-form";
 import {
   Container,
   Content,
+  ErrorText,
   EyeIcon,
   ForgotPasswordButton,
   Label,
@@ -20,6 +21,7 @@ export type InputVariant = "contained" | "underline" | "text";
 export interface InputFormProps extends TextInputProps {
   name: string;
   label?: string;
+  error?: FieldError;
   control: Control<any>;
   variant?: InputVariant;
   endIcon?: ReactElement;
@@ -30,6 +32,7 @@ export interface InputFormProps extends TextInputProps {
 
 export const InputForm = ({
   name,
+  error,
   label,
   control,
   endIcon,
@@ -42,11 +45,13 @@ export const InputForm = ({
   const isPassword = name.toLowerCase().includes("password");
   const [showPassword, setShowPassword] = useState(isPassword);
 
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <Container>
       {label && <Label style={labelStyle}>{label}</Label>}
 
-      <Content variant={variant}>
+      <Content variant={variant} isFocused={isFocused}>
         {startIcon && <>{startIcon}</>}
 
         <Controller
@@ -55,8 +60,9 @@ export const InputForm = ({
           render={({ field: { value, onBlur, onChange } }) => (
             <Input
               value={value}
-              onBlur={onBlur}
               onChangeText={onChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               secureTextEntry={showPassword}
               {...rest}
             />
@@ -71,6 +77,8 @@ export const InputForm = ({
           </Button>
         )}
       </Content>
+
+      {error && <ErrorText>{error.message}</ErrorText>}
 
       {!!forgotPassword && (
         <ForgotPasswordButton>esqueci a senha</ForgotPasswordButton>

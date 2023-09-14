@@ -11,13 +11,18 @@ import {
 } from "./styles";
 import { StatusBar } from "expo-status-bar";
 
+import * as z from "zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { InputForm } from "../../../components/input-form";
 import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
 import { SelectInput } from "../../../components/select-input";
+import { useTheme } from "styled-components";
+
+const requiredField = { message: "campo obrigatório" };
 
 export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
-  const { control } = useForm();
+  const theme = useTheme();
 
   const [userType, setUserType] = useState<string>();
 
@@ -26,9 +31,38 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
     { label: "Estou em busca de um advogado", value: "default" },
   ];
 
+  const schema = z.object({
+    type: z
+      .string()
+      .nonempty({ message: "Selecione uma das opções sobre você" })
+      .default(userType),
+    name: z.string().nonempty(requiredField),
+    email: z.string().email("E-mail inválido").nonempty(requiredField),
+    password: z
+      .string()
+      .min(6, { message: "Mínimo de 6 dígitos" })
+      .nonempty(requiredField),
+  });
+
+  type FormData = z.infer<typeof schema>;
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const handleSubmitForm = async (values: FormData) => {
+    try {
+      console.log(JSON.stringify(values, null, 2));
+    } catch (error) {}
+  };
+
   return (
     <Container>
-      <StatusBar style="light" />
+      <StatusBar style="light" backgroundColor={theme.colors.primary.dark} />
 
       <VerticalContainer>
         <Title>Cadastrar</Title>
@@ -48,6 +82,7 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
           control={control}
           placeholder="Nome"
           variant="contained"
+          error={errors.name}
           endIcon={<UserIcon />}
         />
 
@@ -57,7 +92,9 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
           control={control}
           variant="contained"
           placeholder="E-mail"
+          error={errors.email}
           endIcon={<EmailIcon />}
+          keyboardType="email-address"
         />
 
         <InputForm
@@ -66,13 +103,16 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
           control={control}
           variant="contained"
           placeholder="Senha"
+          error={errors.password}
         />
 
-        <SignInButton>Cadastrar</SignInButton>
-
-        <SignUpButton onPress={() => navigation.navigate("SignIn")}>
-          Já tenho cadastro!
+        <SignUpButton onPress={handleSubmit(handleSubmitForm)}>
+          Cadastrar
         </SignUpButton>
+
+        <SignInButton onPress={() => navigation.navigate("SignIn")}>
+          Já tenho cadastro!
+        </SignInButton>
       </FormContainer>
     </Container>
   );

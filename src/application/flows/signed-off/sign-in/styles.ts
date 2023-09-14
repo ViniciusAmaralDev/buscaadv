@@ -51,8 +51,8 @@ export const SignUpButton = styled(TextButton).attrs(({ theme }) => ({
     color: theme.colors.primary.dark,
   },
 }))`
-  width: 100%;
   border-radius: 8px;
+  align-self: center;
   align-items: center;
   justify-content: center;
 `;

@@ -34,7 +34,7 @@ export const Title = styled(Text)`
   color: ${({ theme }) => theme.colors.white.main};
 `;
 
-export const SignInButton = styled(TextButton).attrs(({ theme }) => ({
+export const SignUpButton = styled(TextButton).attrs(({ theme }) => ({
   textStyle: { fontFamily: theme.fonts.bold, color: theme.colors.white.main },
 }))`
   width: 100%;
@@ -45,14 +45,14 @@ export const SignInButton = styled(TextButton).attrs(({ theme }) => ({
   background-color: ${({ theme }) => theme.colors.primary.dark};
 `;
 
-export const SignUpButton = styled(TextButton).attrs(({ theme }) => ({
+export const SignInButton = styled(TextButton).attrs(({ theme }) => ({
   textStyle: {
     fontSize: 12,
     color: theme.colors.primary.dark,
   },
 }))`
-  width: 100%;
   border-radius: 8px;
+  align-self: center;
   align-items: center;
   justify-content: center;
 `;
