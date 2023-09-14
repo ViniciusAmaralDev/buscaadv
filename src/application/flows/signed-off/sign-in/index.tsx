@@ -13,10 +13,10 @@ import { StatusBar } from "expo-status-bar";
 import { useForm } from "react-hook-form";
 import { InputForm } from "../../../components/input-form";
 import { useNavigation } from "@react-navigation/native";
+import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
 
-export const SignIn = () => {
+export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
   const { control } = useForm();
-  const { navigate } = useNavigation();
 
   return (
     <Container>
@@ -47,7 +47,7 @@ export const SignIn = () => {
 
         <SignInButton>Entrar</SignInButton>
 
-        <SignUpButton onPress={() => navigate("SignUp")}>
+        <SignUpButton onPress={() => navigation.navigate("SignUp")}>
           Quero me cadastrar!
         </SignUpButton>
       </FormContainer>

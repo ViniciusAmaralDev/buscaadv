@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { Layout } from "../../../components/layout";
 import { Text } from "../../../components/base/text";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { TextButton } from "../../../components/text-button";
 import { Wrapper } from "../../../components/wrapper";
 
@@ -60,5 +60,11 @@ export const SignUpButton = styled(TextButton).attrs(({ theme }) => ({
 export const EmailIcon = styled(MaterialCommunityIcons).attrs(({ theme }) => ({
   size: 20,
   name: "email-outline",
+  color: theme.colors.gray.main,
+}))``;
+
+export const UserIcon = styled(Feather).attrs(({ theme }) => ({
+  size: 20,
+  name: "user",
   color: theme.colors.gray.main,
 }))``;

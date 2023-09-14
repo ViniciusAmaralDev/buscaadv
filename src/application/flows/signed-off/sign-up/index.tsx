@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   EmailIcon,
@@ -6,15 +6,25 @@ import {
   SignInButton,
   SignUpButton,
   Title,
+  UserIcon,
   VerticalContainer,
 } from "./styles";
 import { StatusBar } from "expo-status-bar";
 
 import { useForm } from "react-hook-form";
 import { InputForm } from "../../../components/input-form";
+import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
+import { SelectInput } from "../../../components/select-input";
 
-export const SignUp = () => {
+export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
   const { control } = useForm();
+
+  const [userType, setUserType] = useState<string>();
+
+  const types = [
+    { label: "Sou um advogado", value: "advocacy" },
+    { label: "Estou em busca de um advogado", value: "default" },
+  ];
 
   return (
     <Container>
@@ -25,27 +35,44 @@ export const SignUp = () => {
       </VerticalContainer>
 
       <FormContainer>
+        <SelectInput
+          data={types}
+          value={userType}
+          label="Sobre você"
+          onChange={({ value }) => setUserType(value)}
+        />
+
         <InputForm
-          variant="contained"
+          name="name"
+          label="Nome"
           control={control}
+          placeholder="Nome"
+          variant="contained"
+          endIcon={<UserIcon />}
+        />
+
+        <InputForm
           name="email"
-          placeholder="E-mail"
           label="E-mail"
+          control={control}
+          variant="contained"
+          placeholder="E-mail"
           endIcon={<EmailIcon />}
         />
 
         <InputForm
-          variant="contained"
-          control={control}
-          name="password"
-          placeholder="Senha"
           label="Senha"
-          forgotPassword={() => {}}
+          name="password"
+          control={control}
+          variant="contained"
+          placeholder="Senha"
         />
 
-        <SignInButton>Entrar</SignInButton>
+        <SignInButton>Cadastrar</SignInButton>
 
-        <SignUpButton>Quero me cadastrar!</SignUpButton>
+        <SignUpButton onPress={() => navigation.navigate("SignIn")}>
+          Já tenho cadastro!
+        </SignUpButton>
       </FormContainer>
     </Container>
   );
