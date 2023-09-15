@@ -18,6 +18,7 @@ import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProp
 import { useTheme } from "styled-components";
 import { useAuth } from "../../../hook/useAuth";
 import { ISignInProps } from "../../../models/ISignInProps";
+import { Keyboard } from "react-native";
 
 const requiredField = { message: "campo obrigatório" };
 
@@ -42,6 +43,8 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  // console.log("ERRORS =>", JSON.stringify(errors, null, 2));
 
   const handleSubmitForm = async (values: FormData) => {
     console.log(JSON.stringify(values, null, 2));

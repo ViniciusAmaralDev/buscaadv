@@ -5,8 +5,10 @@ import { ISignInProps } from "../models/ISignInProps";
 import { ERequestStatus } from "../enums/ERequestStatus";
 import { authService } from "../../infrastructure/services/auth";
 import { useRequestStatus } from "../context/RequestStatusContext";
+import { useToast } from "../context/ToastContext";
 
 export const useAuth = () => {
+  const { showToast } = useToast();
   const { setRequestStatus } = useRequestStatus();
   const { user, setUser } = useContext(AuthContext);
 
@@ -16,8 +18,8 @@ export const useAuth = () => {
       const user = await authService.signIn({ email, password });
       setUser(user);
       setRequestStatus(ERequestStatus.DONE);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      showToast(error.message);
       setRequestStatus(ERequestStatus.ERROR);
     }
   };
@@ -25,11 +27,12 @@ export const useAuth = () => {
   const signUp = async (values: IUser) => {
     setRequestStatus(ERequestStatus.PENDING);
     try {
+      console.log(JSON.stringify(values, null, 2));
       const user = await authService.signUp(values);
       setUser(user);
       setRequestStatus(ERequestStatus.DONE);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      showToast(error.message);
       setRequestStatus(ERequestStatus.ERROR);
     }
   };
