@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
-import { Layout } from "../../../components/layout";
-import { Wrapper } from "../../../components/wrapper";
-import { Text } from "../../../components/base/text";
+import { Layout } from "../../../../components/layout";
+import { Wrapper } from "../../../../components/wrapper";
+import { Text } from "../../../../components/base/text";
 
 interface LabelProps {
   secondary?: boolean;

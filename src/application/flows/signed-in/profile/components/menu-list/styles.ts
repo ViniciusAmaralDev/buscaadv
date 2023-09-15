@@ -1,7 +1,6 @@
 import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
-import { TextButton } from "../../../../../components/text-button";
-import { Wrapper } from "../../../../../components/wrapper";
+import { Button } from "../../../../../components/base/button";
 
 interface ButtonProps {
   borderBottomEnabled?: boolean;
@@ -9,18 +8,14 @@ interface ButtonProps {
 
 export const Container = styled.View``;
 
-export const HorizontalContainer = styled(Wrapper).attrs({
-  direction: "row",
-})`
+export const HorizontalContainer = styled(Button)<ButtonProps>`
+  padding: 16px 0px;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
-
-export const Button = styled(TextButton)<ButtonProps>`
-  padding: 16px 0px;
   border-bottom-color: ${({ theme }) => theme.colors.gray.main};
   border-bottom-width: ${({ borderBottomEnabled }) =>
-    borderBottomEnabled ? 0.2 : 0}px;
+    borderBottomEnabled ? 0.3 : 0}px;
 `;
 
 export const ArrowIcon = styled(AntDesign).attrs(({ theme }) => ({
