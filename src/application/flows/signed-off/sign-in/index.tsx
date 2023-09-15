@@ -16,11 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InputForm } from "../../../components/input-form";
 import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
 import { useTheme } from "styled-components";
+import { useAuth } from "../../../hook/useAuth";
+import { ISignInProps } from "../../../models/ISignInProps";
 
 const requiredField = { message: "campo obrigatório" };
 
 export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
   const theme = useTheme();
+  const { signIn } = useAuth();
 
   const schema = z.object({
     email: z.string().email("E-mail inválido").nonempty(requiredField),
@@ -41,12 +44,9 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
   });
 
   const handleSubmitForm = async (values: FormData) => {
-    try {
-      console.log(JSON.stringify(values, null, 2));
-    } catch (error) {}
+    console.log(JSON.stringify(values, null, 2));
+    await signIn(values as ISignInProps);
   };
-
-  console.log(JSON.stringify(errors, null, 2));
 
   return (
     <Container>

@@ -1,43 +1,43 @@
 import { useContext } from "react";
+import { IUser } from "../models/IUser";
 import { AuthContext } from "../context/AuthContext";
 import { ISignInProps } from "../models/ISignInProps";
-import { ISignUpProps } from "../models/ISignUpProps";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { IUser } from "../models/IUser";
+import { ERequestStatus } from "../enums/ERequestStatus";
+import { authService } from "../../infrastructure/services/auth";
+import { useRequestStatus } from "../context/RequestStatusContext";
 
 export const useAuth = () => {
+  const { setRequestStatus } = useRequestStatus();
   const { user, setUser } = useContext(AuthContext);
 
   const signIn = async ({ email, password }: ISignInProps) => {
+    setRequestStatus(ERequestStatus.PENDING);
     try {
-      const userStorage = await AsyncStorage.getItem("users");
-      if (!userStorage) return;
-
-      const users = (JSON.parse(userStorage) ?? []) as IUser[];
-      const user = users.find((user) => user.email === email);
-      if (!user || user.email !== email || user.password !== password) return;
-
+      const user = await authService.signIn({ email, password });
       setUser(user);
-      await AsyncStorage.setItem("user", JSON.stringify(user));
-    } catch (error) {}
+      setRequestStatus(ERequestStatus.DONE);
+    } catch (error) {
+      console.log(error);
+      setRequestStatus(ERequestStatus.ERROR);
+    }
   };
 
-  const signUp = async (values: ISignUpProps) => {
+  const signUp = async (values: IUser) => {
+    setRequestStatus(ERequestStatus.PENDING);
     try {
-      const userStorage = await AsyncStorage.getItem("users");
-      const users = (!userStorage ? [] : JSON.parse(userStorage)) as IUser[];
-
-      await AsyncStorage.setItem("users", JSON.stringify([...users, values]));
-      await AsyncStorage.setItem("user", JSON.stringify(values));
-
-      setUser(values);
-    } catch (error) {}
+      const user = await authService.signUp(values);
+      setUser(user);
+      setRequestStatus(ERequestStatus.DONE);
+    } catch (error) {
+      console.log(error);
+      setRequestStatus(ERequestStatus.ERROR);
+    }
   };
 
   const signOut = async () => {
     try {
       setUser(undefined);
-      await AsyncStorage.removeItem("user");
+      await authService.signOut(user.id);
     } catch (error) {}
   };
 

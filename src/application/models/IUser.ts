@@ -6,4 +6,5 @@ export interface IUser {
   password: string;
   createdAt?: string;
   updatedAt?: string;
+  isAuthenticated?: boolean;
 }

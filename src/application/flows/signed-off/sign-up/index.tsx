@@ -18,11 +18,14 @@ import { InputForm } from "../../../components/input-form";
 import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
 import { SelectInput } from "../../../components/select-input";
 import { useTheme } from "styled-components";
+import { useAuth } from "../../../hook/useAuth";
+import { IUser } from "../../../models/IUser";
 
 const requiredField = { message: "campo obrigatório" };
 
 export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
   const theme = useTheme();
+  const { signUp } = useAuth();
 
   const [userType, setUserType] = useState<string>();
 
@@ -57,6 +60,7 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
   const handleSubmitForm = async (values: FormData) => {
     try {
       console.log(JSON.stringify(values, null, 2));
+      await signUp(values as IUser);
     } catch (error) {}
   };
 
