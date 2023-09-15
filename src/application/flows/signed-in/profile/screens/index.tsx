@@ -3,18 +3,21 @@ import {
   Container,
   HorizontalContainer,
   Label,
+  SignOutIcon,
   VerticalContainer,
 } from "./styles";
 import { Image } from "../../../../components/base/image";
 import { useAuth } from "../../../../hook/useAuth";
 import { MenuList } from "../components/menu-list";
 import { SignedInRootProps } from "../../../../routes/signed-in/SignedInRootProps";
+import { ArrowButton } from "../../../../components/icon-buttons/ArrowButton";
+import { Header } from "../../../../components/header";
 
 export const Profile = ({ navigation }: SignedInRootProps<"Profile">) => {
   const { user, signOut } = useAuth();
 
   return (
-    <Container>
+    <Container header={<Header label="Perfil" />}>
       <HorizontalContainer>
         <Image
           uri={undefined}
@@ -38,7 +41,7 @@ export const Profile = ({ navigation }: SignedInRootProps<"Profile">) => {
             label: "Informações da conta",
             onPress: () => navigation.navigate("MyAccount"),
           },
-          { label: "Sair", onPress: signOut },
+          { label: "Sair", icon: <SignOutIcon />, onPress: signOut },
         ]}
       />
     </Container>

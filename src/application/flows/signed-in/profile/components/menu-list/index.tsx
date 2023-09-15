@@ -1,9 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Container, ArrowIcon, HorizontalContainer } from "./styles";
 import { Text } from "../../../../../components/base/text";
 
 interface Menu {
   label: string;
+  icon?: ReactNode;
   onPress: () => void;
 }
 
@@ -21,7 +22,7 @@ export const MenuList = ({ values }: MenuListProps) => {
           borderBottomEnabled={index < values.length - 1}
         >
           <Text>{item.label}</Text>
-          <ArrowIcon />
+          {item.icon ? <>{item.icon}</> : <ArrowIcon />}
         </HorizontalContainer>
       ))}
     </Container>

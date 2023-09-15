@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 import { Layout } from "../../../../components/layout";
 import { Wrapper } from "../../../../components/wrapper";
 import { Text } from "../../../../components/base/text";
+import { Octicons } from "@expo/vector-icons";
 
 interface LabelProps {
   secondary?: boolean;
@@ -28,3 +29,9 @@ export const Label = styled(Text)<LabelProps>`
   color: ${({ theme, secondary }) =>
     secondary ? theme.colors.gray.main : theme.colors.black.main};
 `;
+
+export const SignOutIcon = styled(Octicons).attrs(({ theme }) => ({
+  size: 20,
+  name: "sign-out",
+  color: theme.colors.gray.main,
+}))``;

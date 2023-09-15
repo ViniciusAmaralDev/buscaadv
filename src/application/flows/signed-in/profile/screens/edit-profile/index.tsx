@@ -1,11 +1,15 @@
 import React from "react";
 import { Container } from "./styles";
 import { Text } from "../../../../../components/base/text";
+import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
+import { Header } from "../../../../../components/header";
 
-export const EditProfile = () => {
+export const EditProfile = ({
+  navigation,
+}: SignedInRootProps<"EditProfile">) => {
   return (
-    <Container>
-      <Text>Editar Perfil</Text>
+    <Container header={<Header label="Editar Perfil" />}>
+      <></>
     </Container>
   );
 };
