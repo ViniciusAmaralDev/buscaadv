@@ -9,6 +9,7 @@ interface LabelProps {
 
 export const Container = styled(Layout)`
   flex: 1;
+  gap: 40px;
   padding: 16px;
   background-color: ${({ theme }) => theme.colors.gray.light};
 `;

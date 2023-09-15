@@ -8,6 +8,7 @@ import {
 import { Image } from "../../../components/base/image";
 import { useAuth } from "../../../hook/useAuth";
 import { Text } from "../../../components/base/text";
+import { MenuList } from "./components/menu-list";
 
 export const Profile = () => {
   const { user } = useAuth();
@@ -26,6 +27,14 @@ export const Profile = () => {
           <Label secondary>{user.email}</Label>
         </VerticalContainer>
       </HorizontalContainer>
+
+      <MenuList
+        values={[
+          { label: "Meu perfil", onPress: () => {} },
+          { label: "Informações da conta", onPress: () => {} },
+          { label: "Sair", onPress: () => {} },
+        ]}
+      />
     </Container>
   );
 };
