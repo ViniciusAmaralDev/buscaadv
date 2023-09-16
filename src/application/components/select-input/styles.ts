@@ -2,6 +2,10 @@ import styled from "styled-components/native";
 import { Dropdown as CustomDropdown } from "react-native-element-dropdown";
 import { Text } from "../base/text";
 
+interface DropdownProps {
+  contrast: boolean;
+}
+
 export const Container = styled.View`
   gap: 4px;
 `;
@@ -25,11 +29,12 @@ export const Dropdown = styled(CustomDropdown).attrs(
       color: isSelected ? theme.colors.black.main : theme.colors.gray.main,
     },
   })
-)`
+)<DropdownProps>`
   height: 40px;
   padding: 0px 16px;
   border-radius: 8px;
   border-width: 1px;
   border-color: ${({ theme }) => theme.colors.gray.main};
-  background-color: ${({ theme }) => theme.colors.gray.light};
+  background-color: ${({ theme, contrast }) =>
+    contrast ? theme.colors.white.main : theme.colors.gray.light};
 `;

@@ -149,6 +149,7 @@ export const EditProfile = ({
         {user.type === UserType.ATTORNEY && (
           <>
             <SelectInput
+              contrast
               data={officeList}
               label="Especialização*"
               value={office ?? user?.office}

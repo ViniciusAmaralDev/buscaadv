@@ -45,9 +45,9 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
   const { email } = watch();
 
   const handleSubmitForm = async (values: FormData) => {
-    console.log(JSON.stringify(values, null, 2));
     await updateUser(user.id, values);
     setIsEditing(false);
+    navigation.goBack();
   };
 
   const handleDeleteAccount = async () => {

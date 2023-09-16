@@ -39,6 +39,7 @@ export const InputForm = ({
   control,
   endIcon,
   contrast,
+  editable = true,
   startIcon,
   labelStyle,
   defaultValue,
@@ -55,7 +56,12 @@ export const InputForm = ({
     <Container>
       {label && <Label style={labelStyle}>{label}</Label>}
 
-      <Content variant={variant} contrast={contrast} isFocused={isFocused}>
+      <Content
+        variant={variant}
+        editable={editable}
+        contrast={contrast}
+        isFocused={isFocused}
+      >
         {startIcon && <>{startIcon}</>}
 
         <Controller

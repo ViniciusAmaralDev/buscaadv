@@ -4,19 +4,26 @@ import { DropdownProps } from "react-native-element-dropdown/lib/typescript/comp
 
 interface SelectInputProps extends Partial<DropdownProps<any>> {
   label?: string;
+  contrast?: boolean;
 }
 
-export const SelectInput = ({ label, value, ...rest }: SelectInputProps) => {
+export const SelectInput = ({
+  label,
+  value,
+  contrast,
+  ...rest
+}: SelectInputProps) => {
   return (
     <Container>
       {label && <Label>{label}</Label>}
       <Dropdown
-        {...rest}
         value={value}
         labelField="label"
         valueField="value"
+        contrast={contrast}
         placeholder="Selecione"
         isSelected={value?.length > 0}
+        {...rest}
       />
     </Container>
   );
