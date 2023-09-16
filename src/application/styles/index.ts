@@ -9,7 +9,7 @@ export const theme = {
       main: "#141414",
     },
     white: {
-      main: "#FFFFFF",
+      main: "#FEFEFE",
     },
     red: {
       main: "#ED5A72",

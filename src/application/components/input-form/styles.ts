@@ -5,6 +5,7 @@ import { Text } from "../base/text";
 import { TextButton } from "../text-button";
 
 interface ContentProps {
+  contrast: boolean;
   isFocused: boolean;
   variant: InputVariant;
 }
@@ -22,7 +23,7 @@ export const Label = styled(Text)`
 
 export const Content = styled.View<ContentProps>`
   gap: 16px;
-  height: 40px;
+  min-height: 40px;
   padding: 0px 16px;
   flex-direction: row;
   align-items: center;
@@ -30,8 +31,12 @@ export const Content = styled.View<ContentProps>`
   border-width: 1px;
   border-color: ${({ theme, isFocused }) =>
     isFocused ? theme.colors.primary.main : theme.colors.gray.main};
-  background-color: ${({ theme, variant }) =>
-    variant === "contained" ? theme.colors.gray.light : "transparent"};
+  background-color: ${({ theme, contrast, variant }) =>
+    contrast
+      ? theme.colors.white.main
+      : variant === "contained"
+      ? theme.colors.gray.light
+      : "transparent"};
 `;
 
 export const ErrorText = styled(Text)`

@@ -1,27 +1,29 @@
 import React, { ReactNode, useState } from "react";
+import { StyleProp, TextStyle } from "react-native";
 import { Control, Controller, FieldError } from "react-hook-form";
 import {
-  Container,
-  Content,
-  ErrorText,
-  EyeIcon,
-  ForgotPasswordButton,
   Label,
+  Content,
+  EyeIcon,
+  Container,
+  ErrorText,
+  ForgotPasswordButton,
 } from "./styles";
-import { StyleProp, TextInputProps, TextStyle } from "react-native";
 
 // COMPONENTS
 import { Input } from "../base/input";
 import { Button } from "../base/button";
+import { MaskInputProps } from "react-native-mask-input";
 
 type ReactElement = JSX.Element | ReactNode;
 
 export type InputVariant = "contained" | "underline" | "text";
 
-export interface InputFormProps extends TextInputProps {
+export interface InputFormProps extends MaskInputProps {
   name: string;
   label?: string;
   error?: FieldError;
+  contrast?: boolean;
   control: Control<any>;
   variant?: InputVariant;
   endIcon?: ReactElement;
@@ -36,8 +38,10 @@ export const InputForm = ({
   label,
   control,
   endIcon,
+  contrast,
   startIcon,
   labelStyle,
+  defaultValue,
   variant = "contained",
   forgotPassword,
   ...rest
@@ -51,19 +55,19 @@ export const InputForm = ({
     <Container>
       {label && <Label style={labelStyle}>{label}</Label>}
 
-      <Content variant={variant} isFocused={isFocused}>
+      <Content variant={variant} isFocused={isFocused} contrast={contrast}>
         {startIcon && <>{startIcon}</>}
 
         <Controller
-          control={control}
           name={name}
-          render={({ field: { value, onBlur, onChange } }) => (
+          control={control}
+          render={({ field: { value, onChange } }) => (
             <Input
-              value={value}
               onChangeText={onChange}
+              value={value ?? defaultValue}
+              secureTextEntry={showPassword}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              secureTextEntry={showPassword}
               {...rest}
             />
           )}

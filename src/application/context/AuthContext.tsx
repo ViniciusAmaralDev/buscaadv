@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setUser(await userService.filter(`isAuthenticated == ${true}`));
       // setUser(undefined);
       // await userService.delete("ea78320c-7207-4669-b39e-c89af6a01629");
-      const users = await userService.getAll();
-      console.log("REALM =>", JSON.stringify(users, null, 2));
+      // const users = await userService.getAll();
+      // console.log("REALM =>", JSON.stringify(users, null, 2));
     })();
   }, []);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput } from "./styles";
-import { TextInputProps } from "react-native";
+import { MaskInputProps } from "react-native-mask-input";
 
-export const Input = ({ ...rest }: TextInputProps) => (
+export const Input = ({ ...rest }: MaskInputProps) => (
   <TextInput autoCorrect={false} autoCapitalize="none" {...rest} />
 );

@@ -9,7 +9,7 @@ export interface ImageProps extends Omit<ImageBackgroundProps, "source"> {
   icon?: ReactNode;
 }
 
-export const Image = ({ uri, icon, size, ...rest }: ImageProps) => {
+export const Image = ({ uri, icon, size, children, ...rest }: ImageProps) => {
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,6 +26,8 @@ export const Image = ({ uri, icon, size, ...rest }: ImageProps) => {
       ) : (
         !uri && <>{icon ? <>{icon}</> : <UserIcon size={size / 2} />}</>
       )}
+
+      {children}
     </ImageBackground>
   );
 };
