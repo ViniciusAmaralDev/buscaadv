@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getImageFromLibrary } from "../../../../../utils/Image";
 import { InputForm } from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
+import { useProfile } from "../../../../../hook/useProfile";
 
 const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
@@ -25,6 +26,7 @@ export const EditProfile = ({
   navigation,
 }: SignedInRootProps<"EditProfile">) => {
   const { user } = useAuth();
+  const { updateUser } = useProfile();
 
   const schema = z.object({
     photo: z.string().optional().nullable().default(user?.photo),
@@ -53,7 +55,7 @@ export const EditProfile = ({
   const saveButtonIsDisabled = !username || !phoneNumber;
 
   const handleSubmitForm = async (values: FormData) => {
-    console.log(JSON.stringify(values, null, 2));
+    await updateUser(values);
   };
 
   const handleChangeImage = async () => {

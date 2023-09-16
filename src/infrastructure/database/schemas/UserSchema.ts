@@ -12,6 +12,7 @@ export const userSchema: ObjectSchema = {
     password: "string",
     createdAt: "string",
     updatedAt: "string",
+    phoneNumber: "string?",
     isAuthenticated: { type: "bool", default: false },
   },
 };

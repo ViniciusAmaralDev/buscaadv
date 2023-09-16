@@ -2,26 +2,34 @@ import React from "react";
 import {
   Container,
   HorizontalContainer,
+  ImageProfile,
   Label,
   SignOutIcon,
   VerticalContainer,
 } from "./styles";
-import { Image } from "../../../../components/base/image";
 import { useAuth } from "../../../../hook/useAuth";
 import { MenuList } from "../components/menu-list";
 import { SignedInRootProps } from "../../../../routes/signed-in/SignedInRootProps";
-import { ArrowButton } from "../../../../components/icon-buttons/ArrowButton";
 import { Header } from "../../../../components/header";
 
 export const Profile = ({ navigation }: SignedInRootProps<"Profile">) => {
   const { user, signOut } = useAuth();
 
+  const handleGoBack = () => {
+    if (navigation.canGoBack()) navigation.goBack();
+    else
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      });
+  };
+
   return (
-    <Container header={<Header label="Perfil" />}>
+    <Container header={<Header label="Perfil" goBack={handleGoBack} />}>
       <HorizontalContainer>
-        <Image
-          uri={undefined}
+        <ImageProfile
           size={100}
+          uri={user?.photo}
           style={{ elevation: 1, borderRadius: 25 }}
         />
 

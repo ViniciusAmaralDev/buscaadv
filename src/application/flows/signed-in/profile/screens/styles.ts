@@ -3,6 +3,7 @@ import { Layout } from "../../../../components/layout";
 import { Wrapper } from "../../../../components/wrapper";
 import { Text } from "../../../../components/base/text";
 import { Octicons } from "@expo/vector-icons";
+import { Image } from "../../../../components/base/image";
 
 interface LabelProps {
   secondary?: boolean;
@@ -20,6 +21,15 @@ export const HorizontalContainer = styled(Wrapper).attrs({
 })`
   gap: 8px;
   align-items: center;
+`;
+
+export const ImageProfile = styled(Image).attrs({
+  size: 100,
+  imageStyle: { borderRadius: 25 },
+})`
+  elevation: 1;
+  align-self: center;
+  border-radius: 25px;
 `;
 
 export const VerticalContainer = styled(Wrapper)``;
