@@ -48,7 +48,8 @@ export const EditProfile = ({
   });
 
   const { name, photo, phoneNumber: phone, about } = watch();
-  const availableLimit = ABOUT_LENGTH - (about?.length ?? 0);
+  const availableLimit =
+    ABOUT_LENGTH - (about?.length ?? user?.about?.length ?? 0);
 
   const username = name || user.name;
   const phoneNumber = phone || user.phoneNumber;
@@ -56,6 +57,7 @@ export const EditProfile = ({
 
   const handleSubmitForm = async (values: FormData) => {
     await updateUser(values);
+    navigation.goBack();
   };
 
   const handleChangeImage = async () => {
