@@ -11,6 +11,9 @@ export const theme = {
     white: {
       main: "#FEFEFE",
     },
+    green: {
+      main: "#47A025",
+    },
     red: {
       main: "#ED5A72",
     },

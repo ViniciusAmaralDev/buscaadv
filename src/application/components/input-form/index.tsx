@@ -55,7 +55,7 @@ export const InputForm = ({
     <Container>
       {label && <Label style={labelStyle}>{label}</Label>}
 
-      <Content variant={variant} isFocused={isFocused} contrast={contrast}>
+      <Content variant={variant} contrast={contrast} isFocused={isFocused}>
         {startIcon && <>{startIcon}</>}
 
         <Controller

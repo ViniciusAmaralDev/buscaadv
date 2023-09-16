@@ -6,6 +6,7 @@ import { TextButton } from "../text-button";
 
 interface ContentProps {
   contrast: boolean;
+  editable: boolean;
   isFocused: boolean;
   variant: InputVariant;
 }
@@ -28,11 +29,15 @@ export const Content = styled.View<ContentProps>`
   flex-direction: row;
   align-items: center;
   border-radius: 8px;
-  border-width: 1px;
+  border-width: ${({ variant }) => (variant === "contained" ? 1 : 0)}px;
+  border-bottom-width: ${({ variant }) =>
+    variant === "underline" || variant === "contained" ? 1 : 0}px;
   border-color: ${({ theme, isFocused }) =>
     isFocused ? theme.colors.primary.main : theme.colors.gray.main};
-  background-color: ${({ theme, contrast, variant }) =>
-    contrast
+  background-color: ${({ theme, contrast, variant, editable }) =>
+    !editable
+      ? theme.colors.gray.light
+      : contrast
       ? theme.colors.white.main
       : variant === "contained"
       ? theme.colors.gray.light

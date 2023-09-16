@@ -6,10 +6,15 @@ import { userService } from "../../infrastructure/services/user";
 export const useProfile = () => {
   const { user, setUser } = useContext(AuthContext);
 
-  const updateUser = async (values: Partial<IUser>) => {
-    await userService.update(user.id, values);
+  const updateUser = async (id: string, values: Partial<IUser>) => {
+    await userService.update(id, values);
     setUser((user) => ({ ...user, ...values }));
   };
 
-  return { updateUser };
+  const deleteAccount = async () => {
+    setUser(undefined);
+    await userService.delete(user.id);
+  };
+
+  return { updateUser, deleteAccount };
 };

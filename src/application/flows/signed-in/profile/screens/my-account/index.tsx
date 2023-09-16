@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, SaveButton } from "./styles";
+import { Container, DeleteButton, FormContainer, SaveButton } from "./styles";
 import { Text } from "../../../../../components/base/text";
 import { Header } from "../../../../../components/header";
 import { EditButton } from "../../../../../components/icon-buttons/EditButton";
@@ -10,11 +10,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../../../../hook/useAuth";
 import { InputForm } from "../../../../../components/input-form";
+import { useAlert } from "../../../../../context/AlertContext";
+import { useProfile } from "../../../../../hook/useProfile";
 
 const requiredMessage = { message: "campo obrigatório" };
 
 export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
   const { user } = useAuth();
+  const { showAlert } = useAlert();
+  const { updateUser, deleteAccount } = useProfile();
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -42,7 +46,18 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
 
   const handleSubmitForm = async (values: FormData) => {
     console.log(JSON.stringify(values, null, 2));
+    await updateUser(user.id, values);
     setIsEditing(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    showAlert({
+      title: "Atenção",
+      message:
+        "Ao excluir a sua conta você perderá todas as informações salvas até aqui, tem certeza que quer continuar com esta ação?",
+      leftButton: { label: "cancelar" },
+      rightButton: { label: "continuar", onPress: deleteAccount },
+    });
   };
 
   return (
@@ -56,28 +71,34 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
         />
       }
     >
-      <InputForm
-        contrast
-        name="email"
-        label="E-mail"
-        control={control}
-        placeholder="E-mail"
-        error={errors.email}
-        editable={isEditing}
-        defaultValue={email ?? user.email}
-      />
+      <FormContainer>
+        <InputForm
+          contrast
+          name="email"
+          label="E-mail"
+          control={control}
+          placeholder="E-mail"
+          error={errors.email}
+          editable={isEditing}
+          defaultValue={email ?? user.email}
+        />
 
-      <InputForm
-        contrast
-        label="Senha"
-        name="password"
-        control={control}
-        placeholder="Senha"
-        editable={isEditing}
-      />
+        <InputForm
+          contrast
+          label="Senha"
+          name="password"
+          control={control}
+          placeholder="Senha"
+          editable={isEditing}
+        />
+      </FormContainer>
 
-      {isEditing && (
+      {isEditing ? (
         <SaveButton onPress={handleSubmit(handleSubmitForm)}>Salvar</SaveButton>
+      ) : (
+        <DeleteButton onPress={handleDeleteAccount}>
+          Apagar minha conta
+        </DeleteButton>
       )}
     </Container>
   );

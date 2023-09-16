@@ -56,7 +56,7 @@ export const EditProfile = ({
   const saveButtonIsDisabled = !username || !phoneNumber;
 
   const handleSubmitForm = async (values: FormData) => {
-    await updateUser(values);
+    await updateUser(user.id, values);
     navigation.goBack();
   };
 
