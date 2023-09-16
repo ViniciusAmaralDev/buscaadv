@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { ArrowButton as Button } from "../icon-buttons/ArrowButton";
 
 interface HorizontalContainerProps {
+  flex?: boolean;
   justify?: string;
 }
 
@@ -19,7 +20,7 @@ export const Container = styled(Wrapper).attrs({
 export const HorizontalContainer = styled(Wrapper).attrs({
   direction: "row",
 })<HorizontalContainerProps>`
-  flex: 1;
+  flex-grow: 1;
   align-items: center;
   justify-content: ${({ justify }) => justify ?? "flex-start"};
 `;
