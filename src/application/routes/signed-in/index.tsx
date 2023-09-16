@@ -10,12 +10,19 @@ import { Profile } from "../../flows/signed-in/profile/screens";
 import { MyAccount } from "../../flows/signed-in/profile/screens/my-account";
 import { EditProfile } from "../../flows/signed-in/profile/screens/edit-profile";
 import { EditAccount } from "../../flows/signed-in/profile/screens/edit-account";
+import { UserType } from "../../enums/UserType";
 
 const Stack = createStackNavigator<SignedInParamList>();
 
 export default function SignedInNavigator() {
   const { user } = useAuth();
-  const initialRouteName = !user?.photo ? "Profile" : "Home";
+
+  const initialRouteName =
+    !user?.photo ||
+    !user.phoneNumber ||
+    (user.type === UserType.ATTORNEY && !user.office)
+      ? "EditProfile"
+      : "Home";
 
   return (
     <Stack.Navigator

@@ -7,16 +7,22 @@ interface HeaderProps {
   label: string;
   right?: ReactNode;
   goBack?: () => void;
+  showBackButton?: boolean;
 }
 
-export const Header = ({ label, right, goBack }: HeaderProps) => {
+export const Header = ({
+  label,
+  right,
+  showBackButton = true,
+  goBack,
+}: HeaderProps) => {
   const navigation = useNavigation();
   const onPress = () => (goBack ? goBack() : navigation.goBack());
 
   return (
     <Container>
       <HorizontalContainer>
-        <ArrowButton onPress={onPress} />
+        {showBackButton && <ArrowButton onPress={onPress} />}
       </HorizontalContainer>
 
       <HorizontalContainer justify="center">

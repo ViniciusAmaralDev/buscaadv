@@ -5,6 +5,7 @@ export interface IUser {
   photo: string;
   about: string;
   email: string;
+  office?: string;
   password: string;
   createdAt?: string;
   updatedAt?: string;

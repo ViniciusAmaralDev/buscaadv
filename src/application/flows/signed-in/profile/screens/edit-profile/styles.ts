@@ -7,10 +7,10 @@ import { TextButton } from "../../../../../components/text-button";
 
 export const Container = styled(Layout).attrs({
   scrollEnabled: true,
+  showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     gap: 40,
     paddingVertical: 16,
-    justifyContent: "center",
   },
 })``;
 
