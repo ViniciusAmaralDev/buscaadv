@@ -41,6 +41,10 @@ export const EditButton = styled(Button).attrs(({ theme }) => ({
   align-items: center;
   justify-content: center;
   border-top-left-radius: 8px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  border-top-color: ${({ theme }) => theme.colors.gray.light};
+  border-left-color: ${({ theme }) => theme.colors.gray.light};
   background-color: ${({ theme }) => theme.colors.primary.main};
 `;
 

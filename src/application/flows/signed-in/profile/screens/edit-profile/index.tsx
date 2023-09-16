@@ -18,6 +18,7 @@ import { getImageFromLibrary } from "../../../../../utils/Image";
 import { InputForm } from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
 import { useProfile } from "../../../../../hook/useProfile";
+import { UserType } from "../../../../../enums/UserType";
 
 const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
@@ -57,6 +58,7 @@ export const EditProfile = ({
 
   const handleSubmitForm = async (values: FormData) => {
     await updateUser(user.id, values);
+    console.log(JSON.stringify(values, null, 2));
     navigation.goBack();
   };
 
@@ -93,16 +95,18 @@ export const EditProfile = ({
           defaultValue={user.phoneNumber}
         />
 
-        <InputForm
-          contrast
-          multiline
-          name="about"
-          control={control}
-          maxLength={ABOUT_LENGTH}
-          placeholder="Sobre você"
-          defaultValue={user.about}
-          label={`Sobre você (limite: ${availableLimit})`}
-        />
+        {user.type == UserType.ATTORNEY && (
+          <InputForm
+            contrast
+            multiline
+            name="about"
+            control={control}
+            maxLength={ABOUT_LENGTH}
+            placeholder="Sobre você"
+            defaultValue={user.about}
+            label={`Sobre você (limite: ${availableLimit})`}
+          />
+        )}
 
         <SaveButton
           disabled={saveButtonIsDisabled}

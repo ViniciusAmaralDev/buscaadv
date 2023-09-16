@@ -20,6 +20,7 @@ import { SelectInput } from "../../../components/select-input";
 import { useTheme } from "styled-components";
 import { useAuth } from "../../../hook/useAuth";
 import { IUser } from "../../../models/IUser";
+import { UserType } from "../../../enums/UserType";
 
 const requiredField = { message: "campo obrigatório" };
 
@@ -30,8 +31,8 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
   const [userType, setUserType] = useState<string>();
 
   const types = [
-    { label: "Sou um advogado", value: "advocacy" },
-    { label: "Estou em busca de um advogado", value: "default" },
+    { label: "Sou um advogado", value: UserType.ATTORNEY },
+    { label: "Estou em busca de um advogado", value: UserType.DEFAULT },
   ];
 
   const schema = z.object({
