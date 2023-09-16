@@ -82,7 +82,9 @@ export const EditProfile = ({
   const photo = photoForm ?? user.photo;
   const office = officeForm || user.office;
   const phoneNumber = phone || user.phoneNumber;
-  const saveButtonIsDisabled = !username || !phoneNumber;
+
+  const saveButtonIsDisabled =
+    !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
 
   const handleSubmitForm = async (values: FormData) => {
     await updateUser(user.id, values);
