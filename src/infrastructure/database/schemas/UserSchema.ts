@@ -1,5 +1,14 @@
 import { ObjectSchema } from "realm";
 
+export const addressSchema: ObjectSchema = {
+  name: "Address",
+  embedded: true,
+  properties: {
+    latitude: "double",
+    longitude: "double",
+  },
+};
+
 export const userSchema: ObjectSchema = {
   name: "User",
   primaryKey: "id",
@@ -13,6 +22,7 @@ export const userSchema: ObjectSchema = {
     password: "string",
     updatedAt: "string",
     createdAt: "string",
+    address: "Address?",
     phoneNumber: "string?",
     isAuthenticated: { type: "bool", default: false },
   },

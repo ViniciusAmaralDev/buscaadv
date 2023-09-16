@@ -39,7 +39,7 @@ export const signUp = async (values: IUser) => {
 
 export const signOut = async () => {
   const realm = await getRealm();
-  const user = await userService.filter(`isAuthenticated == "${true}"`);
+  const user = await userService.filter(`isAuthenticated == ${true}`);
 
   const updatedUser = { ...user, isAuthenticated: false };
   realm.write(() => {

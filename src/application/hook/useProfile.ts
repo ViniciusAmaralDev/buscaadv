@@ -9,9 +9,10 @@ export const useProfile = () => {
   const { user, setUser } = useContext(AuthContext);
 
   const updateUser = async (id: string, values: Partial<IUser>) => {
-    await userService.update(id, values);
+    const updatedUser = { ...values, updatedAt: new Date().toString() };
+    await userService.update(id, updatedUser);
     showToast("Atualizado com sucesso!");
-    setUser((user) => ({ ...user, ...values }));
+    setUser((user) => ({ ...user, ...updatedUser }));
   };
 
   const deleteAccount = async () => {

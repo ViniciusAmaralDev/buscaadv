@@ -1,3 +1,5 @@
+import { IAddress } from "./IAddress";
+
 export interface IUser {
   id?: string;
   type: string;
@@ -7,6 +9,7 @@ export interface IUser {
   email: string;
   office?: string;
   password: string;
+  address?: IAddress;
   createdAt?: string;
   updatedAt?: string;
   phoneNumber: string;

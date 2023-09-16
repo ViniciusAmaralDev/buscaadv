@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   EditButton,
@@ -22,6 +22,8 @@ import { UserType } from "../../../../../enums/UserType";
 import { SelectInput } from "../../../../../components/select-input";
 import officesJson from "../../../../../../../offices.json";
 import { useToast } from "../../../../../context/ToastContext";
+import { getCurrentPosition } from "../../../../../utils/Location";
+import { IUser } from "../../../../../models/IUser";
 
 interface Office {
   label: string;
@@ -38,8 +40,6 @@ export const EditProfile = ({
   const { showToast } = useToast();
   const { updateUser } = useProfile();
 
-  const [selectedOffices, setSelectedOffices] = useState<Office[]>([]);
-
   const officeList = Object.keys(officesJson).map((item) => ({
     label: item,
     value: item,
@@ -54,6 +54,12 @@ export const EditProfile = ({
       .default(user?.phoneNumber),
     about: z.string().optional().default(user?.about),
     office: z.z.string().optional().default(user?.office),
+    address: z
+      .object({
+        latitude: z.number(),
+        longitude: z.number(),
+      })
+      .optional(),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -87,7 +93,7 @@ export const EditProfile = ({
     !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
 
   const handleSubmitForm = async (values: FormData) => {
-    await updateUser(user.id, values);
+    await updateUser(user.id, values as IUser);
     goBack();
   };
 
@@ -116,6 +122,15 @@ export const EditProfile = ({
 
     goBack();
   };
+
+  useEffect(() => {
+    (async () => {
+      if (user?.type === UserType.ATTORNEY && !user.address) {
+        const address = await getCurrentPosition();
+        setValue("address", address);
+      }
+    })();
+  }, []);
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
