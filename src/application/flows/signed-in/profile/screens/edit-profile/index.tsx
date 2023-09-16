@@ -93,6 +93,7 @@ export const EditProfile = ({
     !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
 
   const handleSubmitForm = async (values: FormData) => {
+    console.log(JSON.stringify(values, null, 2));
     await updateUser(user.id, values as IUser);
     goBack();
   };
@@ -125,10 +126,9 @@ export const EditProfile = ({
 
   useEffect(() => {
     (async () => {
-      if (user?.type === UserType.ATTORNEY && !user.address) {
-        const address = await getCurrentPosition();
-        setValue("address", address);
-      }
+      const address = await getCurrentPosition();
+      console.log("COORDS =>", JSON.stringify(address, null, 2));
+      setValue("address", address);
     })();
   }, []);
 

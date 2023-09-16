@@ -12,7 +12,7 @@ export const ImageContent = styled.View<ImageContentProps>`
   width: ${({ size }) => size ?? 45}px;
   height: ${({ size }) => size ?? 45}px;
   background-color: ${({ theme, secondary }) =>
-    secondary ? theme.colors.white.main : theme.colors.primary};
+    secondary ? theme.colors.white.main : theme.colors.primary.main};
 `;
 
 export const Image = styled.Image.attrs(({ theme }) => ({

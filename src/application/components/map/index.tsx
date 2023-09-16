@@ -7,8 +7,10 @@ import MapView, {
   MapViewProps,
   PROVIDER_GOOGLE,
 } from "react-native-maps";
+import { useAuth } from "../../hook/useAuth";
+import { useProfile } from "../../hook/useProfile";
 
-interface MarkerProps extends LatLng, TouchableOpacityProps {
+export interface MarkerProps extends LatLng, TouchableOpacityProps {
   uri: string;
 }
 
@@ -17,6 +19,8 @@ interface MapProps extends MapViewProps {
 }
 
 export const Map = ({ markers, ...rest }: MapProps) => {
+  const { user } = useAuth();
+
   return (
     <MapView
       provider={PROVIDER_GOOGLE}
@@ -27,18 +31,18 @@ export const Map = ({ markers, ...rest }: MapProps) => {
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       }}
-      onPress={({ nativeEvent: { coordinate } }) =>
-        console.log(JSON.stringify(coordinate, null, 2))
-      }
+      region={{ ...user.address, latitudeDelta: 0.015, longitudeDelta: 0.0121 }}
+      onPress={async ({ nativeEvent: { coordinate } }) => {
+        console.log(JSON.stringify(coordinate, null, 2));
+      }}
       {...rest}
     >
-      {markers &&
-        markers?.length > 0 &&
-        markers.map((item, index) => (
-          <Marker key={index} coordinate={item}>
+      {markers?.length > 0 &&
+        markers.map(({ latitude, longitude, uri }, index) => (
+          <Marker key={index} coordinate={{ latitude, longitude }}>
             <ImageContent>
               <ImageContent secondary size={40}>
-                <Image source={{ uri: item.uri }} />
+                <Image source={{ uri }} />
               </ImageContent>
             </ImageContent>
           </Marker>

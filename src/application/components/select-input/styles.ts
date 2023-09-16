@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 import { Dropdown as CustomDropdown } from "react-native-element-dropdown";
 import { Text } from "../base/text";
+import { Image } from "../base/image";
 
 interface DropdownProps {
   contrast: boolean;
@@ -8,6 +9,7 @@ interface DropdownProps {
 
 export const Container = styled.View`
   gap: 4px;
+  flex-grow: 1;
 `;
 
 export const Label = styled(Text)`
@@ -15,23 +17,21 @@ export const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.gray.dark};
 `;
 
-export const Dropdown = styled(CustomDropdown).attrs(
-  ({ theme, isSelected }) => ({
-    maxHeight: 300,
-    placeholderStyle: {
-      fontSize: 14,
-      color: theme.colors.gray.main,
-      fontFamily: theme.fonts.regular,
-    },
-    selectedTextStyle: {
-      fontSize: 14,
-      fontFamily: theme.fonts.regular,
-      color: isSelected ? theme.colors.black.main : theme.colors.gray.main,
-    },
-  })
-)<DropdownProps>`
-  height: 40px;
-  padding: 0px 16px;
+export const Dropdown = styled(CustomDropdown).attrs(({ theme }) => ({
+  maxHeight: 300,
+  placeholderStyle: {
+    fontSize: 14,
+    color: theme.colors.gray.main,
+    fontFamily: theme.fonts.regular,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    fontFamily: theme.fonts.regular,
+    color: theme.colors.black.main,
+  },
+}))<DropdownProps>`
+  min-height: 40px;
+  padding: 4px 16px;
   border-radius: 8px;
   border-width: 1px;
   border-color: ${({ theme }) => theme.colors.gray.main};

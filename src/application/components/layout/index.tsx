@@ -2,18 +2,20 @@ import React, { ReactNode } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useTheme } from "styled-components";
 import { Container, View, ScrollView } from "./styles";
-import { Platform, ScrollViewProps } from "react-native";
+import { Platform, ScrollViewProps, StyleProp, ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface LayoutProps extends ScrollViewProps {
   paddingTopDisabled?: boolean;
   header?: JSX.Element | ReactNode;
+  containerStyle: StyleProp<ViewStyle>;
 }
 
 export const Layout = ({
   children,
   header,
   scrollEnabled,
+  containerStyle,
   paddingTopDisabled,
   ...rest
 }: LayoutProps) => {
@@ -23,8 +25,12 @@ export const Layout = ({
   const behavior = Platform.OS === "ios" ? "padding" : "height";
 
   return (
-    <Container behavior={behavior} paddingTop={paddingTop}>
-      <StatusBar style="light" backgroundColor={theme.colors.primary.dark} />
+    <Container
+      behavior={behavior}
+      style={containerStyle}
+      paddingTop={paddingTop}
+    >
+      {/* <StatusBar style="light" backgroundColor={theme.colors.primary.dark} /> */}
 
       {header && <>{header}</>}
 
