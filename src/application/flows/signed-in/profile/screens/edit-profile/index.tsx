@@ -211,6 +211,7 @@ export const EditProfile = ({
               placeholder="CEP"
               mask={Masks.ZIP_CODE}
               name="address.zipCode"
+              keyboardType="number-pad"
               defaultValue={address?.zipCode ?? user?.address?.zipCode}
             />
 
