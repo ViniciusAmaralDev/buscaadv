@@ -111,7 +111,6 @@ export const EditProfile = ({
 
   const handleSubmitForm = async (values: FormData) => {
     try {
-      console.log(JSON.stringify(values, null, 2));
       await updateUser(user.id, values as IUser);
       goBack();
     } catch (error) {
@@ -158,8 +157,6 @@ export const EditProfile = ({
       }
     })();
   }, []);
-
-  console.log("ADDRESS =>", JSON.stringify(address, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
