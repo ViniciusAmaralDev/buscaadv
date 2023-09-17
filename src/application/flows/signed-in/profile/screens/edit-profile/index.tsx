@@ -207,10 +207,7 @@ export const EditProfile = ({
         )}
 
         <AddressContainer>
-          <HorizontalWrapper>
-            <Text>Endereço</Text>
-            <ChangeButton>alterar no mapa</ChangeButton>
-          </HorizontalWrapper>
+          <Text>Endereço</Text>
 
           <HorizontalContainer>
             <InputForm
