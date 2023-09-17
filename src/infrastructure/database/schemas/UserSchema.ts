@@ -6,6 +6,12 @@ export const addressSchema: ObjectSchema = {
   properties: {
     latitude: "double",
     longitude: "double",
+    street: "string",
+    neighborhood: "string",
+    city: "string",
+    state: "string",
+    country: "string",
+    zipCode: "string",
   },
 };
 

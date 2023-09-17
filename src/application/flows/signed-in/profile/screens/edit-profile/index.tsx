@@ -60,7 +60,10 @@ export const EditProfile = ({
       .nonempty(requiredMessage)
       .default(user?.phoneNumber),
     about: z.string().optional().default(user?.about),
-    office: z.z.string().optional().default(user?.office),
+    office: z.z
+      .string()
+      .optional()
+      .default(user?.office ?? undefined),
     address: z
       .object({
         latitude: z.number(),
@@ -107,9 +110,13 @@ export const EditProfile = ({
     !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
 
   const handleSubmitForm = async (values: FormData) => {
-    console.log(JSON.stringify(values, null, 2));
-    await updateUser(user.id, values as IUser);
-    goBack();
+    try {
+      console.log(JSON.stringify(values, null, 2));
+      await updateUser(user.id, values as IUser);
+      goBack();
+    } catch (error) {
+      console.log("ERROR =>", error);
+    }
   };
 
   const handleChangeImage = async () => {
@@ -140,11 +147,21 @@ export const EditProfile = ({
 
   useEffect(() => {
     (async () => {
-      const coords = await getCurrentPosition();
-      const address = await convertCoordinatesToAddress(coords);
-      setValue("address", address);
+      try {
+        if (!user?.address || !user?.address?.street) {
+          const coords = await getCurrentPosition();
+          console.log("COORDS =>", JSON.stringify(coords));
+          const address = await convertCoordinatesToAddress(coords);
+          console.log("ADDRESS =>", JSON.stringify(address));
+          setValue("address", address);
+        }
+      } catch (error) {
+        console.log("ERROR =>", error);
+      }
     })();
-  }, [user.address]);
+  }, [user]);
+
+  console.log("ERRORS =>", JSON.stringify(address));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
