@@ -144,7 +144,7 @@ export const EditProfile = ({
       const address = await convertCoordinatesToAddress(coords);
       setValue("address", address);
     })();
-  }, []);
+  }, [user.address]);
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>

@@ -69,6 +69,7 @@ export const InputForm = ({
           control={control}
           render={({ field: { value, onChange } }) => (
             <Input
+              editable={editable}
               onChangeText={onChange}
               value={value ?? defaultValue}
               secureTextEntry={showPassword}
