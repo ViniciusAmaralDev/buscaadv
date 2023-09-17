@@ -4,7 +4,7 @@ import { IAddressComponent } from "../../infrastructure/services/geocode/IGeocod
 
 export const useGeocode = () => {
   const filter = (query: string, data: IAddressComponent[]) => {
-    return data.find((item) => item.types.includes(query)).long_name;
+    return data.find((item) => item.types.includes(query))?.long_name ?? "";
   };
 
   const convertCoordinatesToAddress = async (values: ICoords) => {

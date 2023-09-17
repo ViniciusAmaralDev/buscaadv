@@ -18,8 +18,9 @@ export const Container = styled(Layout).attrs({
 export const HorizontalContainer = styled(Wrapper).attrs({
   direction: "row",
 })`
-  flex: 1;
   gap: 8px;
+  flex-grow: 1;
+  flex-wrap: wrap;
 `;
 
 export const HorizontalWrapper = styled(Wrapper).attrs({

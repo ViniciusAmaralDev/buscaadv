@@ -148,20 +148,18 @@ export const EditProfile = ({
   useEffect(() => {
     (async () => {
       try {
-        if (!user?.address || !user?.address?.street) {
+        if (!user.address) {
           const coords = await getCurrentPosition();
-          console.log("COORDS =>", JSON.stringify(coords));
           const address = await convertCoordinatesToAddress(coords);
-          console.log("ADDRESS =>", JSON.stringify(address));
           setValue("address", address);
         }
       } catch (error) {
         console.log("ERROR =>", error);
       }
     })();
-  }, [user]);
+  }, []);
 
-  console.log("ERRORS =>", JSON.stringify(address));
+  console.log("ADDRESS =>", JSON.stringify(address, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
@@ -193,28 +191,13 @@ export const EditProfile = ({
         />
 
         {user.type === UserType.ATTORNEY && (
-          <>
-            <SelectInput
-              contrast
-              data={officeList}
-              label="Especialização*"
-              value={office ?? user?.office}
-              onChange={({ value }) => setValue("office", value)}
-            />
-
-            <InputForm
-              contrast
-              multiline
-              name="about"
-              control={control}
-              numberOfLines={14}
-              textAlignVertical="top"
-              maxLength={ABOUT_LENGTH}
-              placeholder="Sobre você"
-              defaultValue={user.about}
-              label={`Sobre você (limite: ${availableLimit})`}
-            />
-          </>
+          <SelectInput
+            contrast
+            data={officeList}
+            label="Especialização*"
+            value={office ?? user?.office}
+            onChange={({ value }) => setValue("office", value)}
+          />
         )}
 
         <AddressContainer>
@@ -284,6 +267,21 @@ export const EditProfile = ({
             />
           </HorizontalContainer>
         </AddressContainer>
+
+        {user.type === UserType.ATTORNEY && (
+          <InputForm
+            contrast
+            multiline
+            name="about"
+            control={control}
+            numberOfLines={14}
+            textAlignVertical="top"
+            maxLength={ABOUT_LENGTH}
+            placeholder="Esta informação ficará disponível para os clientes quando pesquisarem sobre você."
+            defaultValue={user.about}
+            label={`Sobre você (limite: ${availableLimit})`}
+          />
+        )}
 
         <SaveButton
           disabled={saveButtonIsDisabled}
