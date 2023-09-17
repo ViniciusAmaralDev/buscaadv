@@ -7,6 +7,8 @@
     "android": "ENVFILE=.env npx react-native run-android",
     "ios": "npx react-native run-ios",
     "web": "npx react-native start --web",
+    "android:release": "cd android && ./gradlew clean && cd .. && yarn cache clean && clear && ENVFILE=.env npx react-native build-android --mode=release",
+    "android:apk": "cd android && ENVFILE=.env ./gradlew assembleRelease && cd ..",
     "android:clean": "yarn cache clean && cd android && ./gradlew clean && cd .. && clear",
     "ios:clean": "yarn cache clean && rm -rf ~/Library/Developer/Xcode/DerivedData && cd ios && rm -rf /build && rm -rf /Pods && rm -rf Podfile.lock && cd .. && clear",
     "clean": "yarn cache clean && cd android && ./gradlew clean && cd .. && rm -rf ~/Library/Developer/Xcode/DerivedData && cd ios && rm -rf /build && rm -rf /Pods && rm -rf Podfile.lock && cd .. && rm -rf /node_modules && rm -rf yarn.lock && yarn install && npx pod-install && say completed"

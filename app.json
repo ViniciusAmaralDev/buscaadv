@@ -1,9 +1,13 @@
 {
   "expo": {
-    "name": "buscaadv",
+    "name": "Busca Adv",
     "slug": "buscaadv",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
+    "splash": {
+      "image": "./assets/images/busca-adv-splash-icon.png",
+      "backgroundColor": "#0D71AB"
+    },
     "plugins": [
       [
         "expo-location",
