@@ -4,6 +4,7 @@ import { EditButton as Button } from "../../../../../components/icon-buttons/Edi
 import { Image } from "../../../../../components/base/image";
 import { Wrapper } from "../../../../../components/wrapper";
 import { TextButton } from "../../../../../components/text-button";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export const Container = styled(Layout).attrs({
   scrollEnabled: true,
@@ -14,10 +15,28 @@ export const Container = styled(Layout).attrs({
   },
 })``;
 
+export const HorizontalContainer = styled(Wrapper).attrs({
+  direction: "row",
+})`
+  flex: 1;
+  gap: 8px;
+`;
+
+export const HorizontalWrapper = styled(Wrapper).attrs({
+  direction: "row",
+})`
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const FormContainer = styled(Wrapper)`
-  gap: 16px;
-  flex-grow: 1;
+  gap: 8px;
   padding: 16px;
+`;
+
+export const AddressContainer = styled(Wrapper)`
+  gap: 8px;
+  padding: 16px 0px;
 `;
 
 export const ImageProfile = styled(Image).attrs({
@@ -59,3 +78,17 @@ export const SaveButton = styled(TextButton).attrs(({ theme, disabled }) => ({
   background-color: ${({ theme, disabled }) =>
     disabled ? theme.colors.gray.main : theme.colors.primary.dark};
 `;
+
+export const ChangeButton = styled(TextButton).attrs(({ theme }) => ({
+  textStyle: {
+    fontSize: 12,
+    fontFamily: theme.fonts.bold,
+    color: theme.colors.primary.main,
+  },
+}))``;
+
+export const MapIcon = styled(FontAwesome5).attrs(({ theme }) => ({
+  size: 15,
+  name: "map-marked-alt",
+  color: theme.colors.primary.main,
+}))``;

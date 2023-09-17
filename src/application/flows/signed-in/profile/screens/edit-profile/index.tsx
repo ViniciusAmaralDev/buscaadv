@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
+  AddressContainer,
+  ChangeButton,
   Container,
   EditButton,
   FormContainer,
+  HorizontalContainer,
+  HorizontalWrapper,
   ImageProfile,
   SaveButton,
 } from "./styles";
@@ -24,6 +28,8 @@ import officesJson from "../../../../../../../offices.json";
 import { useToast } from "../../../../../context/ToastContext";
 import { getCurrentPosition } from "../../../../../utils/Location";
 import { IUser } from "../../../../../models/IUser";
+import { useGeocode } from "../../../../../hook/useGeocode";
+import { Text } from "../../../../../components/base/text";
 
 interface Office {
   label: string;
@@ -39,6 +45,7 @@ export const EditProfile = ({
   const { user } = useAuth();
   const { showToast } = useToast();
   const { updateUser } = useProfile();
+  const { convertCoordinatesToAddress } = useGeocode();
 
   const officeList = Object.keys(officesJson).map((item) => ({
     label: item,
@@ -58,6 +65,12 @@ export const EditProfile = ({
       .object({
         latitude: z.number(),
         longitude: z.number(),
+        street: z.string(),
+        neighborhood: z.string(),
+        city: z.string(),
+        state: z.string(),
+        country: z.string(),
+        zipCode: z.string(),
       })
       .optional(),
   });
@@ -76,9 +89,10 @@ export const EditProfile = ({
 
   const {
     name,
+    about,
+    address,
     photo: photoForm,
     phoneNumber: phone,
-    about,
     office: officeForm,
   } = watch();
   const availableLimit =
@@ -126,8 +140,8 @@ export const EditProfile = ({
 
   useEffect(() => {
     (async () => {
-      const address = await getCurrentPosition();
-      console.log("COORDS =>", JSON.stringify(address, null, 2));
+      const coords = await getCurrentPosition();
+      const address = await convertCoordinatesToAddress(coords);
       setValue("address", address);
     })();
   }, []);
@@ -185,6 +199,74 @@ export const EditProfile = ({
             />
           </>
         )}
+
+        <AddressContainer>
+          <HorizontalWrapper>
+            <Text>Endereço</Text>
+            <ChangeButton>alterar no mapa</ChangeButton>
+          </HorizontalWrapper>
+
+          <HorizontalContainer>
+            <InputForm
+              contrast
+              label="CEP"
+              control={control}
+              placeholder="CEP"
+              mask={Masks.ZIP_CODE}
+              name="address.zipCode"
+              defaultValue={address?.zipCode ?? user?.address?.zipCode}
+            />
+
+            <InputForm
+              contrast
+              label="Bairro"
+              control={control}
+              placeholder="Bairro"
+              name="address.neighborhood"
+              defaultValue={
+                address?.neighborhood ?? user?.address?.neighborhood
+              }
+            />
+          </HorizontalContainer>
+
+          <InputForm
+            contrast
+            control={control}
+            label="Logradouro"
+            name="address.street"
+            placeholder="Logradouro"
+            defaultValue={address?.street ?? user?.address?.street}
+          />
+
+          <HorizontalContainer>
+            <InputForm
+              contrast
+              label="Cidade"
+              control={control}
+              name="address.city"
+              placeholder="Cidade"
+              defaultValue={address?.city ?? user?.address?.city}
+            />
+
+            <InputForm
+              contrast
+              label="Estado"
+              control={control}
+              name="address.state"
+              placeholder="Estado"
+              defaultValue={address?.state ?? user?.address?.state}
+            />
+
+            <InputForm
+              contrast
+              label="País"
+              control={control}
+              placeholder="País"
+              name="address.country"
+              defaultValue={address?.country ?? user?.address?.country}
+            />
+          </HorizontalContainer>
+        </AddressContainer>
 
         <SaveButton
           disabled={saveButtonIsDisabled}

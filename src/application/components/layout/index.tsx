@@ -30,7 +30,7 @@ export const Layout = ({
       style={containerStyle}
       paddingTop={paddingTop}
     >
-      {/* <StatusBar style="light" backgroundColor={theme.colors.primary.dark} /> */}
+      <StatusBar style="light" backgroundColor={theme.colors.primary.dark} />
 
       {header && <>{header}</>}
 

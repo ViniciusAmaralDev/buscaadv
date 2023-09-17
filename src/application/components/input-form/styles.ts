@@ -13,7 +13,7 @@ interface ContentProps {
 
 export const Container = styled.View`
   gap: 4px;
-  width: 100%;
+  flex-grow: 1;
 `;
 
 export const Label = styled(Text)`
