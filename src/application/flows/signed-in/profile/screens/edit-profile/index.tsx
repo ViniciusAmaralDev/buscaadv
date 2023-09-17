@@ -45,7 +45,7 @@ export const EditProfile = ({
   const { user } = useAuth();
   const { showToast } = useToast();
   const { updateUser } = useProfile();
-  const { convertCoordinatesToAddress } = useGeocode();
+  const { convertCoordinatesToAddress, convertZipCodeToAddress } = useGeocode();
 
   const officeList = Object.keys(officesJson).map((item) => ({
     label: item,
@@ -157,6 +157,15 @@ export const EditProfile = ({
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (address?.zipCode?.length === 9) {
+        const response = await convertZipCodeToAddress(address?.zipCode);
+        setValue("address", response);
+      }
+    })();
+  }, [address?.zipCode]);
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>

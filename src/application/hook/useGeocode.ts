@@ -1,6 +1,7 @@
 import { geocodeService } from "../../infrastructure/services/geocode";
 import { ICoords } from "../../infrastructure/services/geocode/ICoords";
 import { IAddressComponent } from "../../infrastructure/services/geocode/IGeocodeResponse";
+import { viacepService } from "../../infrastructure/services/viacep";
 
 export const useGeocode = () => {
   const filter = (query: string, data: IAddressComponent[]) => {
@@ -21,5 +22,20 @@ export const useGeocode = () => {
     return { ...values, street, neighborhood, city, state, country, zipCode };
   };
 
-  return { convertCoordinatesToAddress };
+  const convertZipCodeToAddress = async (value: string) => {
+    const zipCode = Number(value.replace("-", ""));
+    const { data } = await viacepService.convertZipCodeToAddress(zipCode);
+    const { cep, logradouro, bairro, localidade } = data;
+
+    return {
+      zipCode: cep,
+      street: logradouro,
+      neighborhood: bairro,
+      city: localidade,
+      state: "",
+      country: "",
+    };
+  };
+
+  return { convertCoordinatesToAddress, convertZipCodeToAddress };
 };
