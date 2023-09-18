@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { Image, ImageContent } from "./styles";
 import { IAddress } from "../../models/IAddress";
 import { StyleSheet, TouchableOpacityProps } from "react-native";

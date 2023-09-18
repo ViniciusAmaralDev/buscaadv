@@ -39,7 +39,10 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
   const { top } = useSafeAreaInsets();
   const themeDevice = useColorScheme() ?? "light";
 
-  const [office, setOffice] = useState<IOffice>();
+  const [office, setOffice] = useState<IOffice>({
+    label: "Todos",
+    value: "all",
+  });
 
   const userCoords: LatLng = useMemo(() => {
     const { latitude, longitude } = user.address;
@@ -51,15 +54,20 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
   const markers = users
     .filter((user) => user.type === UserType.ATTORNEY)
     .filter((user) => {
-      if (office && user.office === office.value) return user;
-      else if (!office) return user;
+      if (user.office === office.value) return user;
+      else if (!office || office.value === "all") return user;
     })
     .map((user) => ({ ...user.address, uri: user.photo }));
 
-  const officeList: IOffice[] = Object.keys(officesJson).map((item) => ({
-    label: item,
-    value: item,
-  }));
+  const officeList: IOffice[] = useMemo(() => {
+    return [
+      { label: "Todos", value: "all" },
+      ...Object.keys(officesJson).map((item) => ({
+        label: item,
+        value: item,
+      })),
+    ];
+  }, [user]);
 
   const handleResetMapCoords = () => {
     mapRef.current?.animateToRegion(
