@@ -97,7 +97,7 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
         <SaveButton onPress={handleSubmit(handleSubmitForm)}>Salvar</SaveButton>
       ) : (
         <DeleteButton onPress={handleDeleteAccount}>
-          Apagar minha conta
+          Excluir minha conta
         </DeleteButton>
       )}
     </Container>

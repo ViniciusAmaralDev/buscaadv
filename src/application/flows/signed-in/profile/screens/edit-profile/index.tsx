@@ -47,6 +47,8 @@ export const EditProfile = ({
   const { updateUser } = useProfile();
   const { convertCoordinatesToAddress, convertZipCodeToAddress } = useGeocode();
 
+  const [editingZipCode, setEditingZipCode] = useState(false);
+
   const officeList = Object.keys(officesJson).map((item) => ({
     label: item,
     value: item,
@@ -149,7 +151,9 @@ export const EditProfile = ({
       try {
         if (!user.address) {
           const coords = await getCurrentPosition();
+          console.log("COORDS =>", JSON.stringify(coords, null, 2));
           const address = await convertCoordinatesToAddress(coords);
+          console.log("ADDRESS =>", JSON.stringify(address, null, 2));
           setValue("address", address);
         }
       } catch (error) {
@@ -160,12 +164,16 @@ export const EditProfile = ({
 
   useEffect(() => {
     (async () => {
-      if (address?.zipCode?.length === 9) {
+      if (editingZipCode && address?.zipCode?.length === 9) {
+        const { latitude, longitude } = address;
         const response = await convertZipCodeToAddress(address?.zipCode);
-        setValue("address", response);
+        setEditingZipCode(false);
+        setValue("address", { ...response, latitude, longitude });
       }
     })();
   }, [address?.zipCode]);
+
+  console.log(JSON.stringify(errors, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
@@ -218,6 +226,7 @@ export const EditProfile = ({
               mask={Masks.ZIP_CODE}
               name="address.zipCode"
               keyboardType="number-pad"
+              onChange={() => setEditingZipCode(true)}
               defaultValue={address?.zipCode ?? user?.address?.zipCode}
             />
 

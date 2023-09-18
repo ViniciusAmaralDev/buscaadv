@@ -2,7 +2,12 @@ import styled from "styled-components/native";
 import { Wrapper } from "../../../components/wrapper";
 import { Layout } from "../../../components/layout";
 import { Image } from "../../../components/base/image";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Button } from "../../../components/base/button";
+
+interface TargetButtonProps {
+  isActive: boolean;
+}
 
 interface HeaderProps {
   paddingTop: number;
@@ -48,6 +53,24 @@ export const Footer = styled(Wrapper)`
   border-top-right-radius: 12px;
   background-color: ${({ theme }) => theme.colors.gray.light};
 `;
+
+export const TargetButton = styled(Button)<TargetButtonProps>`
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  border-radius: 12px;
+  padding: 8px;
+  background-color: ${({ theme, isActive }) =>
+    isActive ? theme.colors.primary.main : theme.colors.gray.light};
+`;
+
+export const TargetIcon = styled(MaterialCommunityIcons).attrs(
+  ({ theme, isActive }) => ({
+    size: 24,
+    name: "target",
+    color: isActive ? theme.colors.white.main : theme.colors.gray.dark,
+  })
+)``;
 
 export const FilterIcon = styled(MaterialIcons).attrs(({ theme }) => ({
   size: 20,

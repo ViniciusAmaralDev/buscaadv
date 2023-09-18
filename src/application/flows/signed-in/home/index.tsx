@@ -1,5 +1,13 @@
-import React, { useState } from "react";
-import { Container, FilterIcon, Footer, Header } from "./styles";
+import React, { useMemo, useRef, useState } from "react";
+import {
+  Container,
+  FilterIcon,
+  Footer,
+  Header,
+  TargetButton,
+  TargetIcon,
+} from "./styles";
+import MapView from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
 import { useTheme } from "styled-components";
 import { Map } from "../../../components/map";
@@ -15,6 +23,7 @@ import { Button } from "../../../components/base/button";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ImageProfile } from "../../../components/image-profile";
 import { UserType } from "../../../enums/UserType";
+import { Details, LatLng, Region } from "react-native-maps";
 
 interface IOffice {
   label: string;
@@ -22,6 +31,8 @@ interface IOffice {
 }
 
 export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
+  const mapRef = useRef<MapView>(null);
+
   const theme = useTheme();
   const { user } = useAuth();
   const { users } = useStorage();
@@ -29,6 +40,13 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
   const themeDevice = useColorScheme() ?? "light";
 
   const [office, setOffice] = useState<IOffice>();
+
+  const userCoords: LatLng = useMemo(() => {
+    const { latitude, longitude } = user.address;
+    return { latitude, longitude };
+  }, [user]);
+
+  const [mapPositionChanged, setMapPositionChanged] = useState(false);
 
   const markers = users
     .filter((user) => user.type === UserType.ATTORNEY)
@@ -43,17 +61,23 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
     value: item,
   }));
 
-  console.log(JSON.stringify(user, null, 2));
+  const handleResetMapCoords = () => {
+    mapRef.current?.animateToRegion(
+      { ...userCoords, latitudeDelta: 0.015, longitudeDelta: 0.0121 },
+      1000
+    );
+    setMapPositionChanged(false);
+  };
 
   return (
     <Container>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <Map
+        ref={mapRef}
         markers={markers}
+        coords={userCoords}
         userInterfaceStyle={themeDevice}
-        onRegionChange={(coords) =>
-          console.log(JSON.stringify(coords, null, 2))
-        }
+        onRegionChange={() => setMapPositionChanged(true)}
       />
 
       <Header paddingTop={top}>
@@ -74,9 +98,12 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
         />
       </Header>
 
-      {/* <Footer>
-        
-      </Footer> */}
+      <TargetButton
+        isActive={mapPositionChanged}
+        onPress={handleResetMapCoords}
+      >
+        <TargetIcon isActive={mapPositionChanged} />
+      </TargetButton>
     </Container>
   );
 };

@@ -44,10 +44,7 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
     resolver: zodResolver(schema),
   });
 
-  // console.log("ERRORS =>", JSON.stringify(errors, null, 2));
-
   const handleSubmitForm = async (values: FormData) => {
-    console.log(JSON.stringify(values, null, 2));
     await signIn(values as ISignInProps);
   };
 
@@ -68,6 +65,7 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
           placeholder="E-mail"
           error={errors.email}
           endIcon={<EmailIcon />}
+          keyboardType="email-address"
         />
 
         <InputForm
