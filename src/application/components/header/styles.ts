@@ -20,7 +20,7 @@ export const Container = styled(Wrapper).attrs({
 export const HorizontalContainer = styled(Wrapper).attrs({
   direction: "row",
 })<HorizontalContainerProps>`
-  flex-grow: 1;
+  gap: 8px;
   align-items: center;
   justify-content: ${({ justify }) => justify ?? "flex-start"};
 `;

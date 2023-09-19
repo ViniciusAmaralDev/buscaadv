@@ -6,4 +6,8 @@ export interface IGeocodeService {
   convertCoordinatesToAddress: (
     values: ICoords
   ) => AxiosPromise<IGeocodeResponse>;
+  
+  convertAddressToCoordinates: (
+    address: string
+  ) => AxiosPromise<IGeocodeResponse>;
 }

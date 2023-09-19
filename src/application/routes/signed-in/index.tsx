@@ -11,6 +11,7 @@ import { MyAccount } from "../../flows/signed-in/profile/screens/my-account";
 import { EditProfile } from "../../flows/signed-in/profile/screens/edit-profile";
 import { EditAccount } from "../../flows/signed-in/profile/screens/edit-account";
 import { UserType } from "../../enums/UserType";
+import { ProfileDetails } from "../../flows/signed-in/profile/screens/profile-details";
 
 const Stack = createStackNavigator<SignedInParamList>();
 
@@ -34,6 +35,7 @@ export default function SignedInNavigator() {
       <Stack.Screen name="MyAccount" component={MyAccount} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="EditAccount" component={EditAccount} />
+      <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
     </Stack.Navigator>
   );
 }

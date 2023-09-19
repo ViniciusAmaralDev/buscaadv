@@ -51,13 +51,15 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
 
   const [mapPositionChanged, setMapPositionChanged] = useState(false);
 
-  const markers = users
-    .filter((user) => user.type === UserType.ATTORNEY)
-    .filter((user) => {
-      if (user.office === office.value) return user;
-      else if (!office || office.value === "all") return user;
-    })
-    .map((user) => ({ ...user.address, uri: user.photo }));
+  const markers = useMemo(() => {
+    return users
+      .filter((user) => user.type === UserType.ATTORNEY)
+      .filter((user) => {
+        if (!user.address) return;
+        if (user.office === office.value) return user;
+        else if (!office || office.value === "all") return user;
+      });
+  }, [users, office]);
 
   const officeList: IOffice[] = useMemo(() => {
     return [

@@ -1,24 +1,21 @@
+import { Button } from "../base/button";
+import { Text } from "../base/text";
+import { Wrapper } from "../wrapper";
 import styled from "styled-components/native";
 
-interface ImageContentProps {
-  size?: number;
-  secondary?: boolean;
-}
-
-export const ImageContent = styled.View<ImageContentProps>`
-  border-radius: 23px;
+export const VerticalContainer = styled(Button)`
+  gap: 4px;
   align-items: center;
   justify-content: center;
-  width: ${({ size }) => size ?? 45}px;
-  height: ${({ size }) => size ?? 45}px;
-  background-color: ${({ theme, secondary }) =>
-    secondary ? theme.colors.white.main : theme.colors.primary.main};
 `;
 
-export const Image = styled.Image.attrs(({ theme }) => ({
-  resizeMode: "contain",
-}))`
-  width: 38px;
-  height: 38px;
-  border-radius: 19px;
+export const LabelContent = styled(Wrapper)`
+  padding: 8px 16px;
+  border-radius: 12px;
+  background-color: ${({ theme }) => theme.colors.primary.main};
+`;
+
+export const Label = styled(Text)`
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.white.main};
 `;

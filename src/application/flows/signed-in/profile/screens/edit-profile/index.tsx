@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
   AddressContainer,
-  ChangeButton,
   Container,
   EditButton,
   FormContainer,
   HorizontalContainer,
-  HorizontalWrapper,
   ImageProfile,
   SaveButton,
 } from "./styles";
@@ -30,11 +28,7 @@ import { getCurrentPosition } from "../../../../../utils/Location";
 import { IUser } from "../../../../../models/IUser";
 import { useGeocode } from "../../../../../hook/useGeocode";
 import { Text } from "../../../../../components/base/text";
-
-interface Office {
-  label: string;
-  value: string;
-}
+import { useRequestStatus } from "../../../../../context/RequestStatusContext";
 
 const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
@@ -45,7 +39,9 @@ export const EditProfile = ({
   const { user } = useAuth();
   const { showToast } = useToast();
   const { updateUser } = useProfile();
-  const { convertCoordinatesToAddress, convertZipCodeToAddress } = useGeocode();
+  const { isLoading } = useRequestStatus();
+  const { convertCoordinatesToAddress, convertAddressToCoordinates } =
+    useGeocode();
 
   const [editingZipCode, setEditingZipCode] = useState(false);
 
@@ -66,18 +62,16 @@ export const EditProfile = ({
       .string()
       .optional()
       .default(user?.office ?? undefined),
-    address: z
-      .object({
-        latitude: z.number(),
-        longitude: z.number(),
-        street: z.string(),
-        neighborhood: z.string(),
-        city: z.string(),
-        state: z.string(),
-        country: z.string(),
-        zipCode: z.string(),
-      })
-      .optional(),
+    address: z.object({
+      latitude: z.number().default(user?.address?.latitude),
+      longitude: z.number().default(user?.address?.longitude),
+      street: z.string().default(user?.address?.street),
+      neighborhood: z.string().default(user?.address?.neighborhood),
+      city: z.string().default(user?.address?.city),
+      state: z.string().default(user?.address?.state),
+      country: z.string().default(user?.address?.country),
+      zipCode: z.string().default(user?.address?.zipCode),
+    }),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -115,9 +109,7 @@ export const EditProfile = ({
     try {
       await updateUser(user.id, values as IUser);
       goBack();
-    } catch (error) {
-      console.log("ERROR =>", error);
-    }
+    } catch (error) {}
   };
 
   const handleChangeImage = async () => {
@@ -146,34 +138,31 @@ export const EditProfile = ({
     goBack();
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!user.address) {
-          const coords = await getCurrentPosition();
-          console.log("COORDS =>", JSON.stringify(coords, null, 2));
-          const address = await convertCoordinatesToAddress(coords);
-          console.log("ADDRESS =>", JSON.stringify(address, null, 2));
-          setValue("address", address);
-        }
-      } catch (error) {
-        console.log("ERROR =>", error);
+  const getCoordinatesAndConvertOnAddress = async () => {
+    try {
+      const coords = await getCurrentPosition();
+      const address = await convertCoordinatesToAddress(coords);
+      setValue("address", address);
+    } catch (error) {}
+  };
+
+  const getAddressAndConvertOnCoordinates = async () => {
+    try {
+      if (editingZipCode && address?.zipCode?.length === 9) {
+        const response = await convertAddressToCoordinates(address?.zipCode);
+        setEditingZipCode(false);
+        setValue("address", response);
       }
-    })();
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (!user?.address) getCoordinatesAndConvertOnAddress();
   }, []);
 
   useEffect(() => {
-    (async () => {
-      if (editingZipCode && address?.zipCode?.length === 9) {
-        const { latitude, longitude } = address;
-        const response = await convertZipCodeToAddress(address?.zipCode);
-        setEditingZipCode(false);
-        setValue("address", { ...response, latitude, longitude });
-      }
-    })();
+    getAddressAndConvertOnCoordinates();
   }, [address?.zipCode]);
-
-  console.log(JSON.stringify(errors, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
@@ -224,6 +213,7 @@ export const EditProfile = ({
               control={control}
               placeholder="CEP"
               mask={Masks.ZIP_CODE}
+              editable={!isLoading}
               name="address.zipCode"
               keyboardType="number-pad"
               onChange={() => setEditingZipCode(true)}
@@ -235,6 +225,7 @@ export const EditProfile = ({
               label="Bairro"
               control={control}
               placeholder="Bairro"
+              editable={!isLoading}
               name="address.neighborhood"
               defaultValue={
                 address?.neighborhood ?? user?.address?.neighborhood
@@ -247,6 +238,7 @@ export const EditProfile = ({
             control={control}
             label="Logradouro"
             name="address.street"
+            editable={!isLoading}
             placeholder="Logradouro"
             defaultValue={address?.street ?? user?.address?.street}
           />
@@ -258,6 +250,7 @@ export const EditProfile = ({
               control={control}
               name="address.city"
               placeholder="Cidade"
+              editable={!isLoading}
               defaultValue={address?.city ?? user?.address?.city}
             />
 
@@ -267,6 +260,7 @@ export const EditProfile = ({
               control={control}
               name="address.state"
               placeholder="Estado"
+              editable={!isLoading}
               defaultValue={address?.state ?? user?.address?.state}
             />
 
@@ -275,6 +269,7 @@ export const EditProfile = ({
               label="País"
               control={control}
               placeholder="País"
+              editable={!isLoading}
               name="address.country"
               defaultValue={address?.country ?? user?.address?.country}
             />
@@ -297,6 +292,7 @@ export const EditProfile = ({
         )}
 
         <SaveButton
+          isLoading={isLoading}
           disabled={saveButtonIsDisabled}
           onPress={handleSubmit(handleSubmitForm)}
         >

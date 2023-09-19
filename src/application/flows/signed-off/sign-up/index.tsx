@@ -60,7 +60,6 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
 
   const handleSubmitForm = async (values: FormData) => {
     try {
-      console.log("REGISTERED =>", JSON.stringify(values, null, 2));
       await signUp(values as IUser);
     } catch (error) {}
   };

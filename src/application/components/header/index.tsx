@@ -23,13 +23,10 @@ export const Header = ({
     <Container>
       <HorizontalContainer>
         {showBackButton && <ArrowButton onPress={onPress} />}
-      </HorizontalContainer>
-
-      <HorizontalContainer justify="center">
         <Label>{label}</Label>
       </HorizontalContainer>
 
-      <HorizontalContainer justify="flex-end">{right}</HorizontalContainer>
+      {right}
     </Container>
   );
 };

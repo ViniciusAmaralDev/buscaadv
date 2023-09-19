@@ -21,7 +21,6 @@ export const CardList = ({ data }: CardListProps) => {
       mode="parallax"
       width={Dimensions.get("screen").width}
       scrollAnimationDuration={1000}
-      onSnapToItem={(index) => console.log("current index:", index)}
       style={{
         backgroundColor: theme.colors.gray.light,
       }}

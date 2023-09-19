@@ -6,7 +6,7 @@ interface ImageProfileProps extends Omit<ImageBackgroundProps, "source"> {
   uri?: string;
   size?: number;
   containerStyle?: StyleProp<ViewStyle>;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 export const ImageProfile = ({

@@ -59,7 +59,10 @@ export const TargetButton = styled(Button)<TargetButtonProps>`
   bottom: 16px;
   right: 16px;
   border-radius: 12px;
-  padding: 8px;
+  width: 45px;
+  height: 45px;
+  align-items: center;
+  justify-content: center;
   background-color: ${({ theme, isActive }) =>
     isActive ? theme.colors.primary.main : theme.colors.gray.light};
 `;

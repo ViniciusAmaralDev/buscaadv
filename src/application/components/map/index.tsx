@@ -1,6 +1,5 @@
-import React, { forwardRef, useEffect } from "react";
-import { Image, ImageContent } from "./styles";
-import { IAddress } from "../../models/IAddress";
+import React, { forwardRef } from "react";
+import { ImageProfile } from "../image-profile";
 import { StyleSheet, TouchableOpacityProps } from "react-native";
 import MapView, {
   LatLng,
@@ -8,6 +7,9 @@ import MapView, {
   MapViewProps,
   PROVIDER_GOOGLE,
 } from "react-native-maps";
+import { Label, LabelContent, VerticalContainer } from "./styles";
+import { IUser } from "../../models/IUser";
+import { useNavigation } from "@react-navigation/native";
 
 export interface MarkerProps extends LatLng, TouchableOpacityProps {
   uri: string;
@@ -15,11 +17,13 @@ export interface MarkerProps extends LatLng, TouchableOpacityProps {
 
 interface MapProps extends MapViewProps {
   coords: LatLng;
-  markers?: MarkerProps[];
+  markers?: IUser[];
 }
 
 export const Map = forwardRef<any, MapProps>(
   ({ coords, markers, ...rest }, ref) => {
+    const { navigate } = useNavigation();
+
     return (
       <MapView
         ref={ref}
@@ -34,15 +38,22 @@ export const Map = forwardRef<any, MapProps>(
         region={{ ...coords, latitudeDelta: 0.015, longitudeDelta: 0.0121 }}
         {...rest}
       >
-        {markers?.map(({ latitude, longitude, uri }, index) => (
-          <Marker key={index} coordinate={{ latitude, longitude }}>
-            <ImageContent>
-              <ImageContent secondary size={40}>
-                <Image source={{ uri }} />
-              </ImageContent>
-            </ImageContent>
-          </Marker>
-        ))}
+        {markers?.map(
+          ({ id, name, address: { latitude, longitude }, photo }, index) => (
+            <Marker
+              key={index}
+              coordinate={{ latitude, longitude }}
+              onPress={() => navigate("ProfileDetails", { id })}
+            >
+              <VerticalContainer>
+                <ImageProfile size={45} uri={photo} />
+                <LabelContent>
+                  <Label>{name}</Label>
+                </LabelContent>
+              </VerticalContainer>
+            </Marker>
+          )
+        )}
       </MapView>
     );
   }

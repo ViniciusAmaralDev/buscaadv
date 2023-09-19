@@ -4,4 +4,5 @@ export type SignedInParamList = {
   MyAccount: undefined;
   EditProfile: undefined;
   EditAccount: undefined;
+  ProfileDetails: { id: string };
 };

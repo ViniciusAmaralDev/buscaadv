@@ -8,6 +8,11 @@ const convertCoordinatesToAddress = async ({ latitude, longitude }) => {
   );
 };
 
+const convertAddressToCoordinates = async (address: string) => {
+  return await api.get(`/json?address=${address}&key=${GOOGLE_API_KEY}`);
+};
+
 export const geocodeService: IGeocodeService = {
   convertCoordinatesToAddress,
+  convertAddressToCoordinates,
 };
