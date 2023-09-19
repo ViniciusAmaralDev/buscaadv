@@ -5,7 +5,7 @@ import { SignedInParamList } from "./SignedInParamList";
 import { createStackNavigator } from "@react-navigation/stack";
 
 // SCREENS
-import { Home } from "../../flows/signed-in/home";
+import { Home } from "../../flows/signed-in/home2";
 import { Profile } from "../../flows/signed-in/profile/screens";
 import { MyAccount } from "../../flows/signed-in/profile/screens/my-account";
 import { EditProfile } from "../../flows/signed-in/profile/screens/edit-profile";
