@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Container, HorizontalContainer, ArrowButton, Label } from "./styles";
 
 interface HeaderProps {
-  label: string;
+  label?: string;
   right?: ReactNode;
   goBack?: () => void;
   showBackButton?: boolean;
@@ -23,7 +23,7 @@ export const Header = ({
     <Container>
       <HorizontalContainer>
         {showBackButton && <ArrowButton onPress={onPress} />}
-        <Label>{label}</Label>
+        {label && <Label>{label}</Label>}
       </HorizontalContainer>
 
       {right}

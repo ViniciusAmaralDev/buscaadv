@@ -11,7 +11,7 @@ import { MyAccount } from "../../flows/signed-in/profile/screens/my-account";
 import { EditProfile } from "../../flows/signed-in/profile/screens/edit-profile";
 import { EditAccount } from "../../flows/signed-in/profile/screens/edit-account";
 import { UserType } from "../../enums/UserType";
-import { ProfileDetails } from "../../flows/signed-in/profile/screens/profile-details";
+import { ProfileDetails } from "../../flows/signed-in/profile/screens/profile-details2";
 
 const Stack = createStackNavigator<SignedInParamList>();
 
