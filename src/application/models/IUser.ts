@@ -9,6 +9,7 @@ export interface IUser {
   email: string;
   office?: string;
   password: string;
+  gallery?: string[];
   address?: IAddress;
   createdAt?: string;
   updatedAt?: string;

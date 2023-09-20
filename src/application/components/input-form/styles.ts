@@ -25,7 +25,7 @@ export const Label = styled(Text)`
 export const Content = styled.View<ContentProps>`
   gap: 16px;
   min-height: 40px;
-  padding: 8px 16px;
+  padding: 0px 16px;
   flex-direction: row;
   align-items: center;
   border-radius: 8px;
