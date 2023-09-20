@@ -25,6 +25,8 @@ import {
 } from "./components/personal-info-dropdown";
 import { AddressDropdown } from "./components/address-dropdown";
 import { OpeningHoursDropdown } from "./components/opening-hours-dropdown";
+import { Dropdown } from "./components/dropdown";
+import { ProfissionalDropdown } from "./components/profissional-dropdown";
 
 const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
@@ -98,10 +100,10 @@ export const EditProfile = ({
   const availableLimit =
     ABOUT_LENGTH - (about?.length ?? user?.about?.length ?? 0);
 
-  const username = name || user.name;
+  const username = name ?? user.name;
   const photo = photoForm ?? user.photo;
-  const office = officeForm || user.office;
-  const phoneNumber = phone || user.phoneNumber;
+  const office = officeForm ?? user.office;
+  const phoneNumber = phone ?? user.phoneNumber;
 
   const saveButtonIsDisabled =
     !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
@@ -206,6 +208,23 @@ export const EditProfile = ({
     ];
   }, [user]);
 
+  const openingHourInputs = useMemo(() => {
+    return [
+      {
+        control,
+        label: "De",
+        value: "08:00",
+        name: "openingHours.start",
+      },
+      {
+        control,
+        label: "Às",
+        value: "18:00",
+        name: "openingHours.end",
+      },
+    ];
+  }, [user]);
+
   const [weekDays, setWeekDays] = useState([
     { label: "Domingo", isSelected: false },
     { label: "Segunda", isSelected: false },
@@ -298,23 +317,12 @@ export const EditProfile = ({
       <AddressDropdown inputs={addressInputs as InputFormProps[]} />
 
       <OpeningHoursDropdown
-        inputs={[
-          {
-            control,
-            label: "De",
-            value: "08:00",
-            name: "openingHours.start",
-          },
-          {
-            control,
-            label: "Às",
-            value: "18:00",
-            name: "openingHours.end",
-          },
-        ]}
         weekDays={weekDays}
+        inputs={openingHourInputs}
         changeWeekDays={changeWeekDays}
       />
+
+      <ProfissionalDropdown office={office} />
 
       {/* <FormContainer>
         {user.type === UserType.ATTORNEY && (
