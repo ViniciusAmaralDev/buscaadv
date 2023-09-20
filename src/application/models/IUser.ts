@@ -13,6 +13,8 @@ export interface IUser {
   address?: IAddress;
   createdAt?: string;
   updatedAt?: string;
+  services?: string[];
   phoneNumber: string;
+  openingHours?: string[];
   isAuthenticated?: boolean;
 }

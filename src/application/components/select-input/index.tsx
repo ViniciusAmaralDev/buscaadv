@@ -6,6 +6,7 @@ import { StyleProp, TextStyle } from "react-native";
 interface SelectInputProps extends Partial<DropdownProps<any>> {
   label?: string;
   contrast?: boolean;
+  showBorder?: boolean;
   labelStyle?: StyleProp<TextStyle>;
 }
 
@@ -14,6 +15,7 @@ export const SelectInput = ({
   value,
   contrast,
   labelStyle,
+  showBorder,
   ...rest
 }: SelectInputProps) => {
   return (
@@ -25,6 +27,7 @@ export const SelectInput = ({
         valueField="value"
         contrast={contrast}
         placeholder="Selecione"
+        showBorder={showBorder}
         {...rest}
       />
     </Container>

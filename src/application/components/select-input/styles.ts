@@ -5,6 +5,7 @@ import { Image } from "../base/image";
 
 interface DropdownProps {
   contrast: boolean;
+  showBorder: boolean;
 }
 
 export const Container = styled.View`
@@ -33,7 +34,7 @@ export const Dropdown = styled(CustomDropdown).attrs(({ theme }) => ({
   min-height: 40px;
   padding: 4px 16px;
   border-radius: 8px;
-  border-width: 1px;
+  border-width: ${({ showBorder }) => (showBorder ? 1 : 0)}px;
   border-color: ${({ theme }) => theme.colors.gray.main};
   background-color: ${({ theme, contrast }) =>
     contrast ? theme.colors.white.main : theme.colors.gray.light};

@@ -4,6 +4,10 @@ import styled from "styled-components/native";
 import { Text } from "../base/text";
 import { TextButton } from "../text-button";
 
+interface LabelProps {
+  isFocused?: boolean;
+}
+
 interface ContentProps {
   contrast: boolean;
   editable: boolean;
@@ -16,10 +20,11 @@ export const Container = styled.View`
   flex-grow: 1;
 `;
 
-export const Label = styled(Text)`
+export const Label = styled(Text)<LabelProps>`
   font-size: 12px;
-  color: ${({ theme }) => theme.colors.gray.dark};
   font-family: ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme, isFocused }) =>
+    isFocused ? theme.colors.primary.main : theme.colors.gray.dark};
 `;
 
 export const Content = styled.View<ContentProps>`

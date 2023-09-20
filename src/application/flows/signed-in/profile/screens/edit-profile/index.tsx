@@ -17,7 +17,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getImageFromLibrary } from "../../../../../utils/Image";
-import { InputForm } from "../../../../../components/input-form";
+import {
+  InputForm,
+  InputFormProps,
+} from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
 import { useProfile } from "../../../../../hook/useProfile";
 import { UserType } from "../../../../../enums/UserType";
@@ -29,6 +32,7 @@ import { IUser } from "../../../../../models/IUser";
 import { useGeocode } from "../../../../../hook/useGeocode";
 import { Text } from "../../../../../components/base/text";
 import { useRequestStatus } from "../../../../../context/RequestStatusContext";
+import { Dropdown } from "./components/dropdown";
 
 const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
@@ -94,6 +98,7 @@ export const EditProfile = ({
     phoneNumber: phone,
     office: officeForm,
   } = watch();
+
   const availableLimit =
     ABOUT_LENGTH - (about?.length ?? user?.about?.length ?? 0);
 
@@ -104,6 +109,38 @@ export const EditProfile = ({
 
   const saveButtonIsDisabled =
     !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
+
+  const inputIsEditable = !isLoading && address?.zipCode?.length > 0;
+
+  const personalInformationInputs: InputFormProps[] = [
+    {
+      control,
+      name: "name",
+      label: "Nome",
+      contrast: true,
+      error: errors.name,
+      placeholder: "Nome",
+      defaultValue: name ?? user.name,
+    },
+    {
+      control,
+      contrast: true,
+      label: "Contato*",
+      name: "phoneNumber",
+      mask: Masks.BRL_PHONE,
+      error: errors.phoneNumber,
+      keyboardType: "number-pad",
+      defaultValue: user.phoneNumber,
+      placeholder: "(00) 98765-4321",
+    },
+    {
+      contrast: true,
+      values: officeList,
+      label: "Especialização*",
+      selectedValue: office ?? user?.office,
+      onSelect: ({ value }) => setValue("office", value),
+    },
+  ];
 
   const handleSubmitForm = async (values: FormData) => {
     try {
@@ -170,7 +207,12 @@ export const EditProfile = ({
         <EditButton onPress={handleChangeImage} />
       </ImageProfile>
 
-      <FormContainer>
+      <Dropdown
+        label="Informações pessoais"
+        inputs={personalInformationInputs}
+      />
+
+      {/* <FormContainer>
         <InputForm
           contrast
           name="name"
@@ -225,7 +267,7 @@ export const EditProfile = ({
               label="Bairro"
               control={control}
               placeholder="Bairro"
-              editable={!isLoading}
+              editable={inputIsEditable}
               name="address.neighborhood"
               defaultValue={
                 address?.neighborhood ?? user?.address?.neighborhood
@@ -238,8 +280,8 @@ export const EditProfile = ({
             control={control}
             label="Logradouro"
             name="address.street"
-            editable={!isLoading}
             placeholder="Logradouro"
+            editable={inputIsEditable}
             defaultValue={address?.street ?? user?.address?.street}
           />
 
@@ -250,7 +292,7 @@ export const EditProfile = ({
               control={control}
               name="address.city"
               placeholder="Cidade"
-              editable={!isLoading}
+              editable={inputIsEditable}
               defaultValue={address?.city ?? user?.address?.city}
             />
 
@@ -260,7 +302,7 @@ export const EditProfile = ({
               control={control}
               name="address.state"
               placeholder="Estado"
-              editable={!isLoading}
+              editable={inputIsEditable}
               defaultValue={address?.state ?? user?.address?.state}
             />
 
@@ -269,8 +311,8 @@ export const EditProfile = ({
               label="País"
               control={control}
               placeholder="País"
-              editable={!isLoading}
               name="address.country"
+              editable={inputIsEditable}
               defaultValue={address?.country ?? user?.address?.country}
             />
           </HorizontalContainer>
@@ -287,7 +329,7 @@ export const EditProfile = ({
             maxLength={ABOUT_LENGTH}
             placeholder="Esta informação ficará disponível para os clientes quando pesquisarem sobre você."
             defaultValue={user.about}
-            label={`Sobre você (limite: ${availableLimit})`}
+            label={`Sobre o seu serviço (limite: ${availableLimit})`}
           />
         )}
 
@@ -298,7 +340,7 @@ export const EditProfile = ({
         >
           Salvar
         </SaveButton>
-      </FormContainer>
+      </FormContainer> */}
     </Container>
   );
 };
