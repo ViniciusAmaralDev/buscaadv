@@ -8,14 +8,6 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { Button as CustomButton } from "../../../../../components/base/button";
 import { Text } from "../../../../../components/base/text";
 
-interface WeekButtonProps {
-  showBorder: boolean;
-}
-
-interface LabelProps {
-  secondary?: boolean;
-}
-
 export const Container = styled(Layout).attrs({
   scrollEnabled: true,
   showsVerticalScrollIndicator: false,
@@ -72,37 +64,3 @@ export const SaveButton = styled(TextButton).attrs(({ theme, disabled }) => ({
   background-color: ${({ theme, disabled }) =>
     disabled ? theme.colors.gray.main : theme.colors.primary.dark};
 `;
-
-export const WrapperHorizontal = styled(Wrapper).attrs({
-  direction: "row",
-})`
-  gap: 8px;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const Label = styled(Text)<LabelProps>`
-  font-size: ${({ secondary }) => (secondary ? 14 : 12)}px;
-  color: ${({ theme, secondary }) =>
-    secondary ? theme.colors.black.main : theme.colors.gray.dark};
-  font-family: ${({ theme, secondary }) =>
-    secondary ? theme.fonts.regular : theme.fonts.bold};
-`;
-
-export const WeekButton = styled(CustomButton)<WeekButtonProps>`
-  gap: 8px;
-  padding: 16px 0px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom-width: ${({ showBorder }) => (showBorder ? 0.5 : 0)}px;
-  border-bottom-color: ${({ theme }) => theme.colors.gray.main};
-`;
-
-export const SquareIcon = styled(FontAwesome).attrs(
-  ({ theme, isSelected }) => ({
-    size: 24,
-    name: isSelected ? "check-square" : "square-o",
-    color: isSelected ? theme.colors.primary.main : theme.colors.gray.dark,
-  })
-)``;
