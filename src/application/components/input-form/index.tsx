@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { StyleProp, TextStyle } from "react-native";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Control, Controller, FieldError } from "react-hook-form";
 import {
   Label,
@@ -26,7 +26,7 @@ interface IValue {
 }
 
 export interface InputFormProps extends MaskInputProps {
-  name?: string;
+  name: string;
   label?: string;
   values?: IValue[];
   error?: FieldError;
@@ -38,6 +38,8 @@ export interface InputFormProps extends MaskInputProps {
   startIcon?: ReactElement;
   isConventionalMode?: boolean;
   labelStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
+  onPress?: () => void;
   forgotPassword?: () => void;
   onSelect?: (value: IValue) => void;
 }
@@ -54,9 +56,11 @@ export const InputForm = ({
   labelStyle,
   defaultValue,
   selectedValue,
+  containerStyle,
   editable = true,
   isConventionalMode,
   variant = "contained",
+  onPress,
   onSelect,
   forgotPassword,
   ...rest
@@ -67,7 +71,12 @@ export const InputForm = ({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <Container>
+    <Container
+      style={containerStyle}
+      onPress={() => {
+        if (onPress) onPress();
+      }}
+    >
       {isConventionalMode && label && <Label style={labelStyle}>{label}</Label>}
 
       <Content
@@ -90,7 +99,11 @@ export const InputForm = ({
             data={values}
             value={selectedValue}
             onChange={onSelect}
-            style={{ backgroundColor: "transparent" }}
+            style={{
+              paddingRight: -16,
+              paddingLeft: -16,
+              backgroundColor: "transparent",
+            }}
           />
         ) : (
           <Controller

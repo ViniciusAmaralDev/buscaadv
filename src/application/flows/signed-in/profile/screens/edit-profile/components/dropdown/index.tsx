@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { ArrowIcon, Container, HorizontalContainer } from "./styles";
 import { Text } from "../../../../../../../components/base/text";
 import { Button } from "../../../../../../../components/base/button";
@@ -6,19 +6,19 @@ import {
   InputForm,
   InputFormProps,
 } from "../../../../../../../components/input-form";
+import { Wrapper } from "../../../../../../../components/wrapper";
 
-interface DropdownProps {
+interface DropdownProps extends PropsWithChildren {
   label: string;
   open?: boolean;
-  inputs: InputFormProps[];
 }
 
-export const Dropdown = ({ label, open, inputs }: DropdownProps) => {
+export const Dropdown = ({ label, open, children }: DropdownProps) => {
   const [isOpened, setIsOpened] = useState(open ?? false);
 
   return (
     <Container>
-      <HorizontalContainer>
+      <HorizontalContainer isOpened={isOpened}>
         <Text>{label}</Text>
 
         <Button onPress={() => setIsOpened((value) => !value)}>
@@ -26,13 +26,7 @@ export const Dropdown = ({ label, open, inputs }: DropdownProps) => {
         </Button>
       </HorizontalContainer>
 
-      {isOpened && (
-        <>
-          {inputs.map((rest, index) => (
-            <InputForm key={index} {...rest} />
-          ))}
-        </>
-      )}
+      {isOpened && <Wrapper style={{ gap: 16 }}>{children}</Wrapper>}
     </Container>
   );
 };

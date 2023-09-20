@@ -15,6 +15,8 @@ export interface IUser {
   updatedAt?: string;
   services?: string[];
   phoneNumber: string;
-  openingHours?: string[];
+  openingHours?: {
+    sunday: string[];
+  };
   isAuthenticated?: boolean;
 }

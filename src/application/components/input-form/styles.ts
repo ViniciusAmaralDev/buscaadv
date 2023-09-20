@@ -3,6 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { Text } from "../base/text";
 import { TextButton } from "../text-button";
+import { Button } from "../base/button";
 
 interface LabelProps {
   isFocused?: boolean;
@@ -15,7 +16,7 @@ interface ContentProps {
   variant: InputVariant;
 }
 
-export const Container = styled.View`
+export const Container = styled(Button)`
   gap: 4px;
   flex-grow: 1;
 `;
@@ -28,7 +29,7 @@ export const Label = styled(Text)<LabelProps>`
 `;
 
 export const Content = styled.View<ContentProps>`
-  gap: 16px;
+  gap: 8px;
   min-height: 40px;
   padding: 0px 16px;
   flex-direction: row;

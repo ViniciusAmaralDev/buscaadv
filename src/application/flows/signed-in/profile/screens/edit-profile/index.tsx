@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  AddressContainer,
   Container,
   EditButton,
-  FormContainer,
   HorizontalContainer,
   ImageProfile,
-  SaveButton,
+  Label,
+  SquareIcon,
+  WeekButton,
+  WrapperHorizontal,
 } from "./styles";
 import { Header } from "../../../../../components/header";
 import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
@@ -33,6 +34,8 @@ import { useGeocode } from "../../../../../hook/useGeocode";
 import { Text } from "../../../../../components/base/text";
 import { useRequestStatus } from "../../../../../context/RequestStatusContext";
 import { Dropdown } from "./components/dropdown";
+import { WeekList } from "./components/week-list";
+import { Wrapper } from "../../../../../components/wrapper";
 
 const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
@@ -76,6 +79,9 @@ export const EditProfile = ({
       country: z.string().default(user?.address?.country),
       zipCode: z.string().default(user?.address?.zipCode),
     }),
+    openingHours: z.object({
+      sunday: z.array(z.string()).default(user.openingHours?.sunday),
+    }),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -94,6 +100,7 @@ export const EditProfile = ({
     name,
     about,
     address,
+    openingHours,
     photo: photoForm,
     phoneNumber: phone,
     office: officeForm,
@@ -112,35 +119,25 @@ export const EditProfile = ({
 
   const inputIsEditable = !isLoading && address?.zipCode?.length > 0;
 
-  const personalInformationInputs: InputFormProps[] = [
-    {
-      control,
-      name: "name",
-      label: "Nome",
-      contrast: true,
-      error: errors.name,
-      placeholder: "Nome",
-      defaultValue: name ?? user.name,
-    },
-    {
-      control,
-      contrast: true,
-      label: "Contato*",
-      name: "phoneNumber",
-      mask: Masks.BRL_PHONE,
-      error: errors.phoneNumber,
-      keyboardType: "number-pad",
-      defaultValue: user.phoneNumber,
-      placeholder: "(00) 98765-4321",
-    },
-    {
-      contrast: true,
-      values: officeList,
-      label: "Especialização*",
-      selectedValue: office ?? user?.office,
-      onSelect: ({ value }) => setValue("office", value),
-    },
-  ];
+  const [weekDays, setWeekDays] = useState([
+    { label: "Domingo", isSelected: false },
+    { label: "Segunda", isSelected: false },
+    { label: "Terça", isSelected: false },
+    { label: "Quarta", isSelected: false },
+    { label: "Quinta", isSelected: false },
+    { label: "Sexta", isSelected: false },
+    { label: "Sábado", isSelected: false },
+  ]);
+
+  const changeWeekDays = (label: string) => {
+    setWeekDays((values) =>
+      values.map((value) => ({
+        ...value,
+        isSelected:
+          value.label === label ? !value.isSelected : value.isSelected,
+      }))
+    );
+  };
 
   const handleSubmitForm = async (values: FormData) => {
     try {
@@ -207,12 +204,7 @@ export const EditProfile = ({
         <EditButton onPress={handleChangeImage} />
       </ImageProfile>
 
-      <Dropdown
-        label="Informações pessoais"
-        inputs={personalInformationInputs}
-      />
-
-      {/* <FormContainer>
+      <Dropdown label="Informações pessoais">
         <InputForm
           contrast
           name="name"
@@ -228,102 +220,140 @@ export const EditProfile = ({
           label="Contato*"
           control={control}
           name="phoneNumber"
-          placeholder="Contato"
           mask={Masks.BRL_PHONE}
           keyboardType="number-pad"
           error={errors.phoneNumber}
+          placeholder="(00) 98765-4321"
           defaultValue={user.phoneNumber}
         />
 
         {user.type === UserType.ATTORNEY && (
-          <SelectInput
+          <InputForm
             contrast
-            data={officeList}
+            name="office"
+            values={officeList}
             label="Especialização*"
-            value={office ?? user?.office}
-            onChange={({ value }) => setValue("office", value)}
+            selectedValue={office ?? user?.office}
+            onSelect={({ value }) => setValue("office", value)}
           />
         )}
+      </Dropdown>
 
-        <AddressContainer>
-          <Text>Endereço</Text>
-
-          <HorizontalContainer>
-            <InputForm
-              contrast
-              label="CEP"
-              control={control}
-              placeholder="CEP"
-              mask={Masks.ZIP_CODE}
-              editable={!isLoading}
-              name="address.zipCode"
-              keyboardType="number-pad"
-              onChange={() => setEditingZipCode(true)}
-              defaultValue={address?.zipCode ?? user?.address?.zipCode}
-            />
-
-            <InputForm
-              contrast
-              label="Bairro"
-              control={control}
-              placeholder="Bairro"
-              editable={inputIsEditable}
-              name="address.neighborhood"
-              defaultValue={
-                address?.neighborhood ?? user?.address?.neighborhood
-              }
-            />
-          </HorizontalContainer>
+      <Dropdown label="Endereço">
+        <HorizontalContainer>
+          <InputForm
+            contrast
+            label="CEP"
+            control={control}
+            placeholder="CEP"
+            mask={Masks.ZIP_CODE}
+            editable={!isLoading}
+            name="address.zipCode"
+            keyboardType="number-pad"
+            onChange={() => setEditingZipCode(true)}
+            defaultValue={address?.zipCode ?? user?.address?.zipCode}
+          />
 
           <InputForm
             contrast
+            label="Bairro"
             control={control}
-            label="Logradouro"
-            name="address.street"
-            placeholder="Logradouro"
+            placeholder="Bairro"
             editable={inputIsEditable}
-            defaultValue={address?.street ?? user?.address?.street}
+            name="address.neighborhood"
+            defaultValue={address?.neighborhood ?? user?.address?.neighborhood}
           />
+        </HorizontalContainer>
+
+        <InputForm
+          contrast
+          control={control}
+          label="Logradouro"
+          name="address.street"
+          placeholder="Logradouro"
+          editable={inputIsEditable}
+          defaultValue={address?.street ?? user?.address?.street}
+        />
+
+        <HorizontalContainer>
+          <InputForm
+            contrast
+            label="Cidade"
+            control={control}
+            name="address.city"
+            placeholder="Cidade"
+            editable={inputIsEditable}
+            defaultValue={address?.city ?? user?.address?.city}
+          />
+
+          <InputForm
+            contrast
+            label="Estado"
+            control={control}
+            name="address.state"
+            placeholder="Estado"
+            editable={inputIsEditable}
+            defaultValue={address?.state ?? user?.address?.state}
+          />
+
+          <InputForm
+            contrast
+            label="País"
+            control={control}
+            placeholder="País"
+            name="address.country"
+            editable={inputIsEditable}
+            defaultValue={address?.country ?? user?.address?.country}
+          />
+        </HorizontalContainer>
+      </Dropdown>
+
+      <Dropdown label="Horário de atendimento">
+        <WrapperHorizontal>
+          <Label>Horário</Label>
 
           <HorizontalContainer>
             <InputForm
-              contrast
-              label="Cidade"
+              label="De"
+              containerStyle={{ flexGrow: 0 }}
               control={control}
-              name="address.city"
-              placeholder="Cidade"
-              editable={inputIsEditable}
-              defaultValue={address?.city ?? user?.address?.city}
+              name="openingHours.start"
+              placeholder="00:00"
             />
 
             <InputForm
-              contrast
-              label="Estado"
+              label="Às"
+              containerStyle={{ flexGrow: 0 }}
               control={control}
-              name="address.state"
-              placeholder="Estado"
-              editable={inputIsEditable}
-              defaultValue={address?.state ?? user?.address?.state}
-            />
-
-            <InputForm
-              contrast
-              label="País"
-              control={control}
-              placeholder="País"
-              name="address.country"
-              editable={inputIsEditable}
-              defaultValue={address?.country ?? user?.address?.country}
+              name="openingHours.end"
+              placeholder="00:00"
             />
           </HorizontalContainer>
-        </AddressContainer>
+        </WrapperHorizontal>
 
+        <Wrapper>
+          <Label>Dias da semana</Label>
+          {weekDays.map((item, index) => (
+            <WeekButton
+              key={index}
+              showBorder={index < weekDays.length - 1}
+              onPress={() => changeWeekDays(item.label)}
+            >
+              <Label secondary>{item.label}</Label>
+              <SquareIcon isSelected={item.isSelected} />
+            </WeekButton>
+          ))}
+        </Wrapper>
+      </Dropdown>
+
+      {/* <FormContainer>
         {user.type === UserType.ATTORNEY && (
           <InputForm
             contrast
             multiline
             name="about"
             control={control}
+            isConventionalMode
             numberOfLines={14}
             textAlignVertical="top"
             maxLength={ABOUT_LENGTH}

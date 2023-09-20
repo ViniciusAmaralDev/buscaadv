@@ -4,13 +4,23 @@ import { EditButton as Button } from "../../../../../components/icon-buttons/Edi
 import { Image } from "../../../../../components/base/image";
 import { Wrapper } from "../../../../../components/wrapper";
 import { TextButton } from "../../../../../components/text-button";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { Button as CustomButton } from "../../../../../components/base/button";
+import { Text } from "../../../../../components/base/text";
+
+interface WeekButtonProps {
+  showBorder: boolean;
+}
+
+interface LabelProps {
+  secondary?: boolean;
+}
 
 export const Container = styled(Layout).attrs({
   scrollEnabled: true,
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
-    gap: 40,
+    gap: 0,
     paddingVertical: 16,
   },
 })``;
@@ -19,25 +29,8 @@ export const HorizontalContainer = styled(Wrapper).attrs({
   direction: "row",
 })`
   gap: 8px;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   flex-wrap: wrap;
-`;
-
-export const HorizontalWrapper = styled(Wrapper).attrs({
-  direction: "row",
-})`
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const FormContainer = styled(Wrapper)`
-  gap: 8px;
-  padding: 16px;
-`;
-
-export const AddressContainer = styled(Wrapper)`
-  gap: 8px;
-  padding: 16px 0px;
 `;
 
 export const ImageProfile = styled(Image).attrs({
@@ -80,16 +73,36 @@ export const SaveButton = styled(TextButton).attrs(({ theme, disabled }) => ({
     disabled ? theme.colors.gray.main : theme.colors.primary.dark};
 `;
 
-export const ChangeButton = styled(TextButton).attrs(({ theme }) => ({
-  textStyle: {
-    fontSize: 12,
-    fontFamily: theme.fonts.bold,
-    color: theme.colors.primary.main,
-  },
-}))``;
+export const WrapperHorizontal = styled(Wrapper).attrs({
+  direction: "row",
+})`
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-export const MapIcon = styled(FontAwesome5).attrs(({ theme }) => ({
-  size: 15,
-  name: "map-marked-alt",
-  color: theme.colors.primary.main,
-}))``;
+export const Label = styled(Text)<LabelProps>`
+  font-size: ${({ secondary }) => (secondary ? 14 : 12)}px;
+  color: ${({ theme, secondary }) =>
+    secondary ? theme.colors.black.main : theme.colors.gray.dark};
+  font-family: ${({ theme, secondary }) =>
+    secondary ? theme.fonts.regular : theme.fonts.bold};
+`;
+
+export const WeekButton = styled(CustomButton)<WeekButtonProps>`
+  gap: 8px;
+  padding: 16px 0px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-width: ${({ showBorder }) => (showBorder ? 0.5 : 0)}px;
+  border-bottom-color: ${({ theme }) => theme.colors.gray.main};
+`;
+
+export const SquareIcon = styled(FontAwesome).attrs(
+  ({ theme, isSelected }) => ({
+    size: 24,
+    name: isSelected ? "check-square" : "square-o",
+    color: isSelected ? theme.colors.primary.main : theme.colors.gray.dark,
+  })
+)``;
