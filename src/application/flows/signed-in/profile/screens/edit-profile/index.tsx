@@ -331,20 +331,56 @@ export const EditProfile = ({
           </HorizontalContainer>
         </WrapperHorizontal>
 
-        <Wrapper>
           <Label>Dias da semana</Label>
+        <Wrapper direction="row" style={{ flexWrap: "wrap", gap: 8 }}>
           {weekDays.map((item, index) => (
             <WeekButton
               key={index}
+              isSelected={item.isSelected}
               showBorder={index < weekDays.length - 1}
               onPress={() => changeWeekDays(item.label)}
             >
-              <Label secondary>{item.label}</Label>
-              <SquareIcon isSelected={item.isSelected} />
+              {item.label}
             </WeekButton>
           ))}
         </Wrapper>
       </Dropdown>
+
+      {user.type === UserType.ATTORNEY && (
+        <Dropdown label="Profissional">
+          <Wrapper style={{ gap: 4 }}>
+            <Label>
+              Escreva uma breve apresentação sobre você e/ou seus serviços.
+            </Label>
+
+            <InputForm
+              contrast
+              multiline
+              name="about"
+              control={control}
+              isConventionalMode
+              defaultValue={user.about}
+              placeholder="ex: Advogado experiente em [área] com histórico de sucesso em resolução de casos complexos e compromisso com a justiça."
+            />
+          </Wrapper>
+
+          <Wrapper style={{ gap: 4 }}>
+            <Label>
+              Informe os serviços prestados, separando-os por vírgula.
+            </Label>
+
+            <InputForm
+              contrast
+              multiline
+              name="services"
+              control={control}
+              isConventionalMode
+              defaultValue={user.services?.join(", ")}
+              placeholder="Direito civil, previdenciário, criminal, ..."
+            />
+          </Wrapper>
+        </Dropdown>
+      )}
 
       {/* <FormContainer>
         {user.type === UserType.ATTORNEY && (

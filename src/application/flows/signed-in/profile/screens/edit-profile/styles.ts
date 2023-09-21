@@ -9,7 +9,7 @@ import { Button as CustomButton } from "../../../../../components/base/button";
 import { Text } from "../../../../../components/base/text";
 
 interface WeekButtonProps {
-  showBorder: boolean;
+  isSelected: boolean;
 }
 
 interface LabelProps {
@@ -89,14 +89,21 @@ export const Label = styled(Text)<LabelProps>`
     secondary ? theme.fonts.regular : theme.fonts.bold};
 `;
 
-export const WeekButton = styled(CustomButton)<WeekButtonProps>`
-  gap: 8px;
-  padding: 16px 0px;
-  flex-direction: row;
+export const WeekButton = styled(TextButton).attrs(({ theme, isSelected }) => ({
+  textStyle: {
+    fontFamily: isSelected ? theme.fonts.bold : theme.fonts.regular,
+    color: isSelected ? theme.colors.white.main : theme.colors.gray.dark,
+  },
+}))<WeekButtonProps>`
+  padding: 4px 16px;
+  border-radius: 8px;
   align-items: center;
-  justify-content: space-between;
-  border-bottom-width: ${({ showBorder }) => (showBorder ? 0.5 : 0)}px;
-  border-bottom-color: ${({ theme }) => theme.colors.gray.main};
+  justify-content: center;
+  elevation: 2;
+  /* border-color: ${({ theme }) => theme.colors.gray.main}; */
+  /* border-width: ${({ isSelected }) => (isSelected ? 0 : 0.5)}px; */
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? theme.colors.primary.main : theme.colors.white.main};
 `;
 
 export const SquareIcon = styled(FontAwesome).attrs(
