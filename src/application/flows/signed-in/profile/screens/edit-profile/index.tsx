@@ -1,14 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  EditButton,
-  HorizontalContainer,
-  ImageProfile,
-  Label,
-  SquareIcon,
-  WeekButton,
-  WrapperHorizontal,
-} from "./styles";
+import React, { useEffect, useMemo, useState } from "react";
+import { Container, EditButton, HorizontalContainer, ImageProfile, Label, WeekButton, WrapperHorizontal } from "./styles";
 import { Header } from "../../../../../components/header";
 import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
 import { Masks } from "react-native-mask-input";
@@ -18,23 +9,24 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getImageFromLibrary } from "../../../../../utils/Image";
-import {
-  InputForm,
-  InputFormProps,
-} from "../../../../../components/input-form";
+import { InputForm, InputFormProps } from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
 import { useProfile } from "../../../../../hook/useProfile";
 import { UserType } from "../../../../../enums/UserType";
-import { SelectInput } from "../../../../../components/select-input";
 import officesJson from "../../../../../../../offices.json";
 import { useToast } from "../../../../../context/ToastContext";
 import { getCurrentPosition } from "../../../../../utils/Location";
 import { IUser } from "../../../../../models/IUser";
 import { useGeocode } from "../../../../../hook/useGeocode";
-import { Text } from "../../../../../components/base/text";
 import { useRequestStatus } from "../../../../../context/RequestStatusContext";
+import {
+  Input,
+  PersonalInformationDropdown,
+} from "./components/personal-info-dropdown";
+import { AddressDropdown } from "./components/address-dropdown";
+import { OpeningHoursDropdown } from "./components/opening-hours-dropdown";
 import { Dropdown } from "./components/dropdown";
-import { WeekList } from "./components/week-list";
+import { ProfissionalDropdown } from "./components/profissional-dropdown";
 import { Wrapper } from "../../../../../components/wrapper";
 
 const ABOUT_LENGTH = 300;
@@ -109,15 +101,130 @@ export const EditProfile = ({
   const availableLimit =
     ABOUT_LENGTH - (about?.length ?? user?.about?.length ?? 0);
 
-  const username = name || user.name;
+  const username = name ?? user.name;
   const photo = photoForm ?? user.photo;
-  const office = officeForm || user.office;
-  const phoneNumber = phone || user.phoneNumber;
+  const office = officeForm ?? user.office;
+  const phoneNumber = phone ?? user.phoneNumber;
 
   const saveButtonIsDisabled =
     !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
 
   const inputIsEditable = !isLoading && address?.zipCode?.length > 0;
+
+  const personalInformationsInput = useMemo(() => {
+    return [
+      {
+        hidden: false,
+        contrast: true,
+        name: "name",
+        label: "Nome*",
+        control: control,
+        placeholder: "Nome",
+        error: errors.name,
+        defaultValue: name ?? user.name,
+      },
+      {
+        hidden: false,
+        contrast: true,
+        label: "Contato*",
+        control: control,
+        name: "phoneNumber",
+        mask: Masks.BRL_PHONE,
+        keyboardType: "number-pad",
+        error: errors.phoneNumber,
+        placeholder: "(00) 98765-4321",
+        defaultValue: user.phoneNumber,
+      },
+      {
+        contrast: true,
+        name: "office",
+        values: officeList,
+        label: "Especialização*",
+        selectedValue: office ?? user?.office,
+        hidden: user.type !== UserType.ATTORNEY,
+        onSelect: ({ value }) => setValue("office", value),
+      },
+    ];
+  }, [user]);
+
+  const addressInputs = useMemo(() => {
+    return [
+      {
+        contrast: true,
+        label: "CEP",
+        control: control,
+        placeholder: "CEP",
+        mask: Masks.ZIP_CODE,
+        editable: !isLoading,
+        name: "address.zipCode",
+        keyboardType: "number-pad",
+        onChange: () => setEditingZipCode(true),
+        defaultValue: address?.zipCode ?? user?.address?.zipCode,
+      },
+      {
+        contrast: true,
+        label: "Bairro",
+        control: control,
+        placeholder: "Bairro",
+        editable: inputIsEditable,
+        name: "address.neighborhood",
+        defaultValue: address?.neighborhood ?? user?.address?.neighborhood,
+      },
+      {
+        contrast: true,
+        control: control,
+        label: "Logradouro",
+        name: "address.street",
+        placeholder: "Logradouro",
+        editable: inputIsEditable,
+        defaultValue: address?.street ?? user?.address?.street,
+      },
+      {
+        contrast: true,
+        label: "Cidade",
+        control: control,
+        name: "address.city",
+        placeholder: "Cidade",
+        editable: inputIsEditable,
+        defaultValue: address?.city ?? user?.address?.city,
+      },
+      {
+        contrast: true,
+        label: "Estado",
+        control: control,
+        name: "address.state",
+        placeholder: "Estado",
+        editable: inputIsEditable,
+        defaultValue: address?.state ?? user?.address?.state,
+      },
+      {
+        contrast: true,
+        label: "País",
+        control: control,
+        placeholder: "País",
+        name: "address.country",
+        editable: inputIsEditable,
+        defaultValue: address?.country ?? user?.address?.country,
+      },
+    ];
+  }, [user]);
+
+  const openingHourInputs = useMemo(() => {
+    return [
+      {
+        control,
+        label: "De",
+        value: "08:00",
+        name: "openingHours.start",
+      },
+      {
+        control,
+        label: "Às",
+        value: "18:00",
+        name: "openingHours.end",
+      },
+    ];
+  }, [user]);
 
   const [weekDays, setWeekDays] = useState([
     { label: "Domingo", isSelected: false },
@@ -204,40 +311,17 @@ export const EditProfile = ({
         <EditButton onPress={handleChangeImage} />
       </ImageProfile>
 
-      <Dropdown label="Informações pessoais">
-        <InputForm
-          contrast
-          name="name"
-          label="Nome*"
-          control={control}
-          placeholder="Nome"
-          error={errors.name}
-          defaultValue={name ?? user.name}
-        />
+      <PersonalInformationDropdown
+        inputs={personalInformationsInput as Input[]}
+      />
 
-        <InputForm
-          contrast
-          label="Contato*"
-          control={control}
-          name="phoneNumber"
-          mask={Masks.BRL_PHONE}
-          keyboardType="number-pad"
-          error={errors.phoneNumber}
-          placeholder="(00) 98765-4321"
-          defaultValue={user.phoneNumber}
-        />
+      <AddressDropdown inputs={addressInputs as InputFormProps[]} />
 
-        {user.type === UserType.ATTORNEY && (
-          <InputForm
-            contrast
-            name="office"
-            values={officeList}
-            label="Especialização*"
-            selectedValue={office ?? user?.office}
-            onSelect={({ value }) => setValue("office", value)}
-          />
-        )}
-      </Dropdown>
+      <OpeningHoursDropdown
+        weekDays={weekDays}
+        inputs={openingHourInputs}
+        changeWeekDays={changeWeekDays}
+      />
 
       <Dropdown label="Endereço">
         <HorizontalContainer>
