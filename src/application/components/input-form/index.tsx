@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { StyleProp, TextStyle, ViewStyle } from "react-native";
+import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
 import { Control, Controller, FieldError } from "react-hook-form";
 import {
   Label,
@@ -15,6 +15,7 @@ import { Input } from "../base/input";
 import { Button } from "../base/button";
 import { MaskInputProps } from "react-native-mask-input";
 import { SelectInput } from "../select-input";
+import { Mask, masks } from "../../utils/Masks";
 
 type ReactElement = JSX.Element | ReactNode;
 
@@ -25,7 +26,8 @@ interface IValue {
   value: string;
 }
 
-export interface InputFormProps extends MaskInputProps {
+export interface InputFormProps extends TextInputProps {
+  mask?: Mask;
   name: string;
   label?: string;
   values?: IValue[];
@@ -45,6 +47,7 @@ export interface InputFormProps extends MaskInputProps {
 }
 
 export const InputForm = ({
+  mask,
   name,
   error,
   label,
@@ -69,6 +72,12 @@ export const InputForm = ({
   const [showPassword, setShowPassword] = useState(isPassword);
 
   const [isFocused, setIsFocused] = useState(false);
+
+  const handleFormat = (value: string, callback: (props: any) => any) => {
+    console.log(masks[mask](value));
+    if (mask) return callback(masks[mask](value));
+    else return callback(value);
+  };
 
   return (
     <Container
@@ -112,11 +121,11 @@ export const InputForm = ({
             render={({ field: { value, onChange } }) => (
               <Input
                 editable={editable}
-                onChangeText={onChange}
                 value={value ?? defaultValue}
                 secureTextEntry={showPassword}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                onChangeText={(value) => handleFormat(value, onChange)}
                 {...rest}
               />
             )}

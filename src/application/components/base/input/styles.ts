@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import MaskInput from "react-native-mask-input";
 
-export const TextInput = styled(MaskInput).attrs(({ theme }) => ({
+export const TextInput = styled.TextInput.attrs(({ theme }) => ({
   placeholderTextColor: theme.colors.gray.main,
 }))`
   flex-grow: 1;

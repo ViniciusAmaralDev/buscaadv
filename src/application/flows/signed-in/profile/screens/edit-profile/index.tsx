@@ -1,5 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Container, EditButton, HorizontalContainer, ImageProfile, Label, WeekButton, WrapperHorizontal } from "./styles";
+import {
+  Container,
+  EditButton,
+  HorizontalContainer,
+  ImageProfile,
+  Label,
+  WeekButton,
+  WrapperHorizontal,
+} from "./styles";
 import { Header } from "../../../../../components/header";
 import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
 import { Masks } from "react-native-mask-input";
@@ -9,7 +17,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getImageFromLibrary } from "../../../../../utils/Image";
-import { InputForm, InputFormProps } from "../../../../../components/input-form";
+import {
+  InputForm,
+  InputFormProps,
+} from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
 import { useProfile } from "../../../../../hook/useProfile";
 import { UserType } from "../../../../../enums/UserType";
@@ -72,7 +83,8 @@ export const EditProfile = ({
       zipCode: z.string().default(user?.address?.zipCode),
     }),
     openingHours: z.object({
-      sunday: z.array(z.string()).default(user.openingHours?.sunday),
+      start: z.string(),
+      end: z.string(),
     }),
   });
 
@@ -129,7 +141,7 @@ export const EditProfile = ({
         label: "Contato*",
         control: control,
         name: "phoneNumber",
-        mask: Masks.BRL_PHONE,
+        mask: 'PHONE',
         keyboardType: "number-pad",
         error: errors.phoneNumber,
         placeholder: "(00) 98765-4321",
@@ -141,10 +153,10 @@ export const EditProfile = ({
         values: officeList,
         label: "Especialização*",
         selectedValue: office ?? user?.office,
-        hidden: user.type !== UserType.ATTORNEY,
+        // hidden: user.type !== UserType.ATTORNEY,
         onSelect: ({ value }) => setValue("office", value),
       },
-    ];
+    ] as InputFormProps[];
   }, [user]);
 
   const addressInputs = useMemo(() => {
@@ -315,13 +327,13 @@ export const EditProfile = ({
         inputs={personalInformationsInput as Input[]}
       />
 
-      <AddressDropdown inputs={addressInputs as InputFormProps[]} />
+      {/* <AddressDropdown inputs={addressInputs as InputFormProps[]} /> */}
 
-      <OpeningHoursDropdown
+      {/* <OpeningHoursDropdown
         weekDays={weekDays}
         inputs={openingHourInputs}
         changeWeekDays={changeWeekDays}
-      />
+      /> */}
 
       <Dropdown label="Endereço">
         <HorizontalContainer>
@@ -401,12 +413,14 @@ export const EditProfile = ({
               label="De"
               containerStyle={{ flexGrow: 0 }}
               control={control}
+              mask={Masks.TIME}
               name="openingHours.start"
               placeholder="00:00"
             />
 
             <InputForm
               label="Às"
+              mask={Masks.TIME}
               containerStyle={{ flexGrow: 0 }}
               control={control}
               name="openingHours.end"
@@ -415,7 +429,7 @@ export const EditProfile = ({
           </HorizontalContainer>
         </WrapperHorizontal>
 
-          <Label>Dias da semana</Label>
+        <Label>Dias da semana</Label>
         <Wrapper direction="row" style={{ flexWrap: "wrap", gap: 8 }}>
           {weekDays.map((item, index) => (
             <WeekButton
