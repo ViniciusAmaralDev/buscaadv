@@ -11,6 +11,7 @@ interface AboutTabProps {
 }
 
 export const AboutTab = ({ user }: AboutTabProps) => {
+  console.log(JSON.stringify(user, null, 2));
   const avaliations: IAvaliation[] = [
     {
       author: "a8fa18a4-fa61-4cae-8eec-c350913df99d",
@@ -30,20 +31,16 @@ export const AboutTab = ({ user }: AboutTabProps) => {
   return (
     <Container>
       <Content>
-        <Label>
-          "Escritório de advocacia especializado em contratos, direito civil,
-          pensão alimentícia, previdenciário, criminal e imobiliário. Também
-          prestamos serviços de acessoria jurídica a empresas".
-        </Label>
+        <Label>{user.about}</Label>
       </Content>
 
-      <Divider />
+      {/* <Divider />
 
       <AvaliationList avaliations={avaliations} />
 
       <Divider />
 
-      <Avaliate user={user} />
+      <Avaliate user={user} /> */}
     </Container>
   );
 };

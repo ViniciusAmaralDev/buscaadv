@@ -18,12 +18,12 @@ export const Dropdown = ({ label, open, children }: DropdownProps) => {
 
   return (
     <Wrapper>
-      <HorizontalContainer isOpened={isOpened}>
+      <HorizontalContainer
+        isOpened={isOpened}
+        onPress={() => setIsOpened((value) => !value)}
+      >
         <Text>{label}</Text>
-
-        <Button onPress={() => setIsOpened((value) => !value)}>
-          <ArrowIcon isOpened={isOpened} />
-        </Button>
+        <ArrowIcon isOpened={isOpened} />
       </HorizontalContainer>
 
       {isOpened && <Wrapper style={{ gap: 16 }}>{children}</Wrapper>}

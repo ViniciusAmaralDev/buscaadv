@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   EditButton,
@@ -7,22 +7,16 @@ import {
   ImageProfile,
   Label,
   SaveButton,
-  WeekButton,
-  WrapperHorizontal,
 } from "./styles";
 import { Header } from "../../../../../components/header";
 import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
-import { Masks } from "react-native-mask-input";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getImageFromLibrary } from "../../../../../utils/Image";
-import {
-  InputForm,
-  InputFormProps,
-} from "../../../../../components/input-form";
+import { InputForm } from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
 import { useProfile } from "../../../../../hook/useProfile";
 import { EUserType } from "../../../../../enums/EUserType";
@@ -32,16 +26,8 @@ import { getCurrentPosition } from "../../../../../utils/Location";
 import { IUser } from "../../../../../models/IUser";
 import { useGeocode } from "../../../../../hook/useGeocode";
 import { useRequestStatus } from "../../../../../context/RequestStatusContext";
-import {
-  Input,
-  PersonalInformationDropdown,
-} from "./components/personal-info-dropdown";
-import { AddressDropdown } from "./components/address-dropdown";
-import { OpeningHoursDropdown } from "./components/opening-hours-dropdown";
 import { Dropdown } from "./components/dropdown";
-import { ProfissionalDropdown } from "./components/profissional-dropdown";
 import { Wrapper } from "../../../../../components/wrapper";
-import { weekDayNames } from "./constants/weekDayNames";
 
 const requiredMessage = { message: "campo obrigatório" };
 
@@ -62,17 +48,6 @@ export const EditProfile = ({
     value: item,
   }));
 
-  const [weekDays, setWeekDays] = useState(
-    weekDayNames.map((label) => ({
-      label,
-      isSelected: user?.openingHours?.days?.includes(label),
-    }))
-  );
-
-  const selectedWeekDays = weekDays
-    .filter((item) => item.isSelected)
-    .map((item) => item.label);
-
   const schema = z.object({
     photo: z
       .string()
@@ -89,21 +64,19 @@ export const EditProfile = ({
       .string()
       .optional()
       .default(user?.office ?? undefined),
-    address: z.object({
-      latitude: z.number().default(user?.address?.latitude),
-      longitude: z.number().default(user?.address?.longitude),
-      street: z.string().default(user?.address?.street),
-      neighborhood: z.string().default(user?.address?.neighborhood),
-      city: z.string().default(user?.address?.city),
-      state: z.string().default(user?.address?.state),
-      country: z.string().default(user?.address?.country),
-      zipCode: z.string().default(user?.address?.zipCode),
-    }),
-    openingHours: z.object({
-      end: z.string().default(user?.openingHours?.end),
-      start: z.string().default(user?.openingHours?.start),
-      days: z.array(z.string()).default(selectedWeekDays),
-    }),
+    address: z
+      .object({
+        latitude: z.number().default(user?.address?.latitude),
+        longitude: z.number().default(user?.address?.longitude),
+        street: z.string().default(user?.address?.street),
+        neighborhood: z.string().default(user?.address?.neighborhood),
+        city: z.string().default(user?.address?.city),
+        state: z.string().default(user?.address?.state),
+        country: z.string().default(user?.address?.country),
+        zipCode: z.string().default(user?.address?.zipCode),
+      })
+      .default(user?.address),
+    openingHours: z.string().default(user?.openingHours),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -138,16 +111,6 @@ export const EditProfile = ({
     (user.type === EUserType.ATTORNEY && (!office || !openingHours));
 
   const inputIsEditable = !isLoading && form.address?.zipCode?.length > 0;
-
-  const changeWeekDays = (label: string) => {
-    setWeekDays((values) =>
-      values.map((value) => ({
-        ...value,
-        isSelected:
-          value.label === label ? !value.isSelected : value.isSelected,
-      }))
-    );
-  };
 
   const handleSubmitForm = async (values: FormData) => {
     try {
@@ -325,49 +288,14 @@ export const EditProfile = ({
           </Dropdown>
 
           <Dropdown label="Horário de atendimento">
-            <WrapperHorizontal>
-              <Label>Horário</Label>
-
-              <HorizontalContainer>
-                <InputForm
-                  contrast
-                  label="De"
-                  mask="HOURS"
-                  control={control}
-                  placeholder="00:00"
-                  name="openingHours.start"
-                  keyboardType="number-pad"
-                  containerStyle={{ flexGrow: 0 }}
-                  defaultValue={openingHours.start}
-                />
-
-                <InputForm
-                  contrast
-                  label="Às"
-                  mask="HOURS"
-                  control={control}
-                  placeholder="00:00"
-                  name="openingHours.end"
-                  keyboardType="number-pad"
-                  defaultValue={openingHours.end}
-                  containerStyle={{ flexGrow: 0 }}
-                />
-              </HorizontalContainer>
-            </WrapperHorizontal>
-
-            <Label>Dias da semana</Label>
-            <Wrapper direction="row" style={{ flexWrap: "wrap", gap: 8 }}>
-              {weekDays.map((item, index) => (
-                <WeekButton
-                  key={index}
-                  isSelected={item.isSelected}
-                  showBorder={index < weekDays.length - 1}
-                  onPress={() => changeWeekDays(item.label)}
-                >
-                  {item.label}
-                </WeekButton>
-              ))}
-            </Wrapper>
+            <InputForm
+              contrast
+              control={control}
+              name="openingHours"
+              defaultValue={openingHours}
+              containerStyle={{ flexGrow: 0 }}
+              placeholder="ex: Segunda à Sexta - 08:00 às 18:00"
+            />
           </Dropdown>
 
           {user.type === EUserType.ATTORNEY && (
@@ -382,10 +310,9 @@ export const EditProfile = ({
                   multiline
                   name="about"
                   control={control}
-                  isConventionalMode
                   textAlignVertical="top"
                   defaultValue={user.about}
-                  placeholder="ex: Advogado experiente em [área] com histórico de sucesso em resolução de casos complexos e compromisso com a justiça."
+                  placeholder="ex: Advogado experiente em [área] com ..."
                 />
               </Wrapper>
 
@@ -399,7 +326,6 @@ export const EditProfile = ({
                   multiline
                   name="services"
                   control={control}
-                  isConventionalMode
                   defaultValue={user.services?.join(", ")}
                   placeholder="Direito civil, previdenciário, criminal, ..."
                 />

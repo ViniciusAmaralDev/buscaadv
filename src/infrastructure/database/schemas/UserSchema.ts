@@ -15,16 +15,6 @@ export const addressSchema: ObjectSchema = {
   },
 };
 
-export const openingHoursSchema: ObjectSchema = {
-  name: "OpeningHours",
-  embedded: true,
-  properties: {
-    end: "string",
-    start: "string",
-    days: { type: "list", objectType: "string" },
-  },
-};
-
 export const userSchema: ObjectSchema = {
   name: "User",
   primaryKey: "id",
@@ -34,13 +24,14 @@ export const userSchema: ObjectSchema = {
     name: "string",
     email: "string",
     photo: "string?",
+    about: "string?",
     phone: "string?",
     office: "string?",
     password: "string",
     updatedAt: "string",
     createdAt: "string",
     address: "Address?",
-    openingHours: "OpeningHours?",
+    openingHours: "string?",
     isAuthenticated: { type: "bool", default: false },
     services: { type: "list", objectType: "string", default: [] },
   },

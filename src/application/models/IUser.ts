@@ -1,6 +1,5 @@
 import { IAddress } from "./IAddress";
 import { EUserType } from "../enums/EUserType";
-import { IOpeningHours } from "./IOpeningHours";
 
 export interface IUser {
   id?: string;
@@ -17,6 +16,6 @@ export interface IUser {
   createdAt?: string;
   updatedAt?: string;
   services?: string[];
+  openingHours?: string;
   isAuthenticated?: boolean;
-  openingHours?: IOpeningHours;
 }
