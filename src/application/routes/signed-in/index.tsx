@@ -18,12 +18,7 @@ const Stack = createStackNavigator<SignedInParamList>();
 export default function SignedInNavigator() {
   const { user } = useAuth();
 
-  const initialRouteName =
-    !user?.photo ||
-    !user.phoneNumber ||
-    (user.type === EUserType.ATTORNEY && !user.office)
-      ? "EditProfile"
-      : "Home";
+  const initialRouteName = !user?.photo ? "EditProfile" : "Home";
 
   return (
     <Stack.Navigator

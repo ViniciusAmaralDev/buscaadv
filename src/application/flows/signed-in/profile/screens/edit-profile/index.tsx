@@ -100,8 +100,8 @@ export const EditProfile = ({
       zipCode: z.string().default(user?.address?.zipCode),
     }),
     openingHours: z.object({
-      end: z.string(),
-      start: z.string(),
+      end: z.string().default(user?.openingHours?.end),
+      start: z.string().default(user?.openingHours?.start),
       days: z.array(z.string()).default(selectedWeekDays),
     }),
   });
@@ -124,8 +124,12 @@ export const EditProfile = ({
   const photo = form.photo ?? user.photo;
   const phone = form.phone ?? user.phone;
   const office = form.office ?? user.office;
-  const address = form.address ?? user.address;
-  const openingHours = form.openingHours ?? user.openingHours;
+  const address =
+    Object.keys(form?.address ?? {}).length > 0 ? form.address : user.address;
+  const openingHours =
+    Object.keys(form?.openingHours ?? {}).length > 0
+      ? form?.openingHours
+      : user?.openingHours;
 
   const saveButtonIsDisabled =
     !name ||
@@ -205,7 +209,7 @@ export const EditProfile = ({
     getAddressAndConvertOnCoordinates();
   }, [form.address?.zipCode]);
 
-  console.log(JSON.stringify(errors, null, 2));
+  console.log("errors =>", JSON.stringify(errors, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
@@ -334,6 +338,7 @@ export const EditProfile = ({
                   name="openingHours.start"
                   keyboardType="number-pad"
                   containerStyle={{ flexGrow: 0 }}
+                  defaultValue={openingHours.start}
                 />
 
                 <InputForm
@@ -344,6 +349,7 @@ export const EditProfile = ({
                   placeholder="00:00"
                   name="openingHours.end"
                   keyboardType="number-pad"
+                  defaultValue={openingHours.end}
                   containerStyle={{ flexGrow: 0 }}
                 />
               </HorizontalContainer>
