@@ -42,5 +42,6 @@ export const userSchema: ObjectSchema = {
     address: "Address?",
     openingHours: "OpeningHours?",
     isAuthenticated: { type: "bool", default: false },
+    services: { type: "list", objectType: "string", default: [] },
   },
 };

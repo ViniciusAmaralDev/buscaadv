@@ -53,7 +53,11 @@ export const ProfileDetails = ({
 
       <Tabs
         tabs={[
-          { name: "service", label: "Serviços", children: <ServiceTab /> },
+          {
+            name: "service",
+            label: "Serviços",
+            children: <ServiceTab user={user} />,
+          },
           {
             name: "photo",
             label: "Fotos",
