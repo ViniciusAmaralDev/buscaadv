@@ -62,8 +62,6 @@ export const EditProfile = ({
     value: item,
   }));
 
-  console.log(JSON.stringify(user, null, 2));
-
   const [weekDays, setWeekDays] = useState(
     weekDayNames.map((label) => ({
       label,
