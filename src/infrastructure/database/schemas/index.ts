@@ -1,3 +1,3 @@
-import { addressSchema, userSchema } from "./UserSchema";
+import { addressSchema, openingHoursSchema, userSchema } from "./UserSchema";
 
-export const schema = [userSchema, addressSchema];
+export const schema = [userSchema, addressSchema, openingHoursSchema];

@@ -6,10 +6,6 @@ interface ContainerProps {
   isOpened: boolean;
 }
 
-export const Container = styled(Wrapper)`
-  padding: 0px 16px;
-`;
-
 export const HorizontalContainer = styled(Wrapper).attrs({
   direction: "row",
 })<ContainerProps>`

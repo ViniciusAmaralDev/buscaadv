@@ -20,7 +20,7 @@ import { SelectInput } from "../../../components/select-input";
 import { useTheme } from "styled-components";
 import { useAuth } from "../../../hook/useAuth";
 import { IUser } from "../../../models/IUser";
-import { UserType } from "../../../enums/UserType";
+import { EUserType } from "../../../enums/EUserType";
 
 const requiredField = { message: "campo obrigatório" };
 
@@ -28,18 +28,18 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
   const theme = useTheme();
   const { signUp } = useAuth();
 
-  const [userType, setUserType] = useState<string>();
+  const [UserType, setUserType] = useState<string>();
 
   const types = [
-    { label: "Sou um advogado", value: UserType.ATTORNEY },
-    { label: "Estou em busca de um advogado", value: UserType.DEFAULT },
+    { label: "Sou um advogado", value: EUserType.ATTORNEY },
+    { label: "Estou em busca de um advogado", value: EUserType.DEFAULT },
   ];
 
   const schema = z.object({
     type: z
       .string()
       .nonempty({ message: "Selecione uma das opções sobre você" })
-      .default(userType),
+      .default(UserType),
     name: z.string().nonempty(requiredField),
     email: z.string().email("E-mail inválido").nonempty(requiredField),
     password: z
@@ -74,8 +74,9 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
 
       <FormContainer>
         <SelectInput
+          showBorder
           data={types}
-          value={userType}
+          value={UserType}
           label="Sobre você"
           onChange={({ value }) => setUserType(value)}
         />

@@ -10,7 +10,7 @@ import { Profile } from "../../flows/signed-in/profile/screens";
 import { MyAccount } from "../../flows/signed-in/profile/screens/my-account";
 import { EditProfile } from "../../flows/signed-in/profile/screens/edit-profile";
 import { EditAccount } from "../../flows/signed-in/profile/screens/edit-account";
-import { UserType } from "../../enums/UserType";
+import { EUserType } from "../../enums/EUserType";
 import { ProfileDetails } from "../../flows/signed-in/profile/screens/profile-details2";
 
 const Stack = createStackNavigator<SignedInParamList>();
@@ -21,7 +21,7 @@ export default function SignedInNavigator() {
   const initialRouteName =
     !user?.photo ||
     !user.phoneNumber ||
-    (user.type === UserType.ATTORNEY && !user.office)
+    (user.type === EUserType.ATTORNEY && !user.office)
       ? "EditProfile"
       : "Home";
 

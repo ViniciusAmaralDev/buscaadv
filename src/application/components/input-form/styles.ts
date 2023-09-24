@@ -14,6 +14,7 @@ interface ContentProps {
   editable: boolean;
   isFocused: boolean;
   variant: InputVariant;
+  paddingVerticalEnabled: boolean;
 }
 
 export const Container = styled(Button)`
@@ -31,7 +32,8 @@ export const Label = styled(Text)<LabelProps>`
 export const Content = styled.View<ContentProps>`
   gap: 8px;
   min-height: 40px;
-  padding: 0px 16px;
+  padding: ${({ paddingVerticalEnabled }) => (paddingVerticalEnabled ? 10 : 0)}px
+    16px;
   flex-direction: row;
   align-items: center;
   border-radius: 8px;

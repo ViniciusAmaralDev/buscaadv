@@ -55,6 +55,7 @@ export const InputForm = ({
   control,
   endIcon,
   contrast,
+  multiline,
   startIcon,
   labelStyle,
   defaultValue,
@@ -74,7 +75,6 @@ export const InputForm = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFormat = (value: string, callback: (props: any) => any) => {
-    console.log(masks[mask](value));
     if (mask) return callback(masks[mask](value));
     else return callback(value);
   };
@@ -93,6 +93,7 @@ export const InputForm = ({
         editable={editable}
         contrast={contrast}
         isFocused={isFocused}
+        paddingVerticalEnabled={multiline}
       >
         {startIcon && <>{startIcon}</>}
 
@@ -121,6 +122,7 @@ export const InputForm = ({
             render={({ field: { value, onChange } }) => (
               <Input
                 editable={editable}
+                multiline={multiline}
                 value={value ?? defaultValue}
                 secureTextEntry={showPassword}
                 onFocus={() => setIsFocused(true)}

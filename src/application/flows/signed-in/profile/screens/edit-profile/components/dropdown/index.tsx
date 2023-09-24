@@ -1,5 +1,5 @@
+import { ArrowIcon, HorizontalContainer } from "./styles";
 import React, { PropsWithChildren, useState } from "react";
-import { ArrowIcon, Container, HorizontalContainer } from "./styles";
 import { Text } from "../../../../../../../components/base/text";
 import { Button } from "../../../../../../../components/base/button";
 import {
@@ -17,7 +17,7 @@ export const Dropdown = ({ label, open, children }: DropdownProps) => {
   const [isOpened, setIsOpened] = useState(open ?? false);
 
   return (
-    <Container>
+    <Wrapper>
       <HorizontalContainer isOpened={isOpened}>
         <Text>{label}</Text>
 
@@ -27,6 +27,6 @@ export const Dropdown = ({ label, open, children }: DropdownProps) => {
       </HorizontalContainer>
 
       {isOpened && <Wrapper style={{ gap: 16 }}>{children}</Wrapper>}
-    </Container>
+    </Wrapper>
   );
 };

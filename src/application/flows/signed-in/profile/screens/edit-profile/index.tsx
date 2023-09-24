@@ -2,9 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Container,
   EditButton,
+  FormContainer,
   HorizontalContainer,
   ImageProfile,
   Label,
+  SaveButton,
   WeekButton,
   WrapperHorizontal,
 } from "./styles";
@@ -23,7 +25,7 @@ import {
 } from "../../../../../components/input-form";
 import { useAuth } from "../../../../../hook/useAuth";
 import { useProfile } from "../../../../../hook/useProfile";
-import { UserType } from "../../../../../enums/UserType";
+import { EUserType } from "../../../../../enums/EUserType";
 import officesJson from "../../../../../../../offices.json";
 import { useToast } from "../../../../../context/ToastContext";
 import { getCurrentPosition } from "../../../../../utils/Location";
@@ -39,8 +41,8 @@ import { OpeningHoursDropdown } from "./components/opening-hours-dropdown";
 import { Dropdown } from "./components/dropdown";
 import { ProfissionalDropdown } from "./components/profissional-dropdown";
 import { Wrapper } from "../../../../../components/wrapper";
+import { weekDayNames } from "./constants/weekDayNames";
 
-const ABOUT_LENGTH = 300;
 const requiredMessage = { message: "campo obrigatório" };
 
 export const EditProfile = ({
@@ -60,14 +62,31 @@ export const EditProfile = ({
     value: item,
   }));
 
+  console.log(JSON.stringify(user, null, 2));
+
+  const [weekDays, setWeekDays] = useState(
+    weekDayNames.map((label) => ({
+      label,
+      isSelected: user?.openingHours?.days?.includes(label),
+    }))
+  );
+
+  const selectedWeekDays = weekDays
+    .filter((item) => item.isSelected)
+    .map((item) => item.label);
+
   const schema = z.object({
-    photo: z.string().optional().nullable().default(user?.photo),
-    name: z.string().nonempty(requiredMessage).default(user.name),
-    phoneNumber: z
+    photo: z
       .string()
-      .nonempty(requiredMessage)
-      .default(user?.phoneNumber),
+      .optional()
+      .default(user?.photo ?? undefined),
+    name: z.string().nonempty(requiredMessage).default(user.name),
+    phone: z.string().nonempty(requiredMessage).default(user?.phone),
     about: z.string().optional().default(user?.about),
+    services: z
+      .string()
+      .default(user?.services?.join(", "))
+      .transform((value) => value.split(",").map((item) => item.trim())),
     office: z.z
       .string()
       .optional()
@@ -83,8 +102,9 @@ export const EditProfile = ({
       zipCode: z.string().default(user?.address?.zipCode),
     }),
     openingHours: z.object({
-      start: z.string(),
       end: z.string(),
+      start: z.string(),
+      days: z.array(z.string()).default(selectedWeekDays),
     }),
   });
 
@@ -100,153 +120,22 @@ export const EditProfile = ({
     resolver: zodResolver(schema),
   });
 
-  const {
-    name,
-    about,
-    address,
-    openingHours,
-    photo: photoForm,
-    phoneNumber: phone,
-    office: officeForm,
-  } = watch();
+  const form = watch();
 
-  const availableLimit =
-    ABOUT_LENGTH - (about?.length ?? user?.about?.length ?? 0);
-
-  const username = name ?? user.name;
-  const photo = photoForm ?? user.photo;
-  const office = officeForm ?? user.office;
-  const phoneNumber = phone ?? user.phoneNumber;
+  const name = form.name ?? user.name;
+  const photo = form.photo ?? user.photo;
+  const phone = form.phone ?? user.phone;
+  const office = form.office ?? user.office;
+  const address = form.address ?? user.address;
+  const openingHours = form.openingHours ?? user.openingHours;
 
   const saveButtonIsDisabled =
-    !username || !phoneNumber || (user.type === UserType.ATTORNEY && !office);
+    !name ||
+    !phone ||
+    !address ||
+    (user.type === EUserType.ATTORNEY && (!office || !openingHours));
 
-  const inputIsEditable = !isLoading && address?.zipCode?.length > 0;
-
-  const personalInformationsInput = useMemo(() => {
-    return [
-      {
-        hidden: false,
-        contrast: true,
-        name: "name",
-        label: "Nome*",
-        control: control,
-        placeholder: "Nome",
-        error: errors.name,
-        defaultValue: name ?? user.name,
-      },
-      {
-        hidden: false,
-        contrast: true,
-        label: "Contato*",
-        control: control,
-        name: "phoneNumber",
-        mask: 'PHONE',
-        keyboardType: "number-pad",
-        error: errors.phoneNumber,
-        placeholder: "(00) 98765-4321",
-        defaultValue: user.phoneNumber,
-      },
-      {
-        contrast: true,
-        name: "office",
-        values: officeList,
-        label: "Especialização*",
-        selectedValue: office ?? user?.office,
-        // hidden: user.type !== UserType.ATTORNEY,
-        onSelect: ({ value }) => setValue("office", value),
-      },
-    ] as InputFormProps[];
-  }, [user]);
-
-  const addressInputs = useMemo(() => {
-    return [
-      {
-        contrast: true,
-        label: "CEP",
-        control: control,
-        placeholder: "CEP",
-        mask: Masks.ZIP_CODE,
-        editable: !isLoading,
-        name: "address.zipCode",
-        keyboardType: "number-pad",
-        onChange: () => setEditingZipCode(true),
-        defaultValue: address?.zipCode ?? user?.address?.zipCode,
-      },
-      {
-        contrast: true,
-        label: "Bairro",
-        control: control,
-        placeholder: "Bairro",
-        editable: inputIsEditable,
-        name: "address.neighborhood",
-        defaultValue: address?.neighborhood ?? user?.address?.neighborhood,
-      },
-      {
-        contrast: true,
-        control: control,
-        label: "Logradouro",
-        name: "address.street",
-        placeholder: "Logradouro",
-        editable: inputIsEditable,
-        defaultValue: address?.street ?? user?.address?.street,
-      },
-      {
-        contrast: true,
-        label: "Cidade",
-        control: control,
-        name: "address.city",
-        placeholder: "Cidade",
-        editable: inputIsEditable,
-        defaultValue: address?.city ?? user?.address?.city,
-      },
-      {
-        contrast: true,
-        label: "Estado",
-        control: control,
-        name: "address.state",
-        placeholder: "Estado",
-        editable: inputIsEditable,
-        defaultValue: address?.state ?? user?.address?.state,
-      },
-      {
-        contrast: true,
-        label: "País",
-        control: control,
-        placeholder: "País",
-        name: "address.country",
-        editable: inputIsEditable,
-        defaultValue: address?.country ?? user?.address?.country,
-      },
-    ];
-  }, [user]);
-
-  const openingHourInputs = useMemo(() => {
-    return [
-      {
-        control,
-        label: "De",
-        value: "08:00",
-        name: "openingHours.start",
-      },
-      {
-        control,
-        label: "Às",
-        value: "18:00",
-        name: "openingHours.end",
-      },
-    ];
-  }, [user]);
-
-  const [weekDays, setWeekDays] = useState([
-    { label: "Domingo", isSelected: false },
-    { label: "Segunda", isSelected: false },
-    { label: "Terça", isSelected: false },
-    { label: "Quarta", isSelected: false },
-    { label: "Quinta", isSelected: false },
-    { label: "Sexta", isSelected: false },
-    { label: "Sábado", isSelected: false },
-  ]);
+  const inputIsEditable = !isLoading && form.address?.zipCode?.length > 0;
 
   const changeWeekDays = (label: string) => {
     setWeekDays((values) =>
@@ -260,7 +149,8 @@ export const EditProfile = ({
 
   const handleSubmitForm = async (values: FormData) => {
     try {
-      await updateUser(user.id, values as IUser);
+      // console.log(JSON.stringify(values, null, 2));
+      await updateUser(user.id, values as any as IUser);
       goBack();
     } catch (error) {}
   };
@@ -281,8 +171,8 @@ export const EditProfile = ({
   const handleGoBack = () => {
     if (
       !user.photo ||
-      !user.phoneNumber ||
-      (user.type === UserType.ATTORNEY && !user.office)
+      !user.phone ||
+      (user.type === EUserType.ATTORNEY && !user.office)
     ) {
       showToast("Complete as informações do seu perfil");
       return;
@@ -315,196 +205,213 @@ export const EditProfile = ({
 
   useEffect(() => {
     getAddressAndConvertOnCoordinates();
-  }, [address?.zipCode]);
+  }, [form.address?.zipCode]);
+
+  console.log(JSON.stringify(errors, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
-      <ImageProfile uri={photo || user?.photo}>
-        <EditButton onPress={handleChangeImage} />
-      </ImageProfile>
+      <Wrapper>
+        <ImageProfile uri={photo || user?.photo}>
+          <EditButton onPress={handleChangeImage} />
+        </ImageProfile>
 
-      <PersonalInformationDropdown
-        inputs={personalInformationsInput as Input[]}
-      />
-
-      {/* <AddressDropdown inputs={addressInputs as InputFormProps[]} /> */}
-
-      {/* <OpeningHoursDropdown
-        weekDays={weekDays}
-        inputs={openingHourInputs}
-        changeWeekDays={changeWeekDays}
-      /> */}
-
-      <Dropdown label="Endereço">
-        <HorizontalContainer>
-          <InputForm
-            contrast
-            label="CEP"
-            control={control}
-            placeholder="CEP"
-            mask={Masks.ZIP_CODE}
-            editable={!isLoading}
-            name="address.zipCode"
-            keyboardType="number-pad"
-            onChange={() => setEditingZipCode(true)}
-            defaultValue={address?.zipCode ?? user?.address?.zipCode}
-          />
-
-          <InputForm
-            contrast
-            label="Bairro"
-            control={control}
-            placeholder="Bairro"
-            editable={inputIsEditable}
-            name="address.neighborhood"
-            defaultValue={address?.neighborhood ?? user?.address?.neighborhood}
-          />
-        </HorizontalContainer>
-
-        <InputForm
-          contrast
-          control={control}
-          label="Logradouro"
-          name="address.street"
-          placeholder="Logradouro"
-          editable={inputIsEditable}
-          defaultValue={address?.street ?? user?.address?.street}
-        />
-
-        <HorizontalContainer>
-          <InputForm
-            contrast
-            label="Cidade"
-            control={control}
-            name="address.city"
-            placeholder="Cidade"
-            editable={inputIsEditable}
-            defaultValue={address?.city ?? user?.address?.city}
-          />
-
-          <InputForm
-            contrast
-            label="Estado"
-            control={control}
-            name="address.state"
-            placeholder="Estado"
-            editable={inputIsEditable}
-            defaultValue={address?.state ?? user?.address?.state}
-          />
-
-          <InputForm
-            contrast
-            label="País"
-            control={control}
-            placeholder="País"
-            name="address.country"
-            editable={inputIsEditable}
-            defaultValue={address?.country ?? user?.address?.country}
-          />
-        </HorizontalContainer>
-      </Dropdown>
-
-      <Dropdown label="Horário de atendimento">
-        <WrapperHorizontal>
-          <Label>Horário</Label>
-
-          <HorizontalContainer>
+        <FormContainer>
+          <Dropdown label="Informações pessoais">
             <InputForm
-              label="De"
-              containerStyle={{ flexGrow: 0 }}
+              contrast
+              name="name"
+              label="Nome*"
               control={control}
-              mask={Masks.TIME}
-              name="openingHours.start"
-              placeholder="00:00"
+              placeholder="Nome"
+              error={errors.name}
+              defaultValue={name ?? user.name}
             />
-
-            <InputForm
-              label="Às"
-              mask={Masks.TIME}
-              containerStyle={{ flexGrow: 0 }}
-              control={control}
-              name="openingHours.end"
-              placeholder="00:00"
-            />
-          </HorizontalContainer>
-        </WrapperHorizontal>
-
-        <Label>Dias da semana</Label>
-        <Wrapper direction="row" style={{ flexWrap: "wrap", gap: 8 }}>
-          {weekDays.map((item, index) => (
-            <WeekButton
-              key={index}
-              isSelected={item.isSelected}
-              showBorder={index < weekDays.length - 1}
-              onPress={() => changeWeekDays(item.label)}
-            >
-              {item.label}
-            </WeekButton>
-          ))}
-        </Wrapper>
-      </Dropdown>
-
-      {user.type === UserType.ATTORNEY && (
-        <Dropdown label="Profissional">
-          <Wrapper style={{ gap: 4 }}>
-            <Label>
-              Escreva uma breve apresentação sobre você e/ou seus serviços.
-            </Label>
 
             <InputForm
               contrast
-              multiline
-              name="about"
+              mask="PHONE"
+              label="Contato*"
               control={control}
-              isConventionalMode
-              defaultValue={user.about}
-              placeholder="ex: Advogado experiente em [área] com histórico de sucesso em resolução de casos complexos e compromisso com a justiça."
+              name="phone"
+              keyboardType="number-pad"
+              error={errors.phone}
+              placeholder="(00) 98765-4321"
+              defaultValue={user.phone}
             />
-          </Wrapper>
 
-          <Wrapper style={{ gap: 4 }}>
-            <Label>
-              Informe os serviços prestados, separando-os por vírgula.
-            </Label>
+            {user.type === EUserType.ATTORNEY && (
+              <InputForm
+                contrast
+                name="office"
+                values={officeList}
+                label="Especialização*"
+                selectedValue={office ?? user?.office}
+                onSelect={({ value }) => setValue("office", value)}
+              />
+            )}
+          </Dropdown>
+
+          <Dropdown label="Endereço">
+            <HorizontalContainer>
+              <InputForm
+                contrast
+                label="CEP"
+                maxLength={9}
+                mask="ZIP_CODE"
+                placeholder="CEP"
+                control={control}
+                editable={!isLoading}
+                name="address.zipCode"
+                keyboardType="number-pad"
+                defaultValue={address?.zipCode}
+                onChange={() => setEditingZipCode(true)}
+              />
+
+              <InputForm
+                contrast
+                label="Bairro"
+                control={control}
+                placeholder="Bairro"
+                editable={inputIsEditable}
+                name="address.neighborhood"
+                defaultValue={address?.neighborhood}
+              />
+            </HorizontalContainer>
 
             <InputForm
               contrast
-              multiline
-              name="services"
               control={control}
-              isConventionalMode
-              defaultValue={user.services?.join(", ")}
-              placeholder="Direito civil, previdenciário, criminal, ..."
+              label="Logradouro"
+              name="address.street"
+              placeholder="Logradouro"
+              editable={inputIsEditable}
+              defaultValue={address?.street ?? user?.address?.street}
             />
-          </Wrapper>
-        </Dropdown>
-      )}
 
-      {/* <FormContainer>
-        {user.type === UserType.ATTORNEY && (
-          <InputForm
-            contrast
-            multiline
-            name="about"
-            control={control}
-            isConventionalMode
-            numberOfLines={14}
-            textAlignVertical="top"
-            maxLength={ABOUT_LENGTH}
-            placeholder="Esta informação ficará disponível para os clientes quando pesquisarem sobre você."
-            defaultValue={user.about}
-            label={`Sobre o seu serviço (limite: ${availableLimit})`}
-          />
-        )}
+            <HorizontalContainer>
+              <InputForm
+                contrast
+                label="Cidade"
+                control={control}
+                name="address.city"
+                placeholder="Cidade"
+                editable={inputIsEditable}
+                defaultValue={address?.city ?? user?.address?.city}
+              />
 
-        <SaveButton
-          isLoading={isLoading}
-          disabled={saveButtonIsDisabled}
-          onPress={handleSubmit(handleSubmitForm)}
-        >
-          Salvar
-        </SaveButton>
-      </FormContainer> */}
+              <InputForm
+                contrast
+                label="Estado"
+                control={control}
+                name="address.state"
+                placeholder="Estado"
+                editable={inputIsEditable}
+                defaultValue={address?.state ?? user?.address?.state}
+              />
+
+              <InputForm
+                contrast
+                label="País"
+                control={control}
+                placeholder="País"
+                name="address.country"
+                editable={inputIsEditable}
+                defaultValue={address?.country ?? user?.address?.country}
+              />
+            </HorizontalContainer>
+          </Dropdown>
+
+          <Dropdown label="Horário de atendimento">
+            <WrapperHorizontal>
+              <Label>Horário</Label>
+
+              <HorizontalContainer>
+                <InputForm
+                  contrast
+                  label="De"
+                  mask="HOURS"
+                  control={control}
+                  placeholder="00:00"
+                  name="openingHours.start"
+                  keyboardType="number-pad"
+                  containerStyle={{ flexGrow: 0 }}
+                />
+
+                <InputForm
+                  contrast
+                  label="Às"
+                  mask="HOURS"
+                  control={control}
+                  placeholder="00:00"
+                  name="openingHours.end"
+                  keyboardType="number-pad"
+                  containerStyle={{ flexGrow: 0 }}
+                />
+              </HorizontalContainer>
+            </WrapperHorizontal>
+
+            <Label>Dias da semana</Label>
+            <Wrapper direction="row" style={{ flexWrap: "wrap", gap: 8 }}>
+              {weekDays.map((item, index) => (
+                <WeekButton
+                  key={index}
+                  isSelected={item.isSelected}
+                  showBorder={index < weekDays.length - 1}
+                  onPress={() => changeWeekDays(item.label)}
+                >
+                  {item.label}
+                </WeekButton>
+              ))}
+            </Wrapper>
+          </Dropdown>
+
+          {user.type === EUserType.ATTORNEY && (
+            <Dropdown label="Profissional">
+              <Wrapper style={{ gap: 4 }}>
+                <Label>
+                  Escreva uma breve apresentação sobre você e/ou seus serviços.
+                </Label>
+
+                <InputForm
+                  contrast
+                  multiline
+                  name="about"
+                  control={control}
+                  isConventionalMode
+                  textAlignVertical="top"
+                  defaultValue={user.about}
+                  placeholder="ex: Advogado experiente em [área] com histórico de sucesso em resolução de casos complexos e compromisso com a justiça."
+                />
+              </Wrapper>
+
+              <Wrapper style={{ gap: 4 }}>
+                <Label>
+                  Informe os serviços prestados, separando-os por vírgula.
+                </Label>
+
+                <InputForm
+                  contrast
+                  multiline
+                  name="services"
+                  control={control}
+                  isConventionalMode
+                  defaultValue={user.services?.join(", ")}
+                  placeholder="Direito civil, previdenciário, criminal, ..."
+                />
+              </Wrapper>
+            </Dropdown>
+          )}
+        </FormContainer>
+      </Wrapper>
+
+      <SaveButton
+        isLoading={isLoading}
+        disabled={saveButtonIsDisabled}
+        onPress={handleSubmit(handleSubmitForm)}
+      >
+        Salvar
+      </SaveButton>
     </Container>
   );
 };

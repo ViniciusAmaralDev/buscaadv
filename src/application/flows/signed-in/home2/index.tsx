@@ -5,7 +5,7 @@ import { Map } from "../../../components/map";
 import MapView, { LatLng } from "react-native-maps";
 import { useAuth } from "../../../hook/useAuth";
 import { useStorage } from "../../../hook/useStorage";
-import { UserType } from "../../../enums/UserType";
+import { EUserType } from "../../../enums/EUserType";
 
 export interface IOffice {
   label: string;
@@ -32,7 +32,7 @@ export const Home = () => {
 
   const markers = useMemo(() => {
     return users
-      .filter((user) => user.type === UserType.ATTORNEY)
+      .filter((user) => user.type === EUserType.ATTORNEY)
       .filter((user) => {
         if (!user.address) return;
         if (user.office === office.value) return user;

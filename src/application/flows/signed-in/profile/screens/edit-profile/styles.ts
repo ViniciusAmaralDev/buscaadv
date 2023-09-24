@@ -19,17 +19,17 @@ interface LabelProps {
 export const Container = styled(Layout).attrs({
   scrollEnabled: true,
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    gap: 0,
-    paddingVertical: 16,
-  },
+  contentContainerStyle: { gap: 16, padding: 16 },
 })``;
+
+export const FormContainer = styled(Wrapper)`
+  padding-top: 40px;
+`;
 
 export const HorizontalContainer = styled(Wrapper).attrs({
   direction: "row",
 })`
   gap: 8px;
-  /* flex-grow: 1; */
   flex-wrap: wrap;
 `;
 
@@ -65,7 +65,6 @@ export const SaveButton = styled(TextButton).attrs(({ theme, disabled }) => ({
   textStyle: { fontFamily: theme.fonts.bold, color: theme.colors.white.main },
 }))`
   height: 48px;
-  padding: 0px 16px;
   border-radius: 8px;
   align-items: center;
   justify-content: center;
@@ -82,11 +81,8 @@ export const WrapperHorizontal = styled(Wrapper).attrs({
 `;
 
 export const Label = styled(Text)<LabelProps>`
-  font-size: ${({ secondary }) => (secondary ? 14 : 12)}px;
-  color: ${({ theme, secondary }) =>
-    secondary ? theme.colors.black.main : theme.colors.gray.dark};
-  font-family: ${({ theme, secondary }) =>
-    secondary ? theme.fonts.regular : theme.fonts.bold};
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.gray.dark};
 `;
 
 export const WeekButton = styled(TextButton).attrs(({ theme, isSelected }) => ({
@@ -100,8 +96,6 @@ export const WeekButton = styled(TextButton).attrs(({ theme, isSelected }) => ({
   align-items: center;
   justify-content: center;
   elevation: 2;
-  /* border-color: ${({ theme }) => theme.colors.gray.main}; */
-  /* border-width: ${({ isSelected }) => (isSelected ? 0 : 0.5)}px; */
   background-color: ${({ theme, isSelected }) =>
     isSelected ? theme.colors.primary.main : theme.colors.white.main};
 `;

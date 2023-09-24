@@ -45,7 +45,7 @@ export const PersonalInformationDropdown = ({
         defaultValue={user.phoneNumber}
       />
 
-      {user.type === UserType.ATTORNEY && (
+      {user.type === EUserType.ATTORNEY && (
         <InputForm
           contrast
           name="office"

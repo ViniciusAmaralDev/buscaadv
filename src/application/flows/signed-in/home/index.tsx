@@ -22,7 +22,7 @@ import { useAuth } from "../../../hook/useAuth";
 import { Button } from "../../../components/base/button";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ImageProfile } from "../../../components/image-profile";
-import { UserType } from "../../../enums/UserType";
+import { EUserType } from "../../../enums/EUserType";
 import { Details, LatLng, Region } from "react-native-maps";
 
 interface IOffice {
@@ -53,7 +53,7 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
 
   const markers = useMemo(() => {
     return users
-      .filter((user) => user.type === UserType.ATTORNEY)
+      .filter((user) => user.type === EUserType.ATTORNEY)
       .filter((user) => {
         if (!user.address) return;
         if (user.office === office.value) return user;

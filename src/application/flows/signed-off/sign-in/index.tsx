@@ -18,7 +18,6 @@ import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProp
 import { useTheme } from "styled-components";
 import { useAuth } from "../../../hook/useAuth";
 import { ISignInProps } from "../../../models/ISignInProps";
-import { Keyboard } from "react-native";
 
 const requiredField = { message: "campo obrigatório" };
 
@@ -62,18 +61,18 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
           label="E-mail"
           control={control}
           variant="contained"
-          placeholder="E-mail"
           error={errors.email}
           endIcon={<EmailIcon />}
           keyboardType="email-address"
+          placeholder="usuario@email.com"
         />
 
         <InputForm
           label="Senha"
           name="password"
           control={control}
-          placeholder="Senha"
           variant="contained"
+          placeholder="******"
           error={errors.password}
           forgotPassword={() => {}}
         />
