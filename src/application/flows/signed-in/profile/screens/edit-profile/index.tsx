@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { createSchema } from "./constants/schema";
 import React, { useEffect, useState } from "react";
 import { IUser } from "@/application/models/IUser";
 import { offices } from "@/application/mocks/Offices";
@@ -33,8 +34,6 @@ import { useGeocode } from "@/application/hook/useGeocode";
 import { useToast } from "@/application/context/ToastContext";
 import { useRequestStatus } from "@/application/context/RequestStatusContext";
 
-const requiredMessage = { message: "campo obrigatório" };
-
 export const EditProfile = ({
   navigation,
 }: SignedInRootProps<"EditProfile">) => {
@@ -52,36 +51,7 @@ export const EditProfile = ({
     value: item,
   }));
 
-  const schema = z.object({
-    photo: z
-      .string()
-      .optional()
-      .default(user?.photo ?? undefined),
-    name: z.string().nonempty(requiredMessage).default(user.name),
-    phone: z.string().nonempty(requiredMessage).default(user?.phone),
-    about: z.string().optional().default(user?.about),
-    services: z
-      .string()
-      .default(user?.services?.join(", "))
-      .transform((value) => value.split(",").map((item) => item.trim())),
-    office: z.z
-      .string()
-      .optional()
-      .default(user?.office ?? undefined),
-    address: z
-      .object({
-        latitude: z.number().default(user?.address?.latitude),
-        longitude: z.number().default(user?.address?.longitude),
-        street: z.string().default(user?.address?.street),
-        neighborhood: z.string().default(user?.address?.neighborhood),
-        city: z.string().default(user?.address?.city),
-        state: z.string().default(user?.address?.state),
-        country: z.string().default(user?.address?.country),
-        zipCode: z.string().default(user?.address?.zipCode),
-      })
-      .default(user?.address),
-    openingHours: z.string().default(user?.openingHours),
-  });
+  const schema = createSchema(user);
 
   type FormData = z.infer<typeof schema>;
 
@@ -110,11 +80,12 @@ export const EditProfile = ({
 
   const saveButtonIsDisabled =
     !name ||
+    !photo ||
     !phone ||
-    !address ||
-    (user.type === EUserType.ATTORNEY && (!office || !openingHours));
+    Object.values(address).length === 0 ||
+    (user.type === EUserType.ATTORNEY && !office);
 
-  const inputIsEditable = !isLoading && form.address?.zipCode?.length > 0;
+  const addressIsEditable = !isLoading && address?.zipCode?.length > 0;
 
   const handleSubmitForm = async (values: FormData) => {
     try {
@@ -175,8 +146,6 @@ export const EditProfile = ({
   useEffect(() => {
     getAddressAndConvertOnCoordinates();
   }, [form.address?.zipCode]);
-
-  console.log("errors =>", JSON.stringify(errors, null, 2));
 
   return (
     <Container header={<Header label="Editar Perfil" goBack={handleGoBack} />}>
@@ -242,7 +211,7 @@ export const EditProfile = ({
                 label="Bairro"
                 control={control}
                 placeholder="Bairro"
-                editable={inputIsEditable}
+                editable={addressIsEditable}
                 name="address.neighborhood"
                 defaultValue={address?.neighborhood}
               />
@@ -254,7 +223,7 @@ export const EditProfile = ({
               label="Logradouro"
               name="address.street"
               placeholder="Logradouro"
-              editable={inputIsEditable}
+              editable={addressIsEditable}
               defaultValue={address?.street ?? user?.address?.street}
             />
 
@@ -265,7 +234,7 @@ export const EditProfile = ({
                 control={control}
                 name="address.city"
                 placeholder="Cidade"
-                editable={inputIsEditable}
+                editable={addressIsEditable}
                 defaultValue={address?.city ?? user?.address?.city}
               />
 
@@ -275,7 +244,7 @@ export const EditProfile = ({
                 control={control}
                 name="address.state"
                 placeholder="Estado"
-                editable={inputIsEditable}
+                editable={addressIsEditable}
                 defaultValue={address?.state ?? user?.address?.state}
               />
 
@@ -285,7 +254,7 @@ export const EditProfile = ({
                 control={control}
                 placeholder="País"
                 name="address.country"
-                editable={inputIsEditable}
+                editable={addressIsEditable}
                 defaultValue={address?.country ?? user?.address?.country}
               />
             </HorizontalContainer>
