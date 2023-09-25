@@ -17,6 +17,7 @@ import {
 // HOOKS
 import { useAuth } from "../../../../../hook/useAuth";
 import { useNavigation } from "@react-navigation/native";
+import { NotificationButton } from "@/application/components/notification-button";
 
 interface HeaderProps {
   office: IOffice;
@@ -51,10 +52,7 @@ export const Header = ({ office, setOffice }: HeaderProps) => {
           </VerticalContainer>
         </HorizontalContainer>
 
-        <IconContainer>
-          <NotificationIcon />
-          <MessageIcon />
-        </IconContainer>
+        <NotificationButton onPress={() => navigate("Notifications")} />
       </HorizontalContainer>
 
       <SelectInput

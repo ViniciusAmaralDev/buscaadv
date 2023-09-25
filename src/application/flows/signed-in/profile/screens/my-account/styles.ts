@@ -6,6 +6,7 @@ import { Wrapper } from "../../../../../components/wrapper";
 export const Container = styled(Layout)`
   gap: 16px;
   padding: 16px;
+  padding-top: 32px;
   align-items: center;
   justify-content: space-between;
 `;

@@ -18,7 +18,9 @@ export const theme = {
       main: "#ED5A72",
     },
     yellow: {
+      light: "#F9DD62",
       main: "#F8CD12",
+      dark: "#DAB307",
     },
     gray: {
       main: "#CECEDF",

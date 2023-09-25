@@ -10,6 +10,7 @@ import { Profile } from "@/application/flows/signed-in/profile/screens";
 import { MyAccount } from "@/application/flows/signed-in/profile/screens/my-account";
 import { EditProfile } from "@/application/flows/signed-in/profile/screens/edit-profile";
 import { ProfileDetails } from "@/application/flows/signed-in/profile/screens/profile-details";
+import { Notifications } from "@/application/flows/signed-in/notifications";
 
 const Stack = createStackNavigator<SignedInParamList>();
 
@@ -27,6 +28,7 @@ export default function SignedInNavigator() {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="MyAccount" component={MyAccount} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="Notifications" component={Notifications} />
       <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
     </Stack.Navigator>
   );

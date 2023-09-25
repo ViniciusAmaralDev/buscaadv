@@ -1,19 +1,20 @@
+import * as z from "zod";
 import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Container, DeleteButton, FormContainer, SaveButton } from "./styles";
-import { Text } from "../../../../../components/base/text";
-import { Header } from "../../../../../components/header";
-import { EditButton } from "../../../../../components/icon-buttons/EditButton";
 import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../../../../../hook/useAuth";
+// COMPONENTS
+import { Header } from "../../../../../components/header";
 import { InputForm } from "../../../../../components/input-form";
-import { useAlert } from "../../../../../context/AlertContext";
-import { useProfile } from "../../../../../hook/useProfile";
+import { EditButton } from "../../../../../components/icon-buttons/EditButton";
 
-const requiredMessage = { message: "campo obrigatório" };
+// HOOKS
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../../../../hook/useAuth";
+import { useProfile } from "../../../../../hook/useProfile";
+import { useAlert } from "../../../../../context/AlertContext";
+import { createSchema } from "./constants/Schema";
 
 export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
   const { user } = useAuth();
@@ -22,15 +23,7 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const schema = z.object({
-    email: z
-      .string()
-      .email("e-mail inválido")
-      .nonempty(requiredMessage)
-      .default(user.email),
-    password: z.string().min(6, "mínimo de 6 dígitos").optional(),
-  });
-
+  const schema = createSchema(user);
   type FormData = z.infer<typeof schema>;
 
   const {
@@ -77,7 +70,6 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
           name="email"
           label="E-mail"
           control={control}
-          placeholder="E-mail"
           error={errors.email}
           editable={isEditing}
           defaultValue={email ?? user.email}
@@ -88,7 +80,6 @@ export const MyAccount = ({ navigation }: SignedInRootProps<"MyAccount">) => {
           label="Senha"
           name="password"
           control={control}
-          placeholder="Senha"
           editable={isEditing}
         />
       </FormContainer>
