@@ -1,14 +1,14 @@
+import { Button } from "../base/button";
 import { Text } from "../base/text";
 import { Wrapper } from "../wrapper";
 import styled from "styled-components/native";
 
-export const Container = styled(Wrapper).attrs({
-  direction: "row",
-})`
+export const Container = styled(Button)`
   gap: 8px;
   padding: 4px 8px;
   border-width: 1px;
   border-radius: 8px;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   border-color: ${({ theme }) => theme.colors.primary.main};

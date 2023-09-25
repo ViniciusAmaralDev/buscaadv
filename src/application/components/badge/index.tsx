@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Label } from "./styles";
-import { StyleProp, TextStyle, ViewProps } from "react-native";
+import { ButtonProps, StyleProp, TextStyle } from "react-native";
 
-export interface BadgeProps extends ViewProps {
+export interface BadgeProps extends ButtonProps {
   label?: string;
   icon?: React.ReactNode;
   textStyle?: StyleProp<TextStyle>;
