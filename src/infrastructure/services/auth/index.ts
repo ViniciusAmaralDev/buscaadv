@@ -4,7 +4,7 @@ import { getRealm } from "../../database";
 import { IAuthService } from "./IAuthService";
 import { ISignInRequest } from "./ISignInRequest";
 import { IUser } from "../../../application/models/IUser";
-import { userSchema } from "../../database/schemas/UserSchema";
+import { userSchema } from "../../database/schemas/User";
 
 export const signIn = async ({ email, password }: ISignInRequest) => {
   const user = await userService.filter(`email == "${email}"`);

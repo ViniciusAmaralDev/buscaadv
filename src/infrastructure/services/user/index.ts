@@ -1,7 +1,7 @@
 import { getRealm } from "../../database";
 import { IUserService } from "./IUserService";
 import { IUser } from "../../../application/models/IUser";
-import { userSchema } from "../../database/schemas/UserSchema";
+import { userSchema } from "../../database/schemas/User";
 
 const get = async (id: string) => {
   const realm = await getRealm();
