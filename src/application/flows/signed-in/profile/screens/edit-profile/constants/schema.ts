@@ -5,7 +5,9 @@ import {
   numberErrorMessages,
 } from "@/application/constants/ZodErrorMessages";
 
-export const createSchema = (user: IUser) =>
+type Keys = keyof IUser;
+
+export const createSchema = (user: IUser, requiredFields?: Keys[]) =>
   z.object({
     photo: z
       .string()
@@ -13,13 +15,23 @@ export const createSchema = (user: IUser) =>
       .default(user?.photo ?? undefined),
     name: z.string().nonempty(noEmptyErrorMessage).default(user.name),
     phone: z.string().nonempty(noEmptyErrorMessage).default(user?.phone),
-    about: z.string().optional().default(user?.about),
-    services: z
-      .string()
-      .nonempty(noEmptyErrorMessage)
-      .default(user?.services?.join(", "))
-      .transform((value) => value.split(",").map((item) => item.trim())),
-    office: z.string().nonempty(noEmptyErrorMessage).default(user?.office),
+    about: requiredFields?.includes("about")
+      ? z.string().optional().default(user?.about ?? undefined)
+      : z.string().nonempty(noEmptyErrorMessage).default(user?.about),
+    services: requiredFields?.includes("services")
+      ? z
+          .string()
+          .optional()
+          .default(user?.services?.join(", ") ?? undefined)
+          .transform((value) => value.split(",").map((item) => item.trim()))
+      : z
+          .string()
+          .nonempty(noEmptyErrorMessage)
+          .default(user?.services?.join(", "))
+          .transform((value) => value.split(",").map((item) => item.trim())),
+    office: requiredFields?.includes("services")
+      ? z.string().optional().default(user?.office ?? undefined)
+      : z.string().nonempty(noEmptyErrorMessage).default(user?.office),
     address: z
       .object({
         latitude: z
@@ -51,8 +63,7 @@ export const createSchema = (user: IUser) =>
           .default(user?.address?.zipCode),
       })
       .default(user?.address),
-    openingHours: z
-      .string()
-      .nonempty(noEmptyErrorMessage)
-      .default(user?.openingHours),
+    openingHours: requiredFields?.includes("services")
+      ? z.string().optional().default(user?.openingHours ?? undefined)
+      : z.string().nonempty(noEmptyErrorMessage).default(user?.openingHours),
   });

@@ -79,7 +79,7 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
           values={types}
           control={control}
           label="Quem é você"
-          defaultValue={userType}
+          selectedValue={userType}
           onSelect={({ value }) => setUserType(value)}
         />
 

@@ -51,7 +51,7 @@ export const EditProfile = ({
     value: item,
   }));
 
-  const schema = createSchema(user);
+  const schema = createSchema(user, ["about", "office", "services", "openingHours"]);
 
   type FormData = z.infer<typeof schema>;
 
@@ -155,11 +155,11 @@ export const EditProfile = ({
         </ImageProfile>
 
         <FormContainer>
-          <Dropdown label="Informações pessoais">
+          <Dropdown open required label="Informações pessoais">
             <InputForm
               contrast
               name="name"
-              label="Nome*"
+              label="Nome"
               control={control}
               placeholder="Nome"
               error={errors.name}
@@ -169,7 +169,7 @@ export const EditProfile = ({
             <InputForm
               contrast
               mask="PHONE"
-              label="Contato*"
+              label="Contato"
               control={control}
               name="phone"
               keyboardType="number-pad"
@@ -190,11 +190,11 @@ export const EditProfile = ({
             )}
           </Dropdown>
 
-          <Dropdown label="Endereço">
+          <Dropdown required label="Endereço">
             <HorizontalContainer>
               <InputForm
                 contrast
-                label="CEP"
+                label="Cep"
                 maxLength={9}
                 mask="ZIP_CODE"
                 placeholder="CEP"
@@ -260,50 +260,53 @@ export const EditProfile = ({
             </HorizontalContainer>
           </Dropdown>
 
-          <Dropdown label="Horário de atendimento">
-            <InputForm
-              contrast
-              control={control}
-              name="openingHours"
-              defaultValue={openingHours}
-              containerStyle={{ flexGrow: 0 }}
-              placeholder="ex: Segunda à Sexta - 08:00 às 18:00"
-            />
-          </Dropdown>
-
           {user.type === EUserType.ATTORNEY && (
-            <Dropdown label="Profissional">
-              <Wrapper style={{ gap: 4 }}>
-                <Label>
-                  Escreva uma breve apresentação sobre você e/ou seus serviços.
-                </Label>
-
+            <>
+              <Dropdown required label="Horário de atendimento">
                 <InputForm
                   contrast
-                  multiline
-                  name="about"
                   control={control}
-                  textAlignVertical="top"
-                  defaultValue={user.about}
-                  placeholder="ex: Advogado experiente em [área] com ..."
+                  name="openingHours"
+                  defaultValue={openingHours}
+                  containerStyle={{ flexGrow: 0 }}
+                  placeholder="ex: Segunda à Sexta - 08:00 às 18:00"
                 />
-              </Wrapper>
+              </Dropdown>
 
-              <Wrapper style={{ gap: 4 }}>
-                <Label>
-                  Informe os serviços prestados, separando-os por vírgula.
-                </Label>
+              <Dropdown required label="Profissional">
+                <Wrapper style={{ gap: 4 }}>
+                  <Label>
+                    Escreva uma breve apresentação sobre você e/ou seus
+                    serviços.
+                  </Label>
 
-                <InputForm
-                  contrast
-                  multiline
-                  name="services"
-                  control={control}
-                  defaultValue={user.services?.join(", ")}
-                  placeholder="Direito civil, previdenciário, criminal, ..."
-                />
-              </Wrapper>
-            </Dropdown>
+                  <InputForm
+                    contrast
+                    multiline
+                    name="about"
+                    control={control}
+                    textAlignVertical="top"
+                    defaultValue={user.about}
+                    placeholder="ex: Advogado experiente em [área] com ..."
+                  />
+                </Wrapper>
+
+                <Wrapper style={{ gap: 4 }}>
+                  <Label>
+                    Informe os serviços prestados, separando-os por vírgula.
+                  </Label>
+
+                  <InputForm
+                    contrast
+                    multiline
+                    name="services"
+                    control={control}
+                    defaultValue={user.services?.join(", ")}
+                    placeholder="Direito civil, previdenciário, criminal, ..."
+                  />
+                </Wrapper>
+              </Dropdown>
+            </>
           )}
         </FormContainer>
       </Wrapper>

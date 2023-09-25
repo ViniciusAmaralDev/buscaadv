@@ -8,9 +8,15 @@ import { Wrapper } from "@/application/components/wrapper";
 interface DropdownProps extends PropsWithChildren {
   label: string;
   open?: boolean;
+  required?: boolean;
 }
 
-export const Dropdown = ({ label, open, children }: DropdownProps) => {
+export const Dropdown = ({
+  label,
+  open,
+  children,
+  required = false,
+}: DropdownProps) => {
   const [isOpened, setIsOpened] = useState(open ?? false);
 
   return (
@@ -19,7 +25,10 @@ export const Dropdown = ({ label, open, children }: DropdownProps) => {
         isOpened={isOpened}
         onPress={() => setIsOpened((value) => !value)}
       >
-        <Text>{label}</Text>
+        <Text>
+          {label}
+          {required && "*"}
+        </Text>
         <ArrowIcon isOpened={isOpened} />
       </HorizontalContainer>
 
