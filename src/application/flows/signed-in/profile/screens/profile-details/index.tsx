@@ -47,18 +47,18 @@ export const ProfileDetails = ({
       <Tabs
         tabs={[
           {
-            name: "service",
-            label: "Serviços",
+            name: "general",
+            label: "Geral",
             children: <GeneralTab user={user} />,
           },
           {
-            name: "photo",
-            label: "Fotos",
+            name: "gallery",
+            label: "Galeria",
             children: <GalleryTab gallery={user.gallery ?? []} />,
           },
           {
-            name: "about",
-            label: "Sobre",
+            name: "avaliations",
+            label: "Avaliações",
             children: <AvaliationsTab user={user} />,
           },
         ]}

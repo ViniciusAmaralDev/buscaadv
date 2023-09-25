@@ -9,10 +9,12 @@ interface ServiceTabProps {
 }
 
 export const GeneralTab = ({ user }: ServiceTabProps) => {
+  const address = `${user.address.street}, ${user.address.neighborhood}, ${user.address.city} - ${user.address.state}, ${user.address.country}`;
+
   return (
     <Container>
       <Wrapper>
-        <Label secondary>Do advogado</Label>
+        <Label secondary>Sobre</Label>
         <Label>{user.about}</Label>
       </Wrapper>
 
@@ -21,6 +23,13 @@ export const GeneralTab = ({ user }: ServiceTabProps) => {
       <Wrapper>
         <Label secondary>Horário de atendimento</Label>
         <Label>{user.openingHours}</Label>
+      </Wrapper>
+
+      <Divider />
+
+      <Wrapper>
+        <Label secondary>Endereço</Label>
+        <Label>{address}</Label>
       </Wrapper>
 
       <Divider />
