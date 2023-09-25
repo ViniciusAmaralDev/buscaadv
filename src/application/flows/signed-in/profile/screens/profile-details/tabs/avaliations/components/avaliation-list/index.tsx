@@ -29,11 +29,6 @@ export const AvaliationList = ({ avaliations }: AvaliationListProps) => {
 
   return (
     <Container>
-      <WrapperHorizontal>
-        <Text>Avaliações</Text>
-        <Text>({avaliations.length})</Text>
-      </WrapperHorizontal>
-
       {avaliations.length > 0 && (
         <List
           horizontal

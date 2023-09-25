@@ -11,36 +11,19 @@ interface AboutTabProps {
 }
 
 export const AvaliationsTab = ({ user }: AboutTabProps) => {
-  console.log(JSON.stringify(user, null, 2));
-  const avaliations: IAvaliation[] = [
-    {
-      author: "a8fa18a4-fa61-4cae-8eec-c350913df99d",
-      stars: 2,
-      comment:
-        "Infelizmente não é um bom profissional porque ele enrola muito pra resolver os problemas!",
-      createdAt: new Date().toString(),
-    },
-    {
-      author: "f40e51dc-b8bc-4ce6-b734-97e2e989141f",
-      stars: 5,
-      comment: "Muito bom trabalho, recomendo!",
-      createdAt: new Date().toString(),
-    },
-  ];
+  const avaliations: IAvaliation[] = [];
 
   return (
     <Container>
-      <Content>
-        <Label>{user.about}</Label>
-      </Content>
+      {user.avaliations && (
+        <>
+          <AvaliationList avaliations={avaliations} />
 
-      {/* <Divider />
+          <Divider />
+        </>
+      )}
 
-      <AvaliationList avaliations={avaliations} />
-
-      <Divider />
-
-      <Avaliate user={user} /> */}
+      <Avaliate user={user} />
     </Container>
   );
 };

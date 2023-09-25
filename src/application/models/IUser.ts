@@ -1,4 +1,5 @@
 import { IAddress } from "./IAddress";
+import { IAvaliation } from "./IAvaliation";
 import { EUserType } from "../enums/EUserType";
 
 export interface IUser {
@@ -18,4 +19,5 @@ export interface IUser {
   services?: string[];
   openingHours?: string;
   isAuthenticated?: boolean;
+  avaliations: IAvaliation[];
 }

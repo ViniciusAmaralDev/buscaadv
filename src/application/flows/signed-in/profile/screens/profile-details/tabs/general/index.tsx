@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Label } from "./styles";
 import { IUser } from "../../../../../../../models/IUser";
+
+// COMPONENTS
 import { Wrapper } from "../../../../../../../components/wrapper";
 import { Divider } from "../../../../../../../components/divider";
 
