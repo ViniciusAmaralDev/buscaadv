@@ -29,7 +29,7 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
   const theme = useTheme();
   const { signUp } = useAuth();
 
-  const [UserType, setUserType] = useState<string>();
+  const [userType, setUserType] = useState<string>();
 
   const types = [
     { label: "Sou um advogado", value: EUserType.ATTORNEY },
@@ -40,7 +40,7 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
     type: z
       .string()
       .nonempty({ message: "Selecione uma das opções sobre você" })
-      .default(UserType),
+      .default(userType),
     name: z.string().nonempty(requiredField),
     email: z.string().email("E-mail inválido").nonempty(requiredField),
     password: z
@@ -74,19 +74,19 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
       </VerticalContainer>
 
       <FormContainer>
-        <SelectInput
-          showBorder
-          data={types}
-          value={UserType}
-          label="Sobre você"
-          onChange={({ value }) => setUserType(value)}
+        <InputForm
+          name="type"
+          values={types}
+          control={control}
+          label="Quem é você"
+          defaultValue={userType}
+          onSelect={({ value }) => setUserType(value)}
         />
 
         <InputForm
           name="name"
           label="Nome"
           control={control}
-          placeholder="Nome"
           variant="contained"
           error={errors.name}
           endIcon={<UserIcon />}
@@ -97,7 +97,6 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
           label="E-mail"
           control={control}
           variant="contained"
-          placeholder="E-mail"
           error={errors.email}
           endIcon={<EmailIcon />}
           keyboardType="email-address"
@@ -108,7 +107,6 @@ export const SignUp = ({ navigation }: SignedOffRootProps<"SignUp">) => {
           name="password"
           control={control}
           variant="contained"
-          placeholder="Senha"
           error={errors.password}
         />
 

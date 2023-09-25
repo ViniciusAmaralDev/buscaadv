@@ -58,6 +58,7 @@ export const InputForm = ({
   multiline,
   startIcon,
   labelStyle,
+  placeholder,
   defaultValue,
   selectedValue,
   containerStyle,
@@ -108,7 +109,10 @@ export const InputForm = ({
             contrast
             data={values}
             value={selectedValue}
+            placeholder={placeholder}
             onChange={onSelect}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             style={{
               paddingRight: -16,
               paddingLeft: -16,
@@ -123,6 +127,7 @@ export const InputForm = ({
               <Input
                 editable={editable}
                 multiline={multiline}
+                placeholder={placeholder}
                 value={value ?? defaultValue}
                 secureTextEntry={showPassword}
                 onFocus={() => setIsFocused(true)}

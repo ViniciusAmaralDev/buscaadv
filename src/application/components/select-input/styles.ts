@@ -16,6 +16,7 @@ export const Container = styled.View`
 export const Label = styled(Text)`
   font-size: 12px;
   color: ${({ theme }) => theme.colors.gray.dark};
+  font-family: ${({ theme }) => theme.fonts.bold};
 `;
 
 export const Dropdown = styled(CustomDropdown).attrs(({ theme }) => ({

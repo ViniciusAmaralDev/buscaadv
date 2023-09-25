@@ -65,7 +65,6 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
           error={errors.email}
           endIcon={<EmailIcon />}
           keyboardType="email-address"
-          placeholder="usuario@email.com"
         />
 
         <InputForm
@@ -73,7 +72,6 @@ export const SignIn = ({ navigation }: SignedOffRootProps<"SignIn">) => {
           name="password"
           control={control}
           variant="contained"
-          placeholder="******"
           error={errors.password}
           forgotPassword={() => {}}
         />

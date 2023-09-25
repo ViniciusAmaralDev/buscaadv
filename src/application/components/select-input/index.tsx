@@ -1,7 +1,7 @@
 import React from "react";
+import { StyleProp, TextStyle } from "react-native";
 import { Container, Dropdown, Label } from "./styles";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
-import { StyleProp, TextStyle } from "react-native";
 
 interface SelectInputProps extends Partial<DropdownProps<any>> {
   label?: string;
@@ -16,6 +16,7 @@ export const SelectInput = ({
   contrast,
   labelStyle,
   showBorder,
+  placeholder,
   ...rest
 }: SelectInputProps) => {
   return (
@@ -26,8 +27,8 @@ export const SelectInput = ({
         labelField="label"
         valueField="value"
         contrast={contrast}
-        placeholder="Selecione"
         showBorder={showBorder}
+        placeholder={placeholder ?? ""}
         {...rest}
       />
     </Container>
