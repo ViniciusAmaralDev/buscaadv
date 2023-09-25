@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
+import { Text } from "@/application/components/base/text";
 import { Container, ArrowIcon, HorizontalContainer } from "./styles";
-import { Text } from "../../../../../components/base/text";
 
 interface Menu {
   label: string;

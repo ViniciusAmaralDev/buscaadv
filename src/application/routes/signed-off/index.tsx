@@ -4,8 +4,8 @@ import { SignedOffParamList } from "./SignedOffParamList";
 import { createStackNavigator } from "@react-navigation/stack";
 
 // SCREENS
-import { SignUp } from "../../flows/signed-off/sign-up";
-import { SignIn } from '../../flows/signed-off/sign-in';
+import { SignUp } from "@/application/flows/signed-off/sign-up";
+import { SignIn } from "@/application/flows/signed-off/sign-in";
 
 const Stack = createStackNavigator<SignedOffParamList>();
 

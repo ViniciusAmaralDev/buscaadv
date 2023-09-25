@@ -1,23 +1,24 @@
+import * as z from "zod";
 import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputForm } from "@/application/components/input-form";
+import { ISignInProps } from "@/application/models/ISignInProps";
+import { SignedOffRootProps } from "@/application/routes/signed-off/SignedOffRootProps";
 import {
+  Title,
   Container,
   EmailIcon,
-  FormContainer,
   SignInButton,
   SignUpButton,
-  Title,
+  FormContainer,
   VerticalContainer,
 } from "./styles";
-import { StatusBar } from "expo-status-bar";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-import { InputForm } from "../../../components/input-form";
-import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
+// HOOKS
+import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
-import { useAuth } from "../../../hook/useAuth";
-import { ISignInProps } from "../../../models/ISignInProps";
+import { useAuth } from "@/application/hook/useAuth";
 
 const requiredField = { message: "campo obrigatório" };
 

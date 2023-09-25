@@ -1,12 +1,18 @@
-import { useContext } from "react";
-import { IUser } from "../models/IUser";
 import { AuthContext } from "../context/AuthContext";
-import { ISignInProps } from "../models/ISignInProps";
 import { ERequestStatus } from "../enums/ERequestStatus";
-import { authService } from "../../infrastructure/services/auth";
-import { useRequestStatus } from "../context/RequestStatusContext";
+
+// INTERFACES
+import { IUser } from "../models/IUser";
+import { ISignInProps } from "../models/ISignInProps";
+
+// HOOKS
+import { useContext } from "react";
 import { useToast } from "../context/ToastContext";
-import { userService } from "../../infrastructure/services/user";
+import { useRequestStatus } from "../context/RequestStatusContext";
+
+// SERVICES
+import { authService } from "@/infrastructure/services/auth";
+import { userService } from "@/infrastructure/services/user";
 
 export const useAuth = () => {
   const { showToast } = useToast();
@@ -31,7 +37,7 @@ export const useAuth = () => {
       if (await userService.filter(`email == "${values.email}"`)) {
         throw new Error("Já existe um usuário cadastrado com este e-mail");
       }
-      
+
       const user = await authService.signUp(values);
       setUser(user);
       setRequestStatus(ERequestStatus.DONE);

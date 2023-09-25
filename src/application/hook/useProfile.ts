@@ -1,10 +1,12 @@
-import { useContext } from "react";
 import { IUser } from "../models/IUser";
 import { AuthContext } from "../context/AuthContext";
-import { userService } from "../../infrastructure/services/user";
-import { useToast } from "../context/ToastContext";
-import { useRequestStatus } from "../context/RequestStatusContext";
 import { ERequestStatus } from "../enums/ERequestStatus";
+
+// HOOKS
+import { useContext } from "react";
+import { useToast } from "../context/ToastContext";
+import { userService } from "../../infrastructure/services/user";
+import { useRequestStatus } from "../context/RequestStatusContext";
 
 export const useProfile = () => {
   const { showToast } = useToast();

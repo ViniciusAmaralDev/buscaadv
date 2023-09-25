@@ -1,89 +1,68 @@
-import React, { useMemo } from "react";
-import {
-  Container,
-  Content,
-  HorizontalContainer,
-  ImageProfile,
-  Label,
-  SubOfficeContainer,
-  SubOfficeContent,
-  VerticalContainer,
-  WhatsAppButton,
-  WhatsAppIcon,
-} from "./styles";
-import { Header } from "../../../../../components/header";
-import { useStorage } from "../../../../../hook/useStorage";
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { BadgeList, ChatIcon, Container, PinIcon, StartIcon2 } from "./styles";
 import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
-import { Text } from "../../../../../components/base/text";
-import { sendMessageOnWhatsApp } from "../../../../../utils/WhatsApp";
-import officesJson from "../../../../../../../offices.json";
-import { Button } from "../../../../../components/base/button";
-import { useAuth } from "../../../../../hook/useAuth";
+
+// COMPONENTS
+import { Header } from "../../../../../components/header";
+import { Header as CustomHeader } from "./components/header";
+
+// HOOKS
+import { useMemo } from "react";
+import { useTheme } from "styled-components";
+import { useStorage } from "../../../../../hook/useStorage";
+
+// TABS
+import { Tabs } from "./components/tabs";
+import { GalleryTab } from "./tabs/gallery";
+import { GeneralTab } from "./tabs/general";
+import { AvaliationsTab } from "./tabs/avaliations";
 
 export const ProfileDetails = ({
   route,
 }: SignedInRootProps<"ProfileDetails">) => {
   const { id } = route.params;
 
-  const { user } = useAuth();
+  const theme = useTheme();
   const { users } = useStorage();
-  const adv = users.find((user) => user.id === id);
 
-  const subOffices = useMemo(() => {
-    return officesJson[adv.office];
-  }, [adv]);
+  const user = useMemo(() => {
+    return users.find((user) => user.id === id);
+  }, [users]);
 
-  const handleWhatsappMessage = () => {
-    sendMessageOnWhatsApp(
-      adv.phoneNumber,
-      `Olá ${adv.name}! Me chamo ${user.name}, venho através do aplicativo Busca Adv e gostaria de saber...`
-    );
-  };
+  const badges = [
+    { icon: <PinIcon />, label: "Endereço" },
+    { icon: <ChatIcon />, label: "Conversar" },
+    { icon: <StartIcon2 />, label: "Favoritar" },
+  ];
 
   return (
-    <Container header={<Header label="Detalhes" />}>
-      <ImageProfile source={{ uri: adv.photo }} />
+    <Container header={<Header />}>
+      <StatusBar style="dark" backgroundColor={theme.colors.gray.light} />
 
-      <VerticalContainer>
-        <Label secondary>Nome</Label>
-        <Content>
-          <Label>{adv.name}</Label>
-        </Content>
-      </VerticalContainer>
+      <CustomHeader user={user} />
 
-      <VerticalContainer>
-        <Label secondary>Contato</Label>
-        <HorizontalContainer>
-          <Content>
-            <Label>{adv.phoneNumber}</Label>
-          </Content>
+      <BadgeList badges={badges} />
 
-          <WhatsAppButton onPress={handleWhatsappMessage}>
-            <WhatsAppIcon />
-          </WhatsAppButton>
-        </HorizontalContainer>
-      </VerticalContainer>
-
-      <VerticalContainer>
-        <Label secondary>Especialização</Label>
-        <Content>
-          <Label>{adv.office}</Label>
-        </Content>
-      </VerticalContainer>
-
-      <VerticalContainer>
-        <Label secondary>Sub especializações</Label>
-        <SubOfficeContainer>
-          {subOffices.map((item: string, index: number) => (
-            <SubOfficeContent
-              key={index}
-              showBorder={index < subOffices.length - 1}
-            >
-              <Label>{item}</Label>
-            </SubOfficeContent>
-          ))}
-        </SubOfficeContainer>
-      </VerticalContainer>
+      <Tabs
+        tabs={[
+          {
+            name: "service",
+            label: "Serviços",
+            children: <GeneralTab user={user} />,
+          },
+          {
+            name: "photo",
+            label: "Fotos",
+            children: <GalleryTab gallery={user.gallery ?? []} />,
+          },
+          {
+            name: "about",
+            label: "Sobre",
+            children: <AvaliationsTab user={user} />,
+          },
+        ]}
+      />
     </Container>
   );
 };

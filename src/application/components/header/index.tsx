@@ -1,4 +1,3 @@
-import { Text } from "../base/text";
 import React, { ReactNode } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Container, HorizontalContainer, ArrowButton, Label } from "./styles";

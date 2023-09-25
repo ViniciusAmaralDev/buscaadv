@@ -1,6 +1,6 @@
 import { IUser } from "../models/IUser";
 import { IStorageContext } from "../models/IStorageContext";
-import { userService } from "../../infrastructure/services/user";
+import { userService } from "@/infrastructure/services/user";
 import React, {
   useState,
   useEffect,

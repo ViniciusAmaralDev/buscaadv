@@ -1,26 +1,27 @@
-import React, { useState } from "react";
-import {
-  Container,
-  EmailIcon,
-  FormContainer,
-  SignInButton,
-  SignUpButton,
-  Title,
-  UserIcon,
-  VerticalContainer,
-} from "./styles";
-import { StatusBar } from "expo-status-bar";
-
 import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { InputForm } from "../../../components/input-form";
-import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
-import { SelectInput } from "../../../components/select-input";
-import { useTheme } from "styled-components";
-import { useAuth } from "../../../hook/useAuth";
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import { IUser } from "../../../models/IUser";
 import { EUserType } from "../../../enums/EUserType";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputForm } from "../../../components/input-form";
+import { SelectInput } from "../../../components/select-input";
+import { SignedOffRootProps } from "../../../routes/signed-off/SignedOffRootProps";
+import {
+  Title,
+  UserIcon,
+  Container,
+  EmailIcon,
+  SignInButton,
+  SignUpButton,
+  FormContainer,
+  VerticalContainer,
+} from "./styles";
+
+// HOOKS
+import { useForm } from "react-hook-form";
+import { useTheme } from "styled-components";
+import { useAuth } from "../../../hook/useAuth";
 
 const requiredField = { message: "campo obrigatório" };
 

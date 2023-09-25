@@ -1,7 +1,6 @@
 import styled from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Wrapper } from "../../../../../../../components/wrapper";
-import { Button } from "../../../../../../../components/base/button";
+import { Button } from "@/application/components/base/button";
 
 interface ContainerProps {
   isOpened: boolean;

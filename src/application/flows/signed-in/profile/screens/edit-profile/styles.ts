@@ -1,12 +1,11 @@
 import styled from "styled-components/native";
-import { Layout } from "../../../../../components/layout";
-import { EditButton as Button } from "../../../../../components/icon-buttons/EditButton";
-import { Image } from "../../../../../components/base/image";
-import { Wrapper } from "../../../../../components/wrapper";
-import { TextButton } from "../../../../../components/text-button";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import { Button as CustomButton } from "../../../../../components/base/button";
-import { Text } from "../../../../../components/base/text";
+import { FontAwesome } from "@expo/vector-icons";
+import { Layout } from "@/application/components/layout";
+import { Text } from "@/application/components/base/text";
+import { Wrapper } from "@/application/components/wrapper";
+import { Image } from "@/application/components/base/image";
+import { TextButton } from "@/application/components/text-button";
+import { EditButton as Button } from "@/application/components/icon-buttons/EditButton";
 
 interface WeekButtonProps {
   isSelected: boolean;

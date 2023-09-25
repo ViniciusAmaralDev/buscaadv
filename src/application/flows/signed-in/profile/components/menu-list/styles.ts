@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
-import { Button } from "../../../../../components/base/button";
+import { Button } from "@/application/components/base/button";
 
 interface ButtonProps {
   borderBottomEnabled?: boolean;

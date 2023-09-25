@@ -1,21 +1,21 @@
-import React, { useMemo, useState } from "react";
+import { IOffice } from "../..";
+import React, { useMemo } from "react";
+import { offices } from "@/application/mocks/Offices";
+import { Button } from "@/application/components/base/button";
+import { SelectInput } from "@/application/components/select-input";
 import {
-  Container,
-  HorizontalContainer,
-  IconContainer,
-  ImageProfile,
   Label,
+  Container,
   MessageIcon,
+  ImageProfile,
+  IconContainer,
   NotificationIcon,
   VerticalContainer,
+  HorizontalContainer,
 } from "./styles";
+
+// HOOKS
 import { useAuth } from "../../../../../hook/useAuth";
-import { SelectInput } from "../../../../../components/select-input";
-import officesJson from "../../../../../../../offices.json";
-import { useTheme } from "styled-components";
-import { Wrapper } from "../../../../../components/wrapper";
-import { IOffice } from "../..";
-import { Button } from "../../../../../components/base/button";
 import { useNavigation } from "@react-navigation/native";
 
 interface HeaderProps {
@@ -30,7 +30,7 @@ export const Header = ({ office, setOffice }: HeaderProps) => {
   const officeList: IOffice[] = useMemo(() => {
     return [
       { label: "Todos", value: "all" },
-      ...Object.keys(officesJson).map((item) => ({
+      ...Object.keys(offices).map((item) => ({
         label: item,
         value: item,
       })),

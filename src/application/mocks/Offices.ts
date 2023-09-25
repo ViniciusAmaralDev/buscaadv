@@ -1,4 +1,4 @@
-{
+export const offices: Record<string, string[]> = {
   "Especialista em Direito Civil": [
     "Direito das obrigações.",
     "Direito das sucessões.",
@@ -9,7 +9,7 @@
     "Direito das empresas.",
     "Direito das relações de consumo.",
     "Direito imobiliário.",
-    "Direito registral e notarial"
+    "Direito registral e notarial",
   ],
 
   "Especialista em Direito Penal": [
@@ -22,7 +22,7 @@
     "Crimes de violência doméstica",
     "Crimes cibernéticos",
     "Crimes ambientais",
-    "Criminologia."
+    "Criminologia.",
   ],
 
   "Especialista em Direito Trabalhista": [
@@ -35,7 +35,7 @@
     "Assédio moral e assédio sexual no ambiente de trabalho",
     "Jornada de trabalho e horas extras",
     "Férias e licenças trabalhistas",
-    "Segurança e saúde no trabalho."
+    "Segurança e saúde no trabalho.",
   ],
 
   "Especialista em Direito Tributário": [
@@ -48,7 +48,7 @@
     "Responsabilidade tributária",
     "Autuações fiscais e defesas",
     "Planejamento sucessório e tributação",
-    "Tributação internacional."
+    "Tributação internacional.",
   ],
 
   "Especialista em Direito Administrativo": [
@@ -61,7 +61,7 @@
     "Organização administrativa",
     "Direito urbanístico",
     "Direito regulatório",
-    "Direito ambiental."
+    "Direito ambiental.",
   ],
 
   "Especialista em Direito Constitucional": [
@@ -69,6 +69,6 @@
     "Organização dos poderes",
     "Direitos fundamentais",
     "Federalismo e repartição de competências",
-    "Processo legislativo e emendas"
-  ]
-}
+    "Processo legislativo e emendas",
+  ],
+};

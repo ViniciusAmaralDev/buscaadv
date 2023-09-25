@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
-import { Wrapper } from "../../../../../components/wrapper";
-import { Image } from "../../../../../components/base/image";
-import { Text } from "../../../../../components/base/text";
+import { Text } from "@/application/components/base/text";
+import { Wrapper } from "@/application/components/wrapper";
+import { Image } from "@/application/components/base/image";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface LabelProps {

@@ -1,33 +1,37 @@
+import * as z from "zod";
 import React, { useEffect, useState } from "react";
+import { IUser } from "@/application/models/IUser";
+import { offices } from "@/application/mocks/Offices";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EUserType } from "@/application/enums/EUserType";
+import { SignedInRootProps } from "@/application/routes/signed-in/SignedInRootProps";
 import {
+  Label,
   Container,
+  SaveButton,
   EditButton,
+  ImageProfile,
   FormContainer,
   HorizontalContainer,
-  ImageProfile,
-  Label,
-  SaveButton,
 } from "./styles";
-import { Header } from "../../../../../components/header";
-import { SignedInRootProps } from "../../../../../routes/signed-in/SignedInRootProps";
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+// UTILS
+import { getImageFromLibrary } from "@/application/utils/Image";
+import { getCurrentPosition } from "@/application/utils/Location";
 
-import { getImageFromLibrary } from "../../../../../utils/Image";
-import { InputForm } from "../../../../../components/input-form";
-import { useAuth } from "../../../../../hook/useAuth";
-import { useProfile } from "../../../../../hook/useProfile";
-import { EUserType } from "../../../../../enums/EUserType";
-import officesJson from "../../../../../../../offices.json";
-import { useToast } from "../../../../../context/ToastContext";
-import { getCurrentPosition } from "../../../../../utils/Location";
-import { IUser } from "../../../../../models/IUser";
-import { useGeocode } from "../../../../../hook/useGeocode";
-import { useRequestStatus } from "../../../../../context/RequestStatusContext";
+// COMPONENTS
 import { Dropdown } from "./components/dropdown";
-import { Wrapper } from "../../../../../components/wrapper";
+import { Header } from "@/application/components/header";
+import { Wrapper } from "@/application/components/wrapper";
+import { InputForm } from "@/application/components/input-form";
+
+// HOOKS
+import { useForm } from "react-hook-form";
+import { useAuth } from "@/application/hook/useAuth";
+import { useProfile } from "@/application/hook/useProfile";
+import { useGeocode } from "@/application/hook/useGeocode";
+import { useToast } from "@/application/context/ToastContext";
+import { useRequestStatus } from "@/application/context/RequestStatusContext";
 
 const requiredMessage = { message: "campo obrigatório" };
 
@@ -43,7 +47,7 @@ export const EditProfile = ({
 
   const [editingZipCode, setEditingZipCode] = useState(false);
 
-  const officeList = Object.keys(officesJson).map((item) => ({
+  const officeList = Object.keys(offices).map((item) => ({
     label: item,
     value: item,
   }));

@@ -10,7 +10,7 @@ interface AboutTabProps {
   user: IUser;
 }
 
-export const AboutTab = ({ user }: AboutTabProps) => {
+export const AvaliationsTab = ({ user }: AboutTabProps) => {
   console.log(JSON.stringify(user, null, 2));
   const avaliations: IAvaliation[] = [
     {

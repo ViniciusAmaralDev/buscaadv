@@ -1,6 +1,6 @@
 import { IUser } from "../models/IUser";
 import { IAuthContext } from "../models/IAuthContext";
-import { userService } from "../../infrastructure/services/user";
+import { userService } from "@/infrastructure/services/user";
 import React, {
   useState,
   useEffect,

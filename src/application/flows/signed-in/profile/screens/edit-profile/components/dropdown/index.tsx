@@ -1,12 +1,9 @@
 import { ArrowIcon, HorizontalContainer } from "./styles";
 import React, { PropsWithChildren, useState } from "react";
-import { Text } from "../../../../../../../components/base/text";
-import { Button } from "../../../../../../../components/base/button";
-import {
-  InputForm,
-  InputFormProps,
-} from "../../../../../../../components/input-form";
-import { Wrapper } from "../../../../../../../components/wrapper";
+
+// COMPONENTS
+import { Text } from "@/application/components/base/text";
+import { Wrapper } from "@/application/components/wrapper";
 
 interface DropdownProps extends PropsWithChildren {
   label: string;

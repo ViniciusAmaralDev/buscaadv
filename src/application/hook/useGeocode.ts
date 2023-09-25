@@ -1,9 +1,13 @@
-import { geocodeService } from "../../infrastructure/services/geocode";
-import { ICoords } from "../../infrastructure/services/geocode/ICoords";
-import { IAddressComponent } from "../../infrastructure/services/geocode/IGeocodeResponse";
-import { viacepService } from "../../infrastructure/services/viacep";
-import { useRequestStatus } from "../context/RequestStatusContext";
 import { ERequestStatus } from "../enums/ERequestStatus";
+import { useRequestStatus } from "../context/RequestStatusContext";
+
+// INTERFACES
+import { ICoords } from "@/infrastructure/services/geocode/ICoords";
+import { IAddressComponent } from "@/infrastructure/services/geocode/IGeocodeResponse";
+
+// SERVICES
+import { viacepService } from "@/infrastructure/services/viacep";
+import { geocodeService } from "@/infrastructure/services/geocode";
 
 export const useGeocode = () => {
   const { setRequestStatus } = useRequestStatus();

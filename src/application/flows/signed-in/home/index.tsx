@@ -1,55 +1,39 @@
-import React, { useMemo, useRef, useState } from "react";
-import {
-  Container,
-  FilterIcon,
-  Footer,
-  Header,
-  TargetButton,
-  TargetIcon,
-} from "./styles";
-import MapView from "react-native-maps";
-import { StatusBar } from "expo-status-bar";
-import { useTheme } from "styled-components";
-import { Map } from "../../../components/map";
-import { useStorage } from "../../../hook/useStorage";
-import { SignedInRootProps } from "../../../routes/signed-in/SignedInRootProps";
-import { SelectInput } from "../../../components/select-input";
-import officesJson from "../../../../../offices.json";
-import { CardList } from "./components/card-list";
-import { useColorScheme } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAuth } from "../../../hook/useAuth";
-import { Button } from "../../../components/base/button";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ImageProfile } from "../../../components/image-profile";
-import { EUserType } from "../../../enums/EUserType";
-import { Details, LatLng, Region } from "react-native-maps";
+import React from "react";
+import MapView, { LatLng } from "react-native-maps";
+import { EUserType } from "@/application/enums/EUserType";
+import { Container, TargetButton, TargetIcon } from "./styles";
 
-interface IOffice {
+// COMPONENTS
+import { Header } from "./components/header";
+import { Map } from "@/application/components/map";
+
+// HOOKS
+import { useMemo, useRef, useState } from "react";
+import { useAuth } from "@/application/hook/useAuth";
+import { useStorage } from "@/application/hook/useStorage";
+
+export interface IOffice {
   label: string;
   value: string;
 }
 
-export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
+export const Home = () => {
   const mapRef = useRef<MapView>(null);
 
-  const theme = useTheme();
   const { user } = useAuth();
   const { users } = useStorage();
-  const { top } = useSafeAreaInsets();
-  const themeDevice = useColorScheme() ?? "light";
 
-  const [office, setOffice] = useState<IOffice>({
-    label: "Todos",
-    value: "all",
-  });
+  const [mapPositionChanged, setMapPositionChanged] = useState(false);
 
   const userCoords: LatLng = useMemo(() => {
     const { latitude, longitude } = user.address;
     return { latitude, longitude };
   }, [user]);
 
-  const [mapPositionChanged, setMapPositionChanged] = useState(false);
+  const [office, setOffice] = useState<IOffice>({
+    label: "Todos",
+    value: "all",
+  });
 
   const markers = useMemo(() => {
     return users
@@ -61,16 +45,6 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
       });
   }, [users, office]);
 
-  const officeList: IOffice[] = useMemo(() => {
-    return [
-      { label: "Todos", value: "all" },
-      ...Object.keys(officesJson).map((item) => ({
-        label: item,
-        value: item,
-      })),
-    ];
-  }, [user]);
-
   const handleResetMapCoords = () => {
     mapRef.current?.animateToRegion(
       { ...userCoords, latitudeDelta: 0.015, longitudeDelta: 0.0121 },
@@ -80,33 +54,13 @@ export const Home = ({ navigation }: SignedInRootProps<"Home">) => {
   };
 
   return (
-    <Container>
-      <StatusBar style="dark" />
+    <Container header={<Header office={office} setOffice={setOffice} />}>
       <Map
         ref={mapRef}
         markers={markers}
         coords={userCoords}
-        userInterfaceStyle={themeDevice}
         onRegionChange={() => setMapPositionChanged(true)}
       />
-
-      <Header paddingTop={top}>
-        <Button onPress={() => navigation.navigate("Profile")}>
-          <ImageProfile
-            uri={user?.photo}
-            onPress={() => navigation.navigate("Profile")}
-          />
-        </Button>
-
-        <SelectInput
-          renderLeftIcon={() => <FilterIcon />}
-          labelStyle={{ color: theme.colors.gray.dark }}
-          value={office}
-          data={officeList}
-          placeholder="Especialização"
-          onChange={setOffice}
-        />
-      </Header>
 
       <TargetButton
         isActive={mapPositionChanged}

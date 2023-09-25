@@ -5,7 +5,7 @@ interface PhotoTabProps {
   gallery: string[];
 }
 
-export const PhotoTab = ({ gallery }: PhotoTabProps) => {
+export const GalleryTab = ({ gallery }: PhotoTabProps) => {
   return (
     <Container>
       {gallery.length === 0 ? (

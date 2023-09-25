@@ -1,9 +1,9 @@
 import styled from "styled-components/native";
-import { Layout } from "../../../components/layout";
-import { Text } from "../../../components/base/text";
+import { Layout } from "@/application/components/layout";
+import { Text } from "@/application/components/base/text";
+import { Wrapper } from "@/application/components/wrapper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TextButton } from "../../../components/text-button";
-import { Wrapper } from "../../../components/wrapper";
+import { TextButton } from "@/application/components/text-button";
 
 export const Container = styled(Layout).attrs({
   paddingTopDisabled: true,

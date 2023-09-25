@@ -8,7 +8,7 @@ interface ServiceTabProps {
   user: IUser;
 }
 
-export const ServiceTab = ({ user }: ServiceTabProps) => {
+export const GeneralTab = ({ user }: ServiceTabProps) => {
   return (
     <Container>
       <Wrapper>
