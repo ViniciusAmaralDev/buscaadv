@@ -1,24 +1,16 @@
 import React from "react";
-import { List } from "../../../../../../../../../components/list";
+import { List } from "@/application/components/list";
+import { Stars } from "@/application/components/stars";
+import { useStorage } from "@/application/hook/useStorage";
+import { IAvaliation } from "@/application/models/IAvaliation";
 import {
   Card,
-  Container,
-  HorizontalContainer,
-  ImageProfile,
   Label,
+  Container,
+  ImageProfile,
   VerticalContainer,
-  WrapperHorizontal,
+  HorizontalContainer,
 } from "./styles";
-import { useStorage } from "../../../../../../../../../hook/useStorage";
-import { Stars } from "../../../../../../../../../components/stars";
-import { Text } from "../../../../../../../../../components/base/text";
-
-export interface IAvaliation {
-  author: string;
-  stars: number;
-  comment: string;
-  createdAt: string;
-}
 
 interface AvaliationListProps {
   avaliations: IAvaliation[];

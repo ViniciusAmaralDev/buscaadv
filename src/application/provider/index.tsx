@@ -8,6 +8,7 @@ import { RequestStatusProvider } from "../context/RequestStatusContext";
 import { ToastProvider } from "../context/ToastContext";
 import { AlertProvider } from "../context/AlertContext";
 import { StorageProvider } from "../context/StorageContext";
+import { AvaliationsProvider } from "../context/AvaliationsContext";
 
 export default function Provider({ children }: PropsWithChildren) {
   return (
@@ -16,7 +17,9 @@ export default function Provider({ children }: PropsWithChildren) {
         <AlertProvider>
           <RequestStatusProvider>
             <AuthProvider>
-              <StorageProvider>{children}</StorageProvider>
+              <StorageProvider>
+                <AvaliationsProvider>{children}</AvaliationsProvider>
+              </StorageProvider>
             </AuthProvider>
           </RequestStatusProvider>
         </AlertProvider>

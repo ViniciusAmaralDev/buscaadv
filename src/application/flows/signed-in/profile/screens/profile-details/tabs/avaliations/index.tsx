@@ -1,23 +1,25 @@
 import React from "react";
-import { useAuth } from "../../../../../../../hook/useAuth";
-import { Divider } from "../../../../../../../components/divider";
-import { Container, Content, Label } from "./styles";
+import { Container } from "./styles";
 import { Avaliate } from "./components/avaliate";
-import { AvaliationList, IAvaliation } from "./components/avaliation-list";
-import { IUser } from "../../../../../../../models/IUser";
+import { IUser } from "@/application/models/IUser";
+import { Divider } from "@/application/components/divider";
+import { AvaliationList } from "./components/avaliation-list";
+import { useAvaliation } from "@/application/hook/useAvaliation";
 
 interface AboutTabProps {
   user: IUser;
 }
 
 export const AvaliationsTab = ({ user }: AboutTabProps) => {
-  const avaliations: IAvaliation[] = [];
+  const { avaliations } = useAvaliation();
+
+  const avaliationList = avaliations.filter((item) => item.attorney === user.id);
 
   return (
     <Container>
-      {user.avaliations && (
+      {avaliationList.length > 0 && (
         <>
-          <AvaliationList avaliations={avaliations} />
+          <AvaliationList avaliations={avaliationList} />
 
           <Divider />
         </>
