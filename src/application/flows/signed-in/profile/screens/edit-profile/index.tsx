@@ -51,7 +51,12 @@ export const EditProfile = ({
     value: item,
   }));
 
-  const schema = createSchema(user, ["about", "office", "services", "openingHours"]);
+  const schema = createSchema(user, [
+    "about",
+    "office",
+    "services",
+    "openingHours",
+  ]);
 
   type FormData = z.infer<typeof schema>;
 
@@ -82,10 +87,12 @@ export const EditProfile = ({
     !name ||
     !photo ||
     !phone ||
-    Object.values(address).length === 0 ||
+    Object.values(address ?? {}).length === 0 ||
     (user.type === EUserType.ATTORNEY && !office);
 
   const addressIsEditable = !isLoading && address?.zipCode?.length > 0;
+
+  if (errors) console.log(JSON.stringify(errors, null, 2));
 
   const handleSubmitForm = async (values: FormData) => {
     try {

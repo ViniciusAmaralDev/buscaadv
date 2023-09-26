@@ -21,7 +21,7 @@ export const VerticalContainer = styled(Wrapper)`
 `;
 
 export const Label = styled(Text)<LabelProps>`
-  font-size: ${({ secondary }) => (secondary ? 10 : 14)}px;
+  font-size: ${({ secondary }) => (secondary ? 12 : 14)}px;
   font-family: ${({ theme, secondary }) =>
     secondary ? theme.fonts.regular : theme.fonts.medium};
   color: ${({ theme, secondary }) =>
@@ -29,9 +29,9 @@ export const Label = styled(Text)<LabelProps>`
 `;
 
 export const ImageProfile = styled(Image).attrs({
-  imageStyle: { borderRadius: 20 },
+  imageStyle: { borderRadius: 25 },
 })`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
 `;

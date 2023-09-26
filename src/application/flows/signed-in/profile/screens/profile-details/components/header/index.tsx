@@ -13,7 +13,7 @@ export const Header = ({ user }: HeaderProps) => {
       <VerticalContainer>
         <Label>{user.name}</Label>
         <Label secondary>Advogado {user.office}</Label>
-        <Stars amount={4} />
+        <Stars amount={4} size={20} />
       </VerticalContainer>
 
       <ImageProfile uri={user.photo} />
