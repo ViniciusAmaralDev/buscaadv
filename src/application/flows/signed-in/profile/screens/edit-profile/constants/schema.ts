@@ -16,21 +16,27 @@ export const createSchema = (user: IUser, requiredFields?: Keys[]) =>
     name: z.string().nonempty(noEmptyErrorMessage).default(user.name),
     phone: z.string().nonempty(noEmptyErrorMessage).default(user?.phone),
     about: requiredFields?.includes("about")
-      ? z.string().optional().default(user?.about ?? undefined)
+      ? z
+          .string()
+          .optional()
+          .default(user?.about ?? undefined)
       : z.string().nonempty(noEmptyErrorMessage).default(user?.about),
     services: requiredFields?.includes("services")
       ? z
           .string()
           .optional()
           .default(user?.services?.join(", ") ?? undefined)
-          .transform((value) => value.split(",").map((item) => item.trim()))
+          .transform((value) => value?.split(",")?.map((item) => item?.trim()))
       : z
           .string()
           .nonempty(noEmptyErrorMessage)
           .default(user?.services?.join(", "))
-          .transform((value) => value.split(",").map((item) => item.trim())),
+          .transform((value) => value?.split(",")?.map((item) => item?.trim())),
     office: requiredFields?.includes("services")
-      ? z.string().optional().default(user?.office ?? undefined)
+      ? z
+          .string()
+          .optional()
+          .default(user?.office ?? undefined)
       : z.string().nonempty(noEmptyErrorMessage).default(user?.office),
     address: z
       .object({
@@ -64,6 +70,9 @@ export const createSchema = (user: IUser, requiredFields?: Keys[]) =>
       })
       .default(user?.address),
     openingHours: requiredFields?.includes("services")
-      ? z.string().optional().default(user?.openingHours ?? undefined)
+      ? z
+          .string()
+          .optional()
+          .default(user?.openingHours ?? undefined)
       : z.string().nonempty(noEmptyErrorMessage).default(user?.openingHours),
   });

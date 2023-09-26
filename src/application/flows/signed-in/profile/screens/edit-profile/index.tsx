@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { createSchema } from "./constants/schema";
-import React, { useEffect, useState } from "react";
+import { createSchema } from "./constants/Schema";
+import React, { useEffect, useMemo, useState } from "react";
 import { IUser } from "@/application/models/IUser";
 import { offices } from "@/application/mocks/Offices";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,12 +51,13 @@ export const EditProfile = ({
     value: item,
   }));
 
-  const schema = createSchema(user, [
-    "about",
-    "office",
-    "services",
-    "openingHours",
-  ]);
+  const optionalFields: (keyof IUser)[] = useMemo(() => {
+    return user.type !== EUserType.ATTORNEY
+      ? ["about", "office", "services", "openingHours"]
+      : [];
+  }, [user]);
+
+  const schema = createSchema(user, optionalFields);
 
   type FormData = z.infer<typeof schema>;
 
@@ -69,6 +70,8 @@ export const EditProfile = ({
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  console.log(JSON.stringify(errors, null, 2));
 
   const form = watch();
 
@@ -96,7 +99,7 @@ export const EditProfile = ({
 
   const handleSubmitForm = async (values: FormData) => {
     try {
-      // console.log(JSON.stringify(values, null, 2));
+      console.log(JSON.stringify(values, null, 2));
       await updateUser(user.id, values as any as IUser);
       goBack();
     } catch (error) {}
