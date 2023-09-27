@@ -45,8 +45,6 @@ export const ProfileDetails = ({
 
   return (
     <Container header={<Header />}>
-      <StatusBar style="dark" backgroundColor={theme.colors.gray.light} />
-
       <CustomHeader user={user} />
 
       <BadgeList badges={badges} />
