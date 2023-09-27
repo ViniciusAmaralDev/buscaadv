@@ -5,8 +5,8 @@
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "splash": {
-      "image": "./assets/images/busca-adv-splash-icon.png",
-      "backgroundColor": "#0D71AB"
+      "image": "./assets/images/logo-splash.png",
+      "backgroundColor": "#006297"
     },
     "plugins": [
       [
